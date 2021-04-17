@@ -22,4 +22,7 @@ int main(int argc, char** aa, char ** env,char **ou)
 			if(!strcmp(line,"sair"))
 				break;
 		}
+
+
+//33
 }
