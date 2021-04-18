@@ -50,7 +50,7 @@ int		get_line_break(char *final)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char const *s2)
+char	*ft_strjoin2(char *s1, char const *s2)
 {
 	char	*string;
 	int		len;

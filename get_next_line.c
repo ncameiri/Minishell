@@ -104,7 +104,7 @@ int		get_next_line(int fd, char **line)
 	{
 		s_v.ret = read(fd, s_v.bu, BUFFER_SIZE);
 		s_v.bu[s_v.ret] = '\0';
-		f_content[fd] = ft_strjoin(f_content[fd], s_v.bu);
+		f_content[fd] = ft_strjoin2(f_content[fd], s_v.bu);
 		if (srch_break(f_content[fd]))
 			break ;
 	}

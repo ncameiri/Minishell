@@ -31,7 +31,7 @@ int				get_next_line(int fd, char **line);
 
 size_t			ft_strlen(const char *s);
 
-char			*ft_strjoin(char *s1, char const *s2);
+char			*ft_strjoin2(char *s1, char const *s2);
 
 int				get_line_break(char *final);
 
