@@ -69,14 +69,28 @@ int command_recon(char **command, t_mishell *mishell) // Para saber se é um com
 	return (0);
 }
 
+void sighandler(int num)
+{
+	printf("%d cliacado\n",num);
+	exit(1);
+}
+
 int main(int argc, char** argv, char ** env,char **ou)
 {	
+	 //ESTE PRIMEIRO BLOCO E PARA VER O CONTEUDO DA DIRETORIA
+	  DIR *dir;
+	  struct dirent *entry;
+		dir = opendir("/");		
+	 	while ((entry = readdir(dir)) != NULL)
+      	printf("  %s\n", entry->d_name);
+		  closedir(dir);
+
 	char *line;
 	char **splitted;
 	//char **env_var;
 	t_mishell mishell;
 	int i=0;
-
+signal(SIGINT, sighandler);
 	read_env_var(env, &mishell);
 	write(1,"-->",3);
 	while(get_next_line(0,&line) > 0)// stdin file descriptor
@@ -88,8 +102,8 @@ int main(int argc, char** argv, char ** env,char **ou)
 				//exec_com(line);
 			
 			write(1,"-->",3);
-				while(ou[i])
-	printf("%s\n",ou[i++]);
+			/*	while(ou[i])
+	printf("%s\n",ou[i++]);*/
 		
 	}
 
