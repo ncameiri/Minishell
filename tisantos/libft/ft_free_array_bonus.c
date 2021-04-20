@@ -6,20 +6,21 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 00:17:46 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/19 00:17:56 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/20 14:21:08 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	free_array(char **array, int count)
+void	free_array(char **array)
 {
-	if (count == -1)
-		return ;
-	while (count >= 0)
+	int	i;
+
+	i = 0;
+	while (array[i] != NULL)
 	{
-		free(array[count]);
-		count--;
+		free(array[i]);
+		i++;
 	}
 	free(array);
 }
