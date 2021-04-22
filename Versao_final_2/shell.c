@@ -36,14 +36,14 @@ char *shell_prompt()
 	{
 		write(1, "\x1b[94m", 6);
 		write(1, "minishell", 10);
-		write(1, "\x1b[93m", 5);
+		write(1, "\x1b[93m", 6);
 		write(1, "$ ", 3);
 	}
 	else
 	{
 		write(1, "\x1b[94m", 6);
 		write(1, path, ft_strlen(path));
-		write(1, "\x1b[93m", 5);
+		write(1, "\x1b[93m", 6);
 		write(1, "$ ", 3);
 	}
 
