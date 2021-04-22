@@ -39,8 +39,8 @@ get_next_line (fd, buffer(**line)).
 							You can change it on get_next_line.h
 
 stdin:  Same as fd = 0.	<--- This is what the keyboard writes.
-stdout: Same as fd = 1. 	<--- This is what the shell terminal shows.
-stderr: Same as fd = 2. 	<--- This is what the shell terminal shows.
+stdout: Same as fd = 1. <--- This is what the shell terminal shows.
+stderr: Same as fd = 2. <--- This is what the shell terminal shows.
 
 ------------------------------------------------------------------------------
 
