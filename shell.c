@@ -6,17 +6,17 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/22 03:42:26 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/23 02:27:55 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void sighandler(int num)//Adicionei esta
+/*void sighandler(int num)//Adicionei esta
 {
 	printf(" %d clicaste Ctrl + C\n",num);
 	exit(1);
-}
+}*/
 
 char **shell_split_args(char *line)
 {
@@ -60,7 +60,9 @@ char *shell_prompt()
 void shell_loop()
 {
 	mini_sh.status = 1;
-	signal(SIGINT, sighandler);//para reconhecer o ctrl +c
+
+	//signal(SIGINT, sighandler);//para reconhecer o ctrl +c
+
 	while (mini_sh.status == 1)
 	{
 		mini_sh.line = shell_prompt();
@@ -82,9 +84,11 @@ int main (int argc, char **argv, char **env)
 {
 	(void)argc; // This is for -Wall -Wextra -Werror not
 	(void)argv; // to give unused variables error.
+
 	mini_sh.absolute_path = 0; // Set absolute path as prompt message or Minishell as Prompt.
 	mini_sh.testing = 0; // Changes subject commands for real builtin commands for test purposes.
 	mini_sh.env = env;
+
 	shell_loop();
 
 	return (0);
