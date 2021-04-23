@@ -12,7 +12,7 @@
 
 #include "../../shell.h"
 
-void own_func()
+void ft_env()
 {
 	int	i;
 

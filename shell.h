@@ -55,5 +55,7 @@ void			ft_absolute_path();
 void			ft_testing();
 int				ft_pwd();
 int				ft_echo();
+void 			ft_env();
+int				ft_cd();
 
 #endif

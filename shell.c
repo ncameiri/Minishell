@@ -39,16 +39,16 @@ char *shell_prompt()
 
 	if (mini_sh.absolute_path == 0)
 	{
-		write(1, "\x1b[94m", 6);
+		write(1, "\x1b[90m", 6);
 		write(1, "minishell", 10);
-		write(1, "\x1b[93m", 6);
+		write(1, "\x1b[91m", 6);
 		write(1, "$ ", 3);
 	}
 	else
 	{
-		write(1, "\x1b[94m", 6);
+		write(1, "\x1b[90m", 6);
 		write(1, path, ft_strlen(path));
-		write(1, "\x1b[93m", 6);
+		write(1, "\x1b[91m", 6);
 		write(1, "$ ", 3);
 	}
 

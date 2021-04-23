@@ -13,9 +13,9 @@
 #include "../../shell.h"
 int		ft_pwd()
 {
-	char	cwd[100];
+	char	cwd[1001];
     
-	if (getcwd(cwd, 100))
+	if (getcwd(cwd, 1000))
 	{
 		ft_putendl_fd(cwd, 1);
 		return (1);
@@ -23,3 +23,24 @@ int		ft_pwd()
 	else
 		return (-1); // em caso de erro
 }
+
+
+/*
+echo
+-n
+"ola; > ;adeeus"
+ola
+|
+cat
+-e
+>
+file.txt
+;
+echo
+ola
+
+-pipe on ou off
+- seta de file???
+-contar ; fora das aspas
+
+*/
