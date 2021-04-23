@@ -106,5 +106,6 @@ Updates:
 
 gcc -fsanitize=address -o minishell shell.c ./srcs/builtin/*c ./srcs/exec/*.c ./get_next_line/*.c libft/libft.a
 
+https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_01
 
 </pre>
