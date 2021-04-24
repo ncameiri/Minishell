@@ -96,6 +96,7 @@ void			save_history();
 void			free_global(char *f1, char *f2, char *f3, char *f4);
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
+char 			**ft_aloc_env(char **env);
 
 
 #endif

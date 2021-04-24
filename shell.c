@@ -84,13 +84,18 @@ void	shell_loop()
 
 int	main (int argc, char **argv, char **env)
 {
-	(void)argc; // This is for -Wall -Wextra -Werror not
-	(void)argv; // to give unused variables error.
+	(void)argc; // This is for -Wall -Wextra -Werror not Bem trabalhado!!
+	(void)argv; // to give unused variables error. NICE!!
 
 	mini_sh.absolute_path = 0; // Set absolute path as prompt message or Minishell as Prompt.
 	mini_sh.testing = 0; // Changes subject commands for real builtin commands for test purposes.
-	mini_sh.env = env; // <-- Meter este alocado, uma função qualquer, get_env(), qualquer coisa.
-
+	mini_sh.env = ft_aloc_env(env); // <-- Meter este alocado, uma função qualquer, get_env(), qualquer coisa. tá no utils
+/*int i=0;
+while(env[i])
+{
+	printf("%s\n",env[i]);
+	printf("%s\n",mini_sh.env[i++]);
+}*/
 	shell_loop();
 
 	return (0);
