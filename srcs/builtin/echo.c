@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/23 17:12:50 by tisantos          #+#    #+#             */
+/*   Updated: 2021/04/23 17:13:09 by tisantos         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../shell.h"
+
 void	ft_putnstr(char *str, int n)
 {
 	int		i;
@@ -16,7 +29,7 @@ void	ft_putnstr(char *str, int n)
 	}
 }
 
-static void		echo_out(char **str, int pos)
+static void	echo_out(char **str, int pos)
 {
 	int		starts_with;
 	int		ends_with;
@@ -37,8 +50,7 @@ static void		echo_out(char **str, int pos)
 		write(1," ",1);
 }
 
-
-int				ft_echo()
+int	ft_echo()
 {
 	int		i;
 	int		n_flag;

@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 02:27:55 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/23 17:13:14 by tisantos         ###   ########.fr       */
+/*   Created: 2021/04/22 02:53:37 by tisantos          #+#    #+#             */
+/*   Updated: 2021/04/23 22:14:38 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-void	ft_env()
+void	ft_history()
 {
-	int	i;
+	int i;
 
 	i = 0;
-	if(!ft_strcmp(mini_sh.args[0],"env"))
+	while (mini_sh.history[i] != NULL)
 	{
-		while(mini_sh.env[i])
-		{
-			printf("%s\n",mini_sh.env[i++]);
-		}
+		printf(" %d  %s\n", i + 1, mini_sh.history[i]);
+		i++;
 	}
 }

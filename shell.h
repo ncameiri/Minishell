@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/23 02:27:54 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 01:10:49 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,21 @@
 
 typedef struct s_minishell
 {
-	// Freeable
+	// Parsed
 
-	char			**args; // Line divided in arguments.
 	char			*line; // Line you write on your stdin.
 
-	// Not Freeable
+	char			**cmd_tables; // Command tables where you store your commands separated by ;
+	char			**args; // Line divided in arguments.
+
+
+
+	// Env
 
 	char			**env; // Env file.
+
+	// Loop
+
 	int				status; // Status of while loop.
 
 	// Added Builtins
@@ -43,9 +50,25 @@ typedef struct s_minishell
 	int				absolute_path; // 1 to change to absolute, 0 for minishell 	>.
 	int				testing; // Changes subject commands for real builtin commands.
 
+	// History
+
+	char			**history; // Saves the history of commands you typed.
+	int				history_len; // How many commands you've typed.
+
 }					t_minishell;
 
+/* Freeable
+**
+**		**args
+**		*line
+**		**history
+**		**cmd_tables
+**
+*/
+
 t_minishell mini_sh;
+
+/*	Exec */
 
 void			exec_func();
 
@@ -53,9 +76,26 @@ void			exec_func();
 
 void			ft_absolute_path();
 void			ft_testing();
+void			ft_history();
 int				ft_pwd();
 int				ft_echo();
 void 			ft_env();
 int				ft_cd();
+
+/* 	Parsing */
+
+int				parsing();
+void			process_cmd_tables();
+
+/*	History */
+
+void			save_history();
+
+/*	Utils */
+
+void			free_global(char *f1, char *f2, char *f3, char *f4);
+int				*add_int_to_arr(int *array, int location, int count);
+char			**add_str_to_arrarr(char **array, char *string);
+
 
 #endif

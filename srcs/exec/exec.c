@@ -6,17 +6,19 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:09:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/23 02:28:03 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/23 21:52:56 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-void run_builtin()
+void	run_builtin()
 {
 
 	if(ft_strcmp(mini_sh.args[0],"absolute_path") == 0)
 		ft_absolute_path();
+	else if(ft_strcmp(mini_sh.args[0],"history") == 0)
+		ft_history();
 	else if(ft_strcmp(mini_sh.args[0],"testing") == 0)
 		ft_testing();
 	else if(ft_strcmp(mini_sh.args[0],"pwd") == 0)
@@ -34,13 +36,13 @@ void run_builtin()
 		ft_export();
 	else if(ft_strcmp(mini_sh.args[0],"unset") == 0)
 		ft_unset();
-	
+
 	else if(ft_strcmp(mini_sh.args[0],"exit") == 0)
 		ft_exit();
 	*/
 }
 
-void run_bin()
+void	run_bin()
 {
 	pid_t	pid;
 	char	*bin_path;
@@ -90,11 +92,13 @@ int	check_builtin()
 		return(1);
 	else if(ft_strcmp(mini_sh.args[0],"testing") == 0)
 		return(1);
+	else if(ft_strcmp(mini_sh.args[0],"history") == 0)
+		return(1);
 	else
 		return (0);
 }
 
-void exec_func()
+void	exec_func()
 {
 	char	*path;
 	int		builtin;
