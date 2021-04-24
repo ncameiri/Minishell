@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 01:10:49 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 19:57:28 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,20 @@ typedef struct s_minishell
 **		*line
 **		**history
 **		**cmd_tables
+**		**env
 **
 */
 
 t_minishell mini_sh;
+
+
+/*	Command Tables */
+
+void			syntax_error(int value);
+int				initial_cmd_error_handling(int *semicolon_location, int semicolon_count);
+int				final_cmd_error_handling();
+void			remove_cmd_semicolons();
+void			remove_cmd_blanks();
 
 /*	Exec */
 
@@ -96,7 +106,7 @@ void			save_history();
 void			free_global(char *f1, char *f2, char *f3, char *f4);
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
-char 			**ft_aloc_env(char **env);
+char			**ft_aloc_env(char **env);
 
 
 #endif

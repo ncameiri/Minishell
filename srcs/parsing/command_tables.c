@@ -6,40 +6,59 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 00:36:21 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 01:39:13 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 19:50:15 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
+int	split_cmd_tables3(int *semicolon_location, int i, int copy, int last)
+{
+	int a;
+
+	a = 0;
+
+	mini_sh.cmd_tables[i] = malloc(sizeof(char) * (ft_strlen(mini_sh.line) + 2));
+	if (mini_sh.cmd_tables[i] == NULL)
+		return 0;
+	if (last == 0)
+	{
+		while (copy <= semicolon_location[i])
+			mini_sh.cmd_tables[i][a++] = mini_sh.line[copy++];
+	}
+	else
+	{
+		while (copy < ft_strlen(mini_sh.line))
+			mini_sh.cmd_tables[i][a++] = mini_sh.line[copy++];
+	}
+	mini_sh.cmd_tables[i][a] = '\0';
+	return (copy);
+}
+
 void	split_cmd_tables2(int *semicolon_location, int semicolon_count)
 {
 	int i;
-	int a;
-	char *temp;
-	int	*lens;
+	int copy;
 
 	i = 0;
-	a = 0;
-	mini_sh.cmd_tables = malloc(sizeof(char *) * (semicolon_count + 1));
-	lens = malloc(sizeof(int) * (semicolon_count + 1));
-	if (mini_sh.cmd_tables == NULL || lens == NULL)
+	copy = 0;
+
+	if (initial_cmd_error_handling(semicolon_location, semicolon_count) == 0)
+		return ; // Se começa com ; ou se tem 2 ;; juntos.
+
+	mini_sh.cmd_tables = malloc(sizeof(char *) * (semicolon_count + 2));
+	if (mini_sh.cmd_tables == NULL)
 		return ;
+	while (i < semicolon_count)
+		copy = split_cmd_tables3(semicolon_location, i++, copy, 0);
+	if (copy < ft_strlen(mini_sh.line))
+		copy = split_cmd_tables3(semicolon_location, i++, copy, 1);
+	mini_sh.cmd_tables[i] = NULL;
 
-	lens[i++] = (semicolon_location[i] - 0);
-	while (i < semicolon_count - 1)
-	{
-		lens[i] = (semicolon_location[i + 1] - semicolon_location[i]);
-		i++;
-	}
-	lens[i] = (ft_strlen(mini_sh.line - 1) - semicolon_location[i]);
-
-	i = 0;
-
-	printf("aqui 0 %d\n", lens[0]);
-	printf("aqui 1 %d\n", lens[1]);
-	printf("aqui 2 %d\n", lens[2]);
-
+	if (final_cmd_error_handling(0, 0, 0) == 0)
+		return ;
+	remove_cmd_semicolons();
+	remove_cmd_blanks();
 }
 
 void	split_cmd_tables(int *semicolon_location, int semicolon_count)

@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 01:10:46 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 19:59:15 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char **ft_aloc_env(char **env)
 	no_envs = 0;
 	while (env[i++])
 		no_envs++;
-	ret = malloc(sizeof(char*)*(no_envs+1));
+	ret = malloc(sizeof(char*) * (no_envs + 1));
 	if(!ret)
 		return NULL;
 	i = 0;

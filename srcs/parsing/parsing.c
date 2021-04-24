@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:00:42 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 00:50:40 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 19:36:29 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ int	parsing()
 		return 0;
 	}
 	process_cmd_tables();
-	return (0);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 01:39:50 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 19:53:43 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,32 @@ char **shell_split_args(char *line) // <-- Temporária só.
 void	shell_loop()
 {
 	mini_sh.status = 1;
-
+	int i;
 	//signal(SIGINT, sighandler);//para reconhecer o ctrl +c
 
 	while (mini_sh.status == 1)
 	{
+		i = 0;
 		shell_prompt();
 		if (mini_sh.line == NULL || mini_sh.line[0] == '\0')
 			continue;
 		save_history(); // guardar os lines todos para o mini_sh.history seta cima e baixo.
-		//if (parsing() == 0)
-		//	continue;
+		if (parsing() == 0)
+			continue;
 
-		mini_sh.args = shell_split_args(mini_sh.line); // <-- Temporária só.
+		//mini_sh.args = shell_split_args(mini_sh.line); <-- Temporária só.
 
-		exec_func();
+		while (mini_sh.cmd_tables[i] != NULL)
+		{
+			//mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]);
+			exec_func();
+			i++;
+		}
 
 		free(mini_sh.line);
+		free_array(mini_sh.args);
 		//free_array(mini_sh.cmd_tables);
+		//mini_sh.status = 0;
 	}
 }
 
@@ -84,18 +92,12 @@ void	shell_loop()
 
 int	main (int argc, char **argv, char **env)
 {
-	(void)argc; // This is for -Wall -Wextra -Werror not Bem trabalhado!!
-	(void)argv; // to give unused variables error. NICE!!
+	(void)argc; // This is for -Wall -Wextra -Werror not
+	(void)argv; // to give unused variables error.
 
 	mini_sh.absolute_path = 0; // Set absolute path as prompt message or Minishell as Prompt.
 	mini_sh.testing = 0; // Changes subject commands for real builtin commands for test purposes.
 	mini_sh.env = ft_aloc_env(env); // <-- Meter este alocado, uma função qualquer, get_env(), qualquer coisa. tá no utils
-/*int i=0;
-while(env[i])
-{
-	printf("%s\n",env[i]);
-	printf("%s\n",mini_sh.env[i++]);
-}*/
 	shell_loop();
 
 	return (0);
