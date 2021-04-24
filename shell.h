@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 21:44:08 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 19:57:28 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,17 @@
 # define LSH_TOK_BUFSIZE 64
 # define SHELL_DELIMITERS " \t\r\n\a"
 
+typedef struct s_linklis
+{
+	char			**content;
+	int				type;
+	struct s_list	*next;
+}				t_linklis;
+
 typedef struct s_minishell
 {
+	// LIST
+	t_linklis 		*ls_start;
 	// Parsed
 
 	char			*line; // Line you write on your stdin.
@@ -95,11 +104,14 @@ int				ft_cd();
 /* 	Parsing */
 
 int				cmd_parsing();
-int				process_cmd_tables();
+int			process_cmd_tables();
 
 /*	History */
 
 void			save_history();
+
+/* List */
+int 			add_to_list(int index);
 
 /*	Utils */
 
