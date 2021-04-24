@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:00:42 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:36:29 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:51:37 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,18 @@ int	check_complete_quotation()
 		return (0);
 }
 
-int	parsing()
+int	cmd_parsing()
 {
 	if (check_complete_quotation() == 0) // (Input is missing a " or '". It's invalid.).
 	{
-		printf("%s\n", "quotation mark incomplete");
+		printf("%s\n", "bash: quotation incomplete");
 		free_global("line", "empty", "empty", "empty");
-		return 0;
+		return (0);
 	}
-	process_cmd_tables();
+	if (process_cmd_tables() == 0)
+	{
+		free_global("line", "empty", "empty", "empty");
+		return (0);
+	}
 	return (1);
 }

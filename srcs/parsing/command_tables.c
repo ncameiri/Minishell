@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 00:36:21 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:50:15 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:50:37 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	split_cmd_tables3(int *semicolon_location, int i, int copy, int last)
 
 	mini_sh.cmd_tables[i] = malloc(sizeof(char) * (ft_strlen(mini_sh.line) + 2));
 	if (mini_sh.cmd_tables[i] == NULL)
-		return 0;
+		return (0);
 	if (last == 0)
 	{
 		while (copy <= semicolon_location[i])
@@ -35,7 +35,7 @@ int	split_cmd_tables3(int *semicolon_location, int i, int copy, int last)
 	return (copy);
 }
 
-void	split_cmd_tables2(int *semicolon_location, int semicolon_count)
+int	split_cmd_tables2(int *semicolon_location, int semicolon_count)
 {
 	int i;
 	int copy;
@@ -44,11 +44,11 @@ void	split_cmd_tables2(int *semicolon_location, int semicolon_count)
 	copy = 0;
 
 	if (initial_cmd_error_handling(semicolon_location, semicolon_count) == 0)
-		return ; // Se começa com ; ou se tem 2 ;; juntos.
+		return (0); // Se começa com ; ou se tem 2 ;; juntos.
 
 	mini_sh.cmd_tables = malloc(sizeof(char *) * (semicolon_count + 2));
 	if (mini_sh.cmd_tables == NULL)
-		return ;
+		return (0);
 	while (i < semicolon_count)
 		copy = split_cmd_tables3(semicolon_location, i++, copy, 0);
 	if (copy < ft_strlen(mini_sh.line))
@@ -56,12 +56,18 @@ void	split_cmd_tables2(int *semicolon_location, int semicolon_count)
 	mini_sh.cmd_tables[i] = NULL;
 
 	if (final_cmd_error_handling(0, 0, 0) == 0)
-		return ;
+	{
+		free_global("cmd_tables", "empty", "empty", "empty");
+		free(semicolon_location);
+		return (0);
+	}
 	remove_cmd_semicolons();
 	remove_cmd_blanks();
+
+	return (1);
 }
 
-void	split_cmd_tables(int *semicolon_location, int semicolon_count)
+int	split_cmd_tables(int *semicolon_location, int semicolon_count)
 {
 	int i;
 
@@ -72,12 +78,14 @@ void	split_cmd_tables(int *semicolon_location, int semicolon_count)
 		mini_sh.cmd_tables = malloc(sizeof(char *) * 2);
 		mini_sh.cmd_tables[0] = ft_strdup(mini_sh.line);
 		mini_sh.cmd_tables[1] = NULL;
-		return ;
+		return (1);
 	}
 	else
 	{
-		split_cmd_tables2(semicolon_location, semicolon_count);
+		if (split_cmd_tables2(semicolon_location, semicolon_count) == 0)
+			return (0);
 	}
+	return (1);
 }
 
 
@@ -113,7 +121,7 @@ int	*separator_location(int *semi_locations, int *semi_count)
 	return (semi_locations);
 }
 
-void	process_cmd_tables()
+int	process_cmd_tables()
 {
 	int	*semicolon_location;
 	int semicolon_count;
@@ -123,9 +131,10 @@ void	process_cmd_tables()
 
 	semicolon_location = separator_location(semicolon_location, &semicolon_count);
 
-	split_cmd_tables(semicolon_location, semicolon_count);
-
-
+	if (split_cmd_tables(semicolon_location, semicolon_count) == 0)
+		return (0);
 
 	free(semicolon_location);
+
+	return (1);
 }

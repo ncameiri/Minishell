@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:53:43 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:57:20 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,24 @@ void	shell_loop()
 		if (mini_sh.line == NULL || mini_sh.line[0] == '\0')
 			continue;
 		save_history(); // guardar os lines todos para o mini_sh.history seta cima e baixo.
-		if (parsing() == 0)
+		if (cmd_parsing() == 0)
 			continue;
-
-		//mini_sh.args = shell_split_args(mini_sh.line); <-- Temporária só.
 
 		while (mini_sh.cmd_tables[i] != NULL)
 		{
-			//mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]);
+			mini_sh.args = NULL;
+			mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]); // <-- Temporária só.
 			exec_func();
 			i++;
 		}
 
 		free(mini_sh.line);
 		free_array(mini_sh.args);
-		//free_array(mini_sh.cmd_tables);
+		free_array(mini_sh.cmd_tables);
 		//mini_sh.status = 0;
 	}
+	free_array(mini_sh.history);
+	free_array(mini_sh.env);
 }
 
 

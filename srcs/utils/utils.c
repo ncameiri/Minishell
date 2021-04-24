@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:59:15 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:30:08 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,21 @@ char	**add_str_to_arrarr(char **array, char *string)
 
 void	free_global(char *f1, char *f2, char *f3, char *f4)
 {
-	if (ft_strcmp(f1, "line") || ft_strcmp(f2, "line")
-		|| ft_strcmp(f3, "line") || ft_strcmp(f4, "line"))
+	if (!ft_strcmp(f1, "line") || !ft_strcmp(f2, "line")
+		|| !ft_strcmp(f3, "line") || !ft_strcmp(f4, "line"))
+	{
 		free(mini_sh.line);
-	if (ft_strcmp(f1, "history") || ft_strcmp(f2, "history")
-		|| ft_strcmp(f3, "history") || ft_strcmp(f4, "history"))
+	}
+	if (!ft_strcmp(f1, "history") || !ft_strcmp(f2, "history")
+		|| !ft_strcmp(f3, "history") || !ft_strcmp(f4, "history"))
 	{
 		free_array(mini_sh.history);
 		mini_sh.history = NULL;
+	}
+	if (!ft_strcmp(f1, "cmd_tables") || !ft_strcmp(f2, "cmd_tables")
+		|| !ft_strcmp(f3, "cmd_tables") || !ft_strcmp(f4, "cmd_tables"))
+	{
+		free_array(mini_sh.cmd_tables);
+		mini_sh.cmd_tables = NULL;
 	}
 }

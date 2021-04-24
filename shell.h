@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:57:28 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/24 21:44:08 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ int				ft_cd();
 
 /* 	Parsing */
 
-int				parsing();
-void			process_cmd_tables();
+int				cmd_parsing();
+int				process_cmd_tables();
 
 /*	History */
 
