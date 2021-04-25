@@ -26,11 +26,24 @@
 # define LSH_TOK_BUFSIZE 64
 # define SHELL_DELIMITERS " \t\r\n\a"
 
+typedef struct s_splvariab
+{
+	char			**tab;
+	char			*next_str;
+	unsigned int	next_str_len;
+	unsigned int	nb_strs;
+	unsigned int	i;
+	int single_q;
+	int double_q;
+
+}			t_splvariab;
+
 typedef struct s_linklis
 {
+	char			*pre_split;
 	char			**content;
 	int				type;
-	struct s_list	*next;
+	struct s_linklis	*next;
 }				t_linklis;
 
 typedef struct s_minishell
@@ -119,6 +132,7 @@ void			free_global(char *f1, char *f2, char *f3, char *f4);
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
 char			**ft_aloc_env(char **env);
+char			**ft_split_igquo(char const *s, const char *delimiters);
 
 
 #endif

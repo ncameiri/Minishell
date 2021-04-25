@@ -1,19 +1,19 @@
 #include "../../shell.h"
 
-/*t_linklis	*ft_linknew(char **content,int type)
+t_linklis	*ft_linknew(char *pre_split,int type)
 {
 	t_linklis	*new;
 	int	i;
 	int no_args;
 	
 	i = 0;
-	new = malloc(sizeof(t_list));
+	new = malloc(sizeof(t_linklis));
 	if (new == NULL)
 		return (NULL);
 	if (new)
-	{
-		while(content[i])
-		new->content[i] = content;
+	{	
+		new->pre_split=pre_split;
+		new->type=type;
 		new->next = NULL;
 	}
 	return (new);
@@ -41,16 +41,34 @@ void	ft_linkadd_back(t_linklis **lst, t_linklis *new)
 		}
 	}
 }
-*/
+void	ft_lstspli()
+{
+	t_linklis *lst;
+	lst=mini_sh.ls_start;
+	while (lst)
+	{
+		lst->content=ft_split_igquo(lst->pre_split," ");
+		lst = lst->next;
+	}
+}
 
-int is_separator(char check)
+
+int is_separator(char check, int *type)
 {
 	if(check == '|')
-	return 1;
+	{	
+		*type = 1;
+		return 1;
+	}
+	else if (check == '>')
+	{	
+		*type = 2;
+		return 1;
+	}
 	else 
 	return 0;
 }
-int	sep_link(int index,int *a)
+int	sep_link(int index,int *a, int *type)
 {
 	int i;
 	int s;
@@ -72,11 +90,11 @@ int	sep_link(int index,int *a)
 			single_q = 1;
 		else if (mini_sh.cmd_tables[index][i] == '\'' && single_q == 1 && double_q == 0 ) 
 			single_q = 0;
-		else if (is_separator(mini_sh.cmd_tables[index][i]) && single_q == 0 && double_q == 0)
-		{	//printf("--%d -%d-%d\n",double_q,single_q,i);
+		else if (is_separator(mini_sh.cmd_tables[index][i], type) && single_q == 0 && double_q == 0)
+		{	
 			return (i);
 		}
-		//printf("--%d -%d-%d\n",double_q,single_q,i);
+
 		i++;
 	}
 	return(0);
@@ -86,30 +104,54 @@ int add_to_list(int index)
 {
 	int i;
 	t_list *temp;
+	char *aux;
 	int  start;
 	int last;
-	int open_quote;
-	i = 0;
-	open_quote = 0;
+	int type;
+	i = 0;	
 	start = 0;
 	last =0;
-	
+	temp = NULL;
 	while(mini_sh.cmd_tables[index][i])
 	{
-		last=sep_link(index,&i);
+		last=sep_link(index,&i,&type);
 		
 		if (last > 0 && (last-start)>1)
 		{
-			printf("*%s*\n",ft_substr(mini_sh.cmd_tables[index],start,last-start));
+			aux=ft_substr(mini_sh.cmd_tables[index],start,last-start);
+			ft_linkadd_back(&mini_sh.ls_start,ft_linknew(aux,type));
+		
 			start = last + 1;
 		}
 		if(!mini_sh.cmd_tables[index][i+1])
-		printf("*%s*\n",ft_substr(mini_sh.cmd_tables[index],start,(i+1)-start));
-		//if(mini_sh.cmd_tables[index][i] == '\"' && open_quote)
-	
+		{
+			type=8;		
+			aux=ft_substr(mini_sh.cmd_tables[index],start,(i+1)-start);
+			ft_linkadd_back(&mini_sh.ls_start,ft_linknew(aux,type));
+		}	
 		i++;
 	}
-	//ft_lstnew()
-	//	ft_lstadd_back(mini_sh.start,)
+/*
+ISTO E PARA VER OS ELEM PRE_SPLIT
+*/
+	t_linklis *ptr;
+			ptr = mini_sh.ls_start;
+			while(ptr)
+			{printf("*type %d*%s*\n",ptr->type,ptr->pre_split);
+			
+			ptr=ptr->next;}
+//PARA CIMA E TEMPORARIO
+ft_lstspli();//<--- IMPORTANTE
+printf("ORGANIZADA\n");
+			ptr = mini_sh.ls_start;
+			while(ptr)
+			{printf("*type %d\n",ptr->type);
+			int i=0;
+			while(ptr->content[i])
+			printf("%s\n",ptr->content[i++]);
+			
+			ptr=ptr->next;
+			printf("\n\n");}
+
 }
 
