@@ -77,10 +77,11 @@ void	shell_loop()
 		{
 			//mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]);
 			add_to_list(i);
-			
+			ft_lstspli();//<--- IMPORTANTE
+			ft_lsttrim();
 			mini_sh.args = NULL;
 			mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]); // <-- Temporária só.
-			//exec_func();
+			exec_func();
 			
 			//exec_func();
 			i++;

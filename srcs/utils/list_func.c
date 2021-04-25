@@ -41,6 +41,27 @@ void	ft_linkadd_back(t_linklis **lst, t_linklis *new)
 		}
 	}
 }
+void ft_lsttrim()
+{
+	t_linklis *lst;
+	int i;
+	char *tmp;
+	lst=mini_sh.ls_start;
+	while (lst)
+	{	i=0;
+		while (lst->content[i])
+		{	
+			tmp =ft_strtrim(lst->content[i],"\'\"");
+			free(lst->content[i]);
+			lst->content[i]=tmp;
+			i++;
+		}
+		lst = lst->next;
+		
+	}
+	
+}
+
 void	ft_lstspli()
 {
 	t_linklis *lst;
@@ -53,7 +74,7 @@ void	ft_lstspli()
 }
 
 
-int is_separator(char check, int *type)
+int is_separator(char check,char check2, int *type)
 {
 	if(check == '|')
 	{	
@@ -90,7 +111,7 @@ int	sep_link(int index,int *a, int *type)
 			single_q = 1;
 		else if (mini_sh.cmd_tables[index][i] == '\'' && single_q == 1 && double_q == 0 ) 
 			single_q = 0;
-		else if (is_separator(mini_sh.cmd_tables[index][i], type) && single_q == 0 && double_q == 0)
+		else if (is_separator(mini_sh.cmd_tables[index][i],mini_sh.cmd_tables[index][i+1], type) && single_q == 0 && double_q == 0)
 		{	
 			return (i);
 		}
@@ -134,7 +155,7 @@ int add_to_list(int index)
 /*
 ISTO E PARA VER OS ELEM PRE_SPLIT
 */
-	t_linklis *ptr;
+/*	t_linklis *ptr;
 			ptr = mini_sh.ls_start;
 			while(ptr)
 			{printf("*type %d*%s*\n",ptr->type,ptr->pre_split);
@@ -142,6 +163,7 @@ ISTO E PARA VER OS ELEM PRE_SPLIT
 			ptr=ptr->next;}
 //PARA CIMA E TEMPORARIO
 ft_lstspli();//<--- IMPORTANTE
+ft_lsttrim();
 printf("ORGANIZADA\n");
 			ptr = mini_sh.ls_start;
 			while(ptr)
@@ -151,7 +173,7 @@ printf("ORGANIZADA\n");
 			printf("%s\n",ptr->content[i++]);
 			
 			ptr=ptr->next;
-			printf("\n\n");}
+			printf("\n\n");}*/
 
 }
 
