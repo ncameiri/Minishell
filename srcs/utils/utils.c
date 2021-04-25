@@ -1,26 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
+/*   Updated: 2021/04/25 18:49:16 by tisantos         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../shell.h"
 
-char **ft_aloc_env(char **env)
+int	only_spaces(char *line)
 {
 	int i;
-	int no_envs;
-	char **ret;
+	int a;
 
 	i = 0;
-	no_envs = 0;
-	while (env[i++])
-		no_envs++;
-	ret = malloc(sizeof(char*) * (no_envs + 1));
-	if(!ret)
-		return NULL;
-	i = 0;
-	while (i < no_envs)
+	a = 0;
+	while (line[i] != '\0')
 	{
-		ret[i] = ft_strdup(env[i]);
+		if (line[i] != ' ')
+			a++;
 		i++;
 	}
-	ret[i] = NULL;
-	return (ret);
+	if (a > 0)
+		return (0);
+	else
+		return (1);
 }
 
 int	*add_int_to_arr(int *array, int location, int count)
@@ -79,6 +87,7 @@ void	free_global(char *f1, char *f2, char *f3, char *f4)
 		|| !ft_strcmp(f3, "line") || !ft_strcmp(f4, "line"))
 	{
 		free(mini_sh.line);
+		mini_sh.line = NULL;
 	}
 	if (!ft_strcmp(f1, "history") || !ft_strcmp(f2, "history")
 		|| !ft_strcmp(f3, "history") || !ft_strcmp(f4, "history"))
@@ -92,4 +101,26 @@ void	free_global(char *f1, char *f2, char *f3, char *f4)
 		free_array(mini_sh.cmd_tables);
 		mini_sh.cmd_tables = NULL;
 	}
+	if (!ft_strcmp(f1, "env") || !ft_strcmp(f2, "env")
+		|| !ft_strcmp(f3, "env") || !ft_strcmp(f4, "env"))
+	{
+		free_array(mini_sh.env);
+		mini_sh.env = NULL;
+	}
+	if (!ft_strcmp(f1, "args") || !ft_strcmp(f2, "args")
+		|| !ft_strcmp(f3, "args") || !ft_strcmp(f4, "args"))
+	{
+		free_array(mini_sh.args);
+		mini_sh.args = NULL;
+	}
+}
+
+char **shell_split_args(char *line) // <-- Temporária só.
+{
+	char **args;
+
+	args = NULL;
+	args = ft_split_chars(line, SHELL_DELIMITERS);
+
+	return (args);
 }

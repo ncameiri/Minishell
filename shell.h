@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:57:28 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/25 18:16:56 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,42 +22,20 @@
 # include <sys/wait.h>
 # include <string.h>
 
-# define LSH_RL_BUFSIZE 1024
-# define LSH_TOK_BUFSIZE 64
 # define SHELL_DELIMITERS " \t\r\n\a"
 
-typedef struct s_splvariab
-{
-	char			**tab;
-	char			*next_str;
-	unsigned int	next_str_len;
-	unsigned int	nb_strs;
-	unsigned int	i;
-	int single_q;
-	int double_q;
-
-}			t_splvariab;
-
-typedef struct s_linklis
-{
-	char			*pre_split;
-	char			**content;
-	int				type;
-	struct s_linklis	*next;
-}				t_linklis;
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 typedef struct s_minishell
 {
-	// LIST
-	t_linklis 		*ls_start;
 	// Parsed
 
 	char			*line; // Line you write on your stdin.
 
 	char			**cmd_tables; // Command tables where you store your commands separated by ;
 	char			**args; // Line divided in arguments.
-
-
 
 	// Env
 
@@ -76,6 +54,10 @@ typedef struct s_minishell
 
 	char			**history; // Saves the history of commands you typed.
 	int				history_len; // How many commands you've typed.
+
+	// PID
+
+	pid_t			pid;
 
 }					t_minishell;
 
@@ -117,22 +99,25 @@ int				ft_cd();
 /* 	Parsing */
 
 int				cmd_parsing();
-int			process_cmd_tables();
+int				process_cmd_tables();
 
-/*	History */
+/*	Allocate */
 
 void			save_history();
-
-/* List */
-int 			add_to_list(int index);
+char			**save_env(char **env);
 
 /*	Utils */
 
 void			free_global(char *f1, char *f2, char *f3, char *f4);
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
-char			**ft_aloc_env(char **env);
-char			**ft_split_igquo(char const *s, const char *delimiters);
+int				only_spaces(char *line);
+char			**shell_split_args(char *line);
+
+/*	Signals */
+
+void			sig_int(int signo);
+void			sig_quit(int signo);
 
 
 #endif

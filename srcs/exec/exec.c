@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:09:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/24 19:48:37 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/25 17:07:12 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	run_builtin()
 
 void	run_bin()
 {
-	pid_t	pid;
 	char	*bin_path;
 
 	if (ft_strcmp(mini_sh.args[0],"testing") == 0)
@@ -55,19 +54,24 @@ void	run_bin()
 
 	bin_path = ft_strjoin("/usr/bin/", mini_sh.args[0]);
 
-	pid=fork();
+	mini_sh.pid=fork();
 
-	if(pid == 0)
+	if(mini_sh.pid == 0)
 	{
 		if (ft_strchr(mini_sh.args[0], '/'))
 			execve(mini_sh.args[0], mini_sh.args, mini_sh.env); // This one is in case it's to read an ./a.out or other executable.
 		execve(bin_path, mini_sh.args, mini_sh.env); // If it's not an executable, you read from /usr/bin/
 		printf("%s: command not found\n", mini_sh.args[0]);
+		free(bin_path);
+
+		exit(1);
 	}
-	else if (pid > 0)
-		wait(&pid);
-	else if (pid < 0)
+	else if (mini_sh.pid > 0)
+		wait(&mini_sh.pid);
+	else if (mini_sh.pid < 0)
 		write(1,"ERROR",5);
+
+	mini_sh.pid = 0;
 
 	free(bin_path);
 }
