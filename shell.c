@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 19:01:28 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/25 20:30:14 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	loop_command_tables()
 	{
 		if (a++ > 0)
 			free_array(mini_sh.args);
+		add_to_list(i);
+		ft_lstspli(); //<--- Importante
+		ft_lsttrim();
 		mini_sh.args = shell_split_args(mini_sh.cmd_tables[i++]); // <-- Temporária só.
 		exec_func();
 	}

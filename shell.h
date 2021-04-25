@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 18:16:56 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/25 20:37:53 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,33 @@
 # define STDOUT 1
 # define STDERR 2
 
+
+typedef struct s_splvariab
+{
+	char			**tab;
+	char			*next_str;
+	unsigned int	next_str_len;
+	unsigned int	nb_strs;
+	unsigned int	i;
+	int single_q;
+	int double_q;
+
+}			t_splvariab;
+
+typedef struct s_linklis
+{
+	char			*pre_split;
+	char			**content;
+	int				type;
+	struct s_linklis	*next;
+}			t_linklis;
+
 typedef struct s_minishell
 {
+	// List
+
+	t_linklis 		*ls_start;
+
 	// Parsed
 
 	char			*line; // Line you write on your stdin.
@@ -113,11 +138,18 @@ int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
 int				only_spaces(char *line);
 char			**shell_split_args(char *line);
+char			**ft_aloc_env(char **env);
+char			**ft_split_igquo(char const *s, const char *delimiters);
 
 /*	Signals */
 
 void			sig_int(int signo);
 void			sig_quit(int signo);
 
+/*	List */
+
+int				add_to_list(int index);
+void			ft_lstspli();
+void			ft_lsttrim();
 
 #endif
