@@ -126,9 +126,9 @@ int	add_to_list(int index)
 
 	ft_lstspli();
 	ft_lsttrim();
-	//chck_dup_symbols();
+	chck_dup_symbols();
 	
-	chck_begend_symbols();
+	//chck_begend_symbols();
 if(mini_sh.error==1)
 printf("DEU ERRO\n");
 /*
