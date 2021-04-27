@@ -41,6 +41,7 @@ int	check_inside_symbols(t_splvariab *var, char *str)
 		if (is_a_shell_symbol(str[i], str[i + 1]))
 			return (1);
 	}
+	return 0;
 }
 
 void	chck_dup_symbols(void)
@@ -78,12 +79,12 @@ void	chck_begend_symbols(void)
 		i = 0;
 		if (pt[i])
 		{
-			while (pt[i] && chck_iespac(pt[i], '\"'))
+			while (pt[i] && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i++;
 			if (ft_strchr("|><", pt[i]))
 				mini_sh.error = 1;
 			i = ft_strlen(pt) - 1;
-			while (pt[i] && chck_iespac(pt[i], '\"'))
+			while (pt[i] && i>0 && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i--;
 			if (ft_strchr("|><", pt[i]))
 				mini_sh.error = 1;
