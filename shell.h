@@ -36,19 +36,36 @@ typedef struct s_splvariab
 	unsigned int	next_str_len;
 	unsigned int	nb_strs;
 	unsigned int	i;
-	int single_q;
-	int double_q;
+	int 			single_q;
+	int 			double_q;
 
-}			t_splvariab;
+}				t_splvariab;
 
 typedef struct s_linklis
 {
-	char			*pre_split;
-	char			**content;
-	int				type;
+	char				*pre_split;
+	char				**content;
+	int					type;
 	struct s_linklis	*next;
-}			t_linklis;
+}				t_linklis;
 
+typedef struct	s_var_seplink
+{
+	int		i;
+	int		s;
+	int		single_q;
+	int		double_q;
+	char	n;
+}				t_var_seplink;
+typedef struct s_var_add_tlis
+{
+		int		i;
+	t_list	*temp;
+	char	*aux;
+	int		start;
+	int		last;
+	int		type;
+}t_var_add_tlis;
 typedef struct s_minishell
 {
 	// List
@@ -83,6 +100,9 @@ typedef struct s_minishell
 	// PID
 
 	pid_t			pid;
+
+	//ERRO List
+	int 			error;
 
 }					t_minishell;
 
@@ -140,6 +160,7 @@ int				only_spaces(char *line);
 char			**shell_split_args(char *line);
 char			**ft_aloc_env(char **env);
 char			**ft_split_igquo(char const *s, const char *delimiters);
+int 			chck_iespac(char s1,char s)	;
 
 /*	Signals */
 
@@ -149,7 +170,12 @@ void			sig_quit(int signo);
 /*	List */
 
 int				add_to_list(int index);
-void			ft_lstspli();
-void			ft_lsttrim();
+void			ft_lstspli(void);
+void			ft_lsttrim(void);
+void			ft_linklstclear(t_linklis **lst);
+int				is_separator(char check, char check2, int *type);
+void			add_var_init(t_var_add_tlis *va);
+void 			chck_dup_symbols(void);
+void 			chck_begend_symbols(void);
 
 #endif

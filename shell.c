@@ -24,10 +24,11 @@ void	loop_command_tables()
 		if (a++ > 0)
 			free_array(mini_sh.args);
 		add_to_list(i);
-		ft_lstspli(); //<--- Importante
-		ft_lsttrim();
-		mini_sh.args = shell_split_args(mini_sh.cmd_tables[i++]); // <-- Temporária só.
-		exec_func();
+		
+		mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]); // <-- Temporária só.
+		//exec_func();
+		//ft_linklstclear(&mini_sh.ls_start);
+	i++;
 	}
 	if (a > 0)
 		free_global("args", "cmd_tables", "line", "empty");
