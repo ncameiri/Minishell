@@ -153,7 +153,7 @@ int	add_to_list(int index)
 	if(mini_sh.error==1)
 	{
 		ft_linklstclear(&mini_sh.ls_start);
-		printf("bash: syntax error near unexpected token `||'");
+		printf("bash: syntax error near unexpected token `||'\n");
 		return (0);
 	}
 	else
