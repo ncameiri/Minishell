@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 18:49:16 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 16:33:13 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	*add_int_to_arr(int *array, int location, int count)
 		a++;
 	}
 	temp[a++] = location;
+	temp[a] = '\0';
 
 	free(array);
 
@@ -81,46 +82,37 @@ char	**add_str_to_arrarr(char **array, char *string)
 	return (temp);
 }
 
-void	free_global(char *f1, char *f2, char *f3, char *f4)
+void debug(int a)
 {
-	if (!ft_strcmp(f1, "line") || !ft_strcmp(f2, "line")
-		|| !ft_strcmp(f3, "line") || !ft_strcmp(f4, "line"))
-	{
-		free(mini_sh.line);
-		mini_sh.line = NULL;
-	}
-	if (!ft_strcmp(f1, "history") || !ft_strcmp(f2, "history")
-		|| !ft_strcmp(f3, "history") || !ft_strcmp(f4, "history"))
-	{
-		free_array(mini_sh.history);
-		mini_sh.history = NULL;
-	}
-	if (!ft_strcmp(f1, "cmd_tables") || !ft_strcmp(f2, "cmd_tables")
-		|| !ft_strcmp(f3, "cmd_tables") || !ft_strcmp(f4, "cmd_tables"))
-	{
-		free_array(mini_sh.cmd_tables);
-		mini_sh.cmd_tables = NULL;
-	}
-	if (!ft_strcmp(f1, "env") || !ft_strcmp(f2, "env")
-		|| !ft_strcmp(f3, "env") || !ft_strcmp(f4, "env"))
-	{
-		free_array(mini_sh.env);
-		mini_sh.env = NULL;
-	}
-	if (!ft_strcmp(f1, "args") || !ft_strcmp(f2, "args")
-		|| !ft_strcmp(f3, "args") || !ft_strcmp(f4, "args"))
-	{
-		free_array(mini_sh.args);
-		mini_sh.args = NULL;
-	}
-}
+	t_linklis *ptr;
 
-char **shell_split_args(char *line) // <-- Temporária só.
-{
-	char **args;
+	int i = 0;
+	printf("\n------------COMMAND TABLE [%i]------------\n", a);
+	printf("\n%s\n", mini_sh.cmd_tables[a]);
+	ptr = mini_sh.ls_start;
+	while(ptr)
+	{
+		printf("\n");
+		printf("%s\n", ptr->pre_split);
 
-	args = NULL;
-	args = ft_split_chars(line, SHELL_DELIMITERS);
+		if (ptr->type == 1)
+			printf("Type:%d = | \n", ptr->type);
+		else if (ptr->type == 2)
+			printf("Type:%d = >> \n", ptr->type);
+		else if (ptr->type == 3)
+			printf("Type:%d = > \n", ptr->type);
+		else if (ptr->type == 4)
+			printf("Type:%d = < \n", ptr->type);
+		else if (ptr->type == 8)
+			printf("Type:%d = last arg \n", ptr->type);
 
-	return (args);
+		while(ptr->content[i] != NULL)
+		{
+			printf("arg[%i] = %s\n", i, ptr->content[i]);
+			i++;
+		}
+
+		i = 0;
+		ptr=ptr->next;
+	}
 }
