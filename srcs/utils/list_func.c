@@ -157,4 +157,9 @@ printf("ORGANIZADA\n");
 
 			ptr=ptr->next;
 			printf("\n");}
+
+			if(mini_sh.error)
+			return 0;
+			else 
+			return 1;
 }
