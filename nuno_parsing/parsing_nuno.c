@@ -329,6 +329,7 @@ void	ft_lstspli(void)
 	lst = mini_sh.ls_start;
 	while (lst)
 	{
+		//printf("||%s||",lst)
 		lst->content = ft_split_igquo(lst->pre_split, " ");
 		lst = lst->next;
 	}
@@ -449,7 +450,7 @@ int	sep_link(int index, int *a, int *type)
 			va.single_q = 0;
 		else if (is_separator(va.n, mini_sh.cmd_tables[index][va.i + 1],
 			type) && va.single_q == 0 && va.double_q == 0)
-			return (va.i);
+			return (va.i /*+(va.n == '>' && mini_sh.cmd_tables[index][va.i + 1] == '>')*/);
 		va.i++;
 		va.n = mini_sh.cmd_tables[index][va.i];
 	}
@@ -467,13 +468,17 @@ int	add_to_list(int index)
 		va.last = sep_link(index, &va.i, &va.type);
 		printf("\\%d\\\n",va.last);
 		if (va.last > 0 /*&& (va.last - va.start) > 1*/)
-		{
+		{	
 			va.aux = ft_substr(mini_sh.cmd_tables[index],
 					va.start, va.last - va.start);
 			ft_linkadd_back(&mini_sh.ls_start, ft_linknew(va.aux, va.type));
 			va.start = va.last + 1;
 			if (va.type == 2)
+			{
 				va.start += 1;
+				va.i++;
+			}
+			
 		}
 		if (!mini_sh.cmd_tables[index][va.i + 1])
 		{
