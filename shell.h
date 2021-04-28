@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 20:37:53 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:37:15 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct	s_var_seplink
 }				t_var_seplink;
 typedef struct s_var_add_tlis
 {
-		int		i;
+	int		i;
 	t_list	*temp;
 	char	*aux;
 	int		start;
@@ -101,7 +101,8 @@ typedef struct s_minishell
 
 	pid_t			pid;
 
-	//ERRO List
+
+	// Add to List
 	int 			error;
 
 }					t_minishell;

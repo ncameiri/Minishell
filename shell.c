@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 20:30:14 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 11:32:34 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,17 @@
 void	loop_command_tables()
 {
 	int i;
-	int a;
 
 	i = 0;
-	a = 0;
 	while (mini_sh.cmd_tables[i] != NULL)
 	{
-		if (a++ > 0)
-			free_array(mini_sh.args);
-		add_to_list(i);
-		
-		mini_sh.args = shell_split_args(mini_sh.cmd_tables[i]); // <-- Temporária só.
+		if (add_to_list(i) == 0)
+			break;
 		//exec_func();
-		//ft_linklstclear(&mini_sh.ls_start);
-	i++;
+		ft_linklstclear(&mini_sh.ls_start);
+		i++;
 	}
-	if (a > 0)
-		free_global("args", "cmd_tables", "line", "empty");
-	else
-		free_global("cmd_tables", "line", "empty", "empty");
+	free_global("cmd_tables", "line", "empty", "empty");
 }
 
 void	*shell_prompt_line()
