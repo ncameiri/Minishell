@@ -46,6 +46,7 @@ typedef struct s_linklis
 	char				*pre_split;
 	char				**content;
 	int					type;
+	int					builtin;
 	struct s_linklis	*next;
 }				t_linklis;
 

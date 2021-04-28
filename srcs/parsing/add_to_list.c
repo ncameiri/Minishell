@@ -146,6 +146,8 @@ int	add_to_list(int index)
 
 	chck_begend_symbols();
 	ft_lsttrim();
+	ft_lstclear_zerolen();
+	ft_lstbuiltcheck();
 
 
 	if(mini_sh.error==1)
