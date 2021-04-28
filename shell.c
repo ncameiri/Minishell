@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 16:44:02 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 19:10:14 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	*shell_prompt()
 	if (get_next_line(0, &mini_sh.line) == 0)
 	{
 		write (1, "exit\n", 6);
-		exit_cntrl_d();
+		exit_cntrl_d(0);
 		exit(0);
 	}
 	if (only_spaces(mini_sh.line) == 1)

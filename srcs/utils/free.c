@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 15:43:44 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 16:24:05 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:57:44 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	free_global(char *f1, char *f2, char *f3, char *f4)
 	}
 }
 
-void	exit_cntrl_d()
+void	exit_cntrl_d(int free_list)
 {
 	free_array(mini_sh.env);
 	free(mini_sh.line);
@@ -55,6 +55,9 @@ void	exit_cntrl_d()
 		free_array(mini_sh.history);
 	if (mini_sh.cmd_tables != NULL)
 		free_array(mini_sh.cmd_tables);
+
+	if (free_list == 1)
+		ft_linklstclear(&mini_sh.ls_start);
 
 }
 

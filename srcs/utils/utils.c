@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 16:33:13 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:17:44 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,24 +93,28 @@ void debug(int a)
 	while(ptr)
 	{
 		printf("\n");
-		printf("%s\n", ptr->pre_split);
+		printf("[ %s]\n", ptr->pre_split);
+
 
 		if (ptr->type == 1)
-			printf("Type:%d = | \n", ptr->type);
+			printf("Type %d = | \n", ptr->type);
 		else if (ptr->type == 2)
-			printf("Type:%d = >> \n", ptr->type);
+			printf("Type %d = >> \n", ptr->type);
 		else if (ptr->type == 3)
-			printf("Type:%d = > \n", ptr->type);
+			printf("Type %d = > \n", ptr->type);
 		else if (ptr->type == 4)
-			printf("Type:%d = < \n", ptr->type);
+			printf("Type %d = < \n", ptr->type);
 		else if (ptr->type == 8)
-			printf("Type:%d = last arg \n", ptr->type);
+			printf("Type %d = last arg \n", ptr->type);
+
+		printf("Builtin: %i\n", ptr->builtin);
 
 		while(ptr->content[i] != NULL)
 		{
 			printf("arg[%i] = %s\n", i, ptr->content[i]);
 			i++;
 		}
+		printf("arg[%i] = %s\n", i, ptr->content[i]);
 
 		i = 0;
 		ptr=ptr->next;

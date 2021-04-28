@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_old.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:09:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 16:51:16 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:50:09 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
+
+
 
 void	run_builtin()
 {
@@ -101,7 +103,7 @@ int	check_builtin()
 	else
 		return (0);
 }
-/*
+
 void	exec()
 {
 	char	*path;
@@ -114,10 +116,9 @@ void	exec()
 	else if (builtin == 0 || mini_sh.testing == 1)
 		run_bin();
 }
-*/
 
 
-
+// NOT BEING USED! BUT DONT DELETE. YET.
 
 
 

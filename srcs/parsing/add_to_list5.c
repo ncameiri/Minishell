@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 17:40:05 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 17:40:51 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:56:12 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char	**re_alloc_parse(char **original)
 		i++;
 		k++;
 	}
-		ret[i] = NULL;
-		free_array(original);
-		return ret;
+	ret[i] = NULL;
+	free_array(original);
+	return (ret);
 
 }
 
@@ -78,7 +78,7 @@ void	ft_lstbuiltcheck(void)
 	lst = mini_sh.ls_start;
 	while (lst)
 	{
-		if(check_builtinlst(lst->content[0]))
+		if(lst->content[0] && check_builtinlst(lst->content[0]))
 			lst->builtin = 1;
 		else
 			lst->builtin = 0;

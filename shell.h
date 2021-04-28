@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 11:37:15 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:46:43 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,9 @@ void			remove_cmd_blanks();
 /*	Exec */
 
 void			exec_command();
+
+void			simple_execute(t_linklis *list);
+
 
 /* 	Builtins */
 
