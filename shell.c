@@ -35,7 +35,7 @@ void debug(int a)
 			printf("Type:%d = < \n", ptr->type);
 		else if (ptr->type == 8)
 			printf("Type:%d = last arg \n", ptr->type);
-
+		printf("BUILTIN:%d\n",ptr->builtin);
 		while(ptr->content[i] != NULL)
 		{
 			printf("arg[%i] = %s\n", i, ptr->content[i]);

@@ -179,5 +179,7 @@ int				is_separator(char check, char check2, int *type);
 void			add_var_init(t_var_add_tlis *va);
 void 			chck_dup_symbols(void);
 void 			chck_begend_symbols(void);
+void			ft_lstbuiltcheck(void);
+void 			ft_lstclear_zerolen(void);
 
 #endif

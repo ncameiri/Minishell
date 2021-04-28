@@ -24,6 +24,7 @@ char    **re_alloc_parse(char **original)
             k++;
         ret[i] = ft_strdup(original[k]);
         i++;
+        k++;
     }
         ret[i] = NULL;
         free_array(original);
