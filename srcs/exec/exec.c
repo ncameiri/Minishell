@@ -17,6 +17,13 @@ void	exec_command()
 	t_linklis *list;
 
 	list = mini_sh.ls_start;
+	
+	if (list->content[0] == NULL)
+	{
+		printf(" : command not found.\n");
+		return ;
+	}
+	
 	if (list->type == 8)
 		simple_execute(list);
 	//else
