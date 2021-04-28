@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../get_next_line/get_next_line.h"
-# include "../../libft/libft.h"
+# include "../get_next_line/get_next_line.h"
+# include "../libft/libft.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -126,7 +126,7 @@ int	check_inside_symbols(t_splvariab *var, char *str)
 			i++;
 		while(str[i] && (str[i] == '\t' || str[i] == '\n' || str[i] == '\a' || str[i] == ' ' || str[i] == '\r'))
 			i++;*/
-		if (is_a_shell_symbol(str[i], str[i + 1]))
+		if (str[i+1] && is_a_shell_symbol(str[i], str[i + 1]))
 			return (1);
 	}
 	return 0;
@@ -145,7 +145,7 @@ void	chck_dup_symbols(void)
 		i = 0;
 		while (lst->content[i])
 		{
-			if (check_inside_symbols(&var, lst->content[i]))
+			if (lst->content[i] && check_inside_symbols(&var, lst->content[i]))
 				mini_sh.error = 1;
 			i++;
 		}
@@ -453,6 +453,8 @@ int	sep_link(int index, int *a, int *type)
 		va.i++;
 		va.n = mini_sh.cmd_tables[index][va.i];
 	}
+	if(va.double_q || va.single_q)
+		mini_sh.error=1;
 	return (0);
 }
 int	add_to_list(int index)
@@ -463,7 +465,8 @@ int	add_to_list(int index)
 	while (mini_sh.cmd_tables[index][va.i])
 	{
 		va.last = sep_link(index, &va.i, &va.type);
-		if (va.last > 0 && (va.last - va.start) > 1)
+		printf("\\%d\\\n",va.last);
+		if (va.last > 0 /*&& (va.last - va.start) > 1*/)
 		{
 			va.aux = ft_substr(mini_sh.cmd_tables[index],
 					va.start, va.last - va.start);
@@ -483,7 +486,9 @@ int	add_to_list(int index)
 	}
 
 	ft_lstspli();
-		chck_dup_symbols();
+	
+	//chck_dup_symbols();
+		
 
 
 	chck_begend_symbols();
