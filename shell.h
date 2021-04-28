@@ -131,7 +131,7 @@ void			remove_cmd_blanks();
 
 /*	Exec */
 
-void			exec_func();
+void			exec_command();
 
 /* 	Builtins */
 
@@ -155,14 +155,10 @@ char			**save_env(char **env);
 
 /*	Utils */
 
-void			free_global(char *f1, char *f2, char *f3, char *f4);
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
 int				only_spaces(char *line);
-char			**shell_split_args(char *line);
-char			**ft_aloc_env(char **env);
-char			**ft_split_igquo(char const *s, const char *delimiters);
-int 			chck_iespac(char s1,char s)	;
+void			debug(int a);
 
 /*	Signals */
 
@@ -171,6 +167,9 @@ void			sig_quit(int signo);
 
 /*	List */
 
+char			**ft_aloc_env(char **env);
+char			**ft_split_igquo(char const *s, const char *delimiters);
+int 			chck_iespac(char s1,char s);
 int				add_to_list(int index);
 void			ft_lstspli(void);
 void			ft_lsttrim(void);
@@ -181,5 +180,10 @@ void 			chck_dup_symbols(void);
 void 			chck_begend_symbols(void);
 void			ft_lstbuiltcheck(void);
 void 			ft_lstclear_zerolen(void);
+
+/*	Free */
+
+void			free_global(char *f1, char *f2, char *f3, char *f4);
+void			exit_cntrl_d();
 
 #endif
