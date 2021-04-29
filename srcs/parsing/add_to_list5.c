@@ -23,18 +23,23 @@ char	**re_alloc_parse(char **original)
 	elems = 0;
 	if(!original)
 	return NULL;
-	while(original[i] && ft_strlen(original[i]))
+	while(original[i]/* && ft_strlen(original[i])*/)
+	{	
+		if(ft_strlen(original[i]))
+		elems++;
 		i++;
-	ret = malloc(sizeof(char*)*(i+1));
+	}
+	ret = malloc(sizeof(char*)*(elems+1));
 	if (!ret)
 		return NULL;
-	elems = i;
+	
 	i = 0;
 	k = 0;
 	while(i < elems)
 	{
-		while(!ft_strlen(original[k]))
+		while(!ft_strlen(original[k]) && original[k])
 			k++;
+		if(original[k])
 		ret[i] = ft_strdup(original[k]);
 		i++;
 		k++;

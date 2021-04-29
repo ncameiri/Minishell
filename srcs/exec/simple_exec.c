@@ -80,6 +80,8 @@ void	run_bin_simple(t_linklis *list)
 
 void	simple_execute(t_linklis *list)
 {
+
+	
 	if (list->builtin == 1 && mini_sh.testing == 0)
 		run_builtin_simple(list);
 	else if (list->builtin == 0 || mini_sh.testing == 1)
