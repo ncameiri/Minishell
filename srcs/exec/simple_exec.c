@@ -29,16 +29,17 @@ void	run_builtin_simple(t_linklis *list)
 		ft_env();
 	else if(ft_strcmp(list->content[0],"cd") == 0)
 		ft_cd();
+	else if(ft_strcmp(list->content[0],"exit") == 0)
+		ft_exit();
 
 	// Vai adicionando estas conforme vais fazendo os builtins.
 	/*
-	else if(ft_strcmp(mini_sh.args[0],"export") == 0)
+	else if(ft_strcmp(list->content[0],"export") == 0)
 		ft_export();
-	else if(ft_strcmp(mini_sh.args[0],"unset") == 0)
+	else if(ft_strcmp(list->content[0],"unset") == 0)
 		ft_unset();
 
-	else if(ft_strcmp(mini_sh.args[0],"exit") == 0)
-		ft_exit();
+
 	*/
 }
 

@@ -141,6 +141,7 @@ void			simple_execute(t_linklis *list);
 void			ft_absolute_path();
 void			ft_testing();
 void			ft_history();
+void 			ft_exit();
 int				ft_pwd();
 int				ft_echo();
 void 			ft_env();
