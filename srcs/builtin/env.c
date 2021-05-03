@@ -17,7 +17,7 @@ void	ft_env()
 	int	i;
 
 	i = 0;
-	if(!ft_strcmp(mini_sh.args[0],"env"))
+	if(!ft_strcmp(mini_sh.ls_start->content[0],"env"))
 	{
 		while(mini_sh.env[i])
 		{

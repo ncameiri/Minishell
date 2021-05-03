@@ -56,20 +56,20 @@ int	ft_echo()
 	int		n_flag;
 
 	n_flag = 0;
-	if (!mini_sh.args[1])
+	if (!mini_sh.ls_start->content[1])
 	{
 		write(1, "\n", 1);
 		return (1);
 	}
-	else if (!ft_strcmp(mini_sh.args[1] ,"-n"))
+	else if (!ft_strcmp(mini_sh.ls_start->content[1] ,"-n"))
 		n_flag = 1;
 	i = 0;
 	if (n_flag)
 		++i;
-	while (mini_sh.args[++i])
+	while (mini_sh.ls_start->content[++i])
 	{
-		echo_out(mini_sh.args, i);
-		if (!mini_sh.args[i + 1] && !n_flag)
+		echo_out(mini_sh.ls_start->content, i);
+		if (!mini_sh.ls_start->content[i + 1] && !n_flag)
 			write(1,"\n",1);
 	}
 	return (1);
