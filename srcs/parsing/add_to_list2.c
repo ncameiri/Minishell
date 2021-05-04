@@ -45,7 +45,7 @@ void	ft_lstspli(void)
 	while (lst)
 	{
 		//printf("||%s||",lst)
-		lst->content = ft_split_igquo(lst->pre_split, " ");
+		lst->content = ft_split_igquo(lst->pre_split, SHELL_DELIMITERS);
 		lst = lst->next;
 	}
 }

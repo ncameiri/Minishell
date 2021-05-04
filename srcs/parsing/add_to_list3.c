@@ -45,6 +45,7 @@ static unsigned int	ft_get_splnb(char const *s,
 {
 	unsigned int	i;
 	unsigned int	nb_strs;
+	int k;
 
 	if (!s[0])
 		return (0);
@@ -54,16 +55,21 @@ static unsigned int	ft_get_splnb(char const *s,
 		i++;
 	while (s[i])
 	{
-		if (che_open_quo(variab, s[i]) && ft_strchr(delimiters, s[i]))
+
+		k=che_open_quo(variab, s[i]);
+		if (ft_strchr(delimiters, s[i]) && k)
 		{
 			nb_strs++;
 			while (s[i] && ft_strchr(delimiters, s[i]))
 				i++;
 			continue ;
 		}
-		else if(che_open_quo(variab, s[i]) && chck_iespac(s[i + 1], s[i]) )
-			nb_strs++;
+		/*else if(k && chck_iespac(s[i + 1], s[i]) )
+			{nb_strs++;}
+		else if(i>0 && k && chck_iespac(s[i],s[i - 1]) )
+			{nb_strs++;}*/
 		i++;
+		
 	}
 	if (!ft_strchr(delimiters, s[i - 1]))
 		nb_strs++;
@@ -80,18 +86,27 @@ static void	ft_get_next_str1(char **next_str, unsigned int *next_str_len,
 	*next_str += *next_str_len;
 	*next_str_len = 0;
 	i = 0;
-	o = *next_str_len;
+	//o = *next_str_len;
 	while (**next_str && ft_strchr(delimiters, **next_str))
 		(*next_str)++;
+	printf("\\\\\\%c",**next_str);
+	o=0;
 	while ((*next_str)[i])
 	{
 		k = (*next_str)[i];
 		a=che_open_quo(varia, k);
-		if (a && i!=o && (ft_strchr(delimiters,
-			(*next_str)[i]) || chck_iespac((*next_str)[i+1], k) ))
+		/*if(i>0)
+		k = (*next_str)[i+1];
+		else 
+		k = (*next_str)[i];
+		
+		if (chck_iespac((*next_str)[i],k) )
+			{printf("**1%c**",k);
+			return ;}
+		(*next_str_len)++;
+		i++;*/
+			if (a && ft_strchr(delimiters, (*next_str)[i]))
 			return ;
-		else if(!a && i>0 && i!=o && chck_iespac((*next_str)[i-1],k))
-			return;
 		(*next_str_len)++;
 		i++;
 
@@ -104,6 +119,9 @@ char	**ft_split_igquo(char const *s, const char *delimiters)
 	var.double_q = 0;
 	var.single_q = 0;
 	var.nb_strs = ft_get_splnb(s, delimiters, &var);
+	printf("**%d**\n",var.nb_strs);
+	var.single_q = 0;
+	var.double_q = 0;
 	var.tab = malloc(sizeof(char *) * (var.nb_strs + 1));
 	if (var.tab == NULL)
 		return (NULL);

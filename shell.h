@@ -23,6 +23,7 @@
 # include <string.h>
 
 # define SHELL_DELIMITERS " \t\r\n\a"
+# define DELIMETERS2 " \t\r\n\a\'\""
 
 # define STDIN 0
 # define STDOUT 1
