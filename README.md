@@ -368,27 +368,27 @@ Parsing:							(Major headache)
 
 		typedeft struct s_list
 		{
-			char			**args;
-			char			type;
+			char		**args;
+			char		type;
 			struct s_list	*next;
 
-		}				t_list;
+		}		t_list;
 
-		t_list->args[0] = "ping";							t_list->type = '|';
-			  ->args[1] = "-c";
-			  ->args[2] = "1";						// The root of the t_list is a Pipe.
-			  ->args[3] = "google.com";
-			  ->args[4] = NULL;
+		t_list->args[0] = "ping";					t_list->type = '|';
+		      ->args[1] = "-c";
+		      ->args[2] = "1";					// The root of the t_list is a Pipe.
+		      ->args[3] = "google.com";
+		      ->args[4] = NULL;
 
-		t_list->next->args[0] = "grep";						t_list->type = '|';
-					->args[1] = "rtt";
-					->args[2] = NULL;
+		t_list->next->args[0] = "grep";					t_list->type = '|';
+			    ->args[1] = "rtt";
+			    ->args[2] = NULL;
 
-		t_list->next->next->args[0] = "wc";					t_list->type = '>';
-						  ->args[1] = NULL;
+		t_list->next->next->args[0] = "wc";				t_list->type = '>';
+				  ->args[1] = NULL;
 
-		t_list->next->next->next->args[0] = "aqui.txt";		t_list->type = '>';
-						  		->args[1] = NULL;
+		t_list->next->next->next->args[0] = "aqui.txt";		        t_list->type = '>';
+				        ->args[1] = NULL;
 
 
 		Now we have it divided in lists. Now it's easier to divide it into the next
@@ -400,10 +400,10 @@ Parsing:							(Major headache)
 		Continuing our example.
 		S.C. = Simple Commmand.
 
-						ping -c 1 google.com | grep rtt | wc > aqui.txt
-					   |					 |			|			   |
-					   |					 |			|			   |
-					   |		S.C.		 |	 S.C.	|	  S.C.     |
+				ping -c 1 google.com | grep rtt | wc > aqui.txt
+			       |		     |		|		|
+			       |		     |	        |		|
+			       |	S.C.	     |	 S.C.	|      S.C.     |
 
 		Simple commands are divided when they find a '|'. If you find a > or >> or <
 		you're still on the simple command.
@@ -411,14 +411,14 @@ Parsing:							(Major headache)
 		Another example:
 
 			ping google.com | grep rtt | wc > aqui.txt < ali.txt > aqui.txt | wc
-		   |				|		   |									|	  |
-		   |				|		   |									|	  |
-		   |	  S.C.		|	S.C.   |				S.C.				| S.C.|
+		       |		|	   |					|     |
+		       |		|	   |					|     |
+		       |       S.C.	|    S.C.  |			S.C.    	| S.C.|
 
 
 		Ok. Back on the cmd_tables[1].
 
-						ping -c 1 google.com | grep rtt | wc > aqui.txt".
+				ping -c 1 google.com | grep rtt | wc > aqui.txt".
 
 		Now we have to divide these in simple commands.
 		We make a struct.
@@ -433,19 +433,19 @@ Parsing:							(Major headache)
 		}				t_simplecommand;
 
 		t_simplecommand->command[0] = "ping";					..->outfile = NULL;
-					   ->command[1] = "-c";						..->infile	= NULL;
+					   ->command[1] = "-c";				..->infile  = NULL;
 					   ->command[2] = "1";
 					   ->command[3] = "google.com";
 					   ->command[4] = NULL;
 
 		t_simplecommand->next->command[0] = "grep";				..->outfile = NULL;
-					   		 ->command[1] = "rtt";				..->infile	= NULL;
+					   		 ->command[1] = "rtt";		..->infile  = NULL;
 					   		 ->command[2] = NULL;
 
-		t_simplecommand->next->next->command[0] = "wc";			..->outfile[0] = "aqui.txt";
-					   		 	   ->command[1] = NULL;			..->outfile[1] = NULL;
+		t_simplecommand->next->next->command[0] = "wc";				..->outfile[0] = "aqui.txt";
+				     ->command[1] = NULL;				..->outfile[1] = NULL;
 
-																..->infile = NULL;
+											..->infile = NULL;
 
 		The parsing is all done!
 
@@ -460,15 +460,15 @@ Parsing:							(Major headache)
 			int i = 0;
 
 			command_tables(); // Here we divide the Input on the bash in command tables.
-							  // It's on a global struct. gstruct->cmd_tables;
+					  // It's on a global struct. gstruct->cmd_tables;
 
 			while(cmd_tables[i] != NULL) // We loop one command table at a time.
 			{
 				convert_to_lists(cmd_tables[i]); // This is the Step 2.
-												 // It goes to gstruct->t_list.
+								 // It goes to gstruct->t_list.
 
 				convert_to_simple_commands(gstruct->t_list); // This is Step 3.
-															 // It goes to gstruct->simple_commands.
+									     // It goes to gstruct->simple_commands.
 
 				// Now we have simple commands we do a while loop on it.
 
@@ -486,7 +486,7 @@ Parsing:							(Major headache)
 
 Execute:				(Another Major Headache)
 
-
+// To Do
 
 
 
@@ -508,9 +508,9 @@ In any simple command there is only one and only ONE command!
 And the only command is ALWAYS the first argument of the simple command. Always.
 
 	 echo ola | echo adeus > te.txt < aqui.txt | ls | wc | wc >> ali.txt
-	|		  |								   |    |    |				|
-	|		  |								   |    |    |				|
-	|	echo  |				echo			   | ls	| wc | wc			|
+	|	  |				   |    |    |		    |
+	|	  |				   |    |    |		    |
+	|   echo  |		echo		   | ls	| wc |	    wc	    |
 
 Antes do loop fazer todos os infiles.
 (Se o infile der fd = -1 "bash: aqui.txt: No such file or directory" e dar return (0);)
