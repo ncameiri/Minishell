@@ -168,7 +168,9 @@ void	chck_begend_symbols(void)
 			while (pt[i] && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i++;
 			if (ft_strchr("|><", pt[i]))
+			{	if (!mini_sh.error_log)
 				mini_sh.error = 1;
+			}
 			i = ft_strlen(pt) - 1;
 			while (pt[i] && i>0 && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i--;

@@ -106,6 +106,8 @@ typedef struct s_minishell
 
 	// Add to List
 	int 			error;
+	char			*error_log;
+	int				actind;
 
 }					t_minishell;
 
@@ -164,6 +166,7 @@ int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
 int				only_spaces(char *line);
 void			debug(int a);
+char			*ft_errstr(char c);
 
 /*	Signals */
 

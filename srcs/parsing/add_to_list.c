@@ -104,7 +104,7 @@ int	sep_link(int index, int *a, int *type)
 		va.n = mini_sh.cmd_tables[index][va.i];
 	}
 	if(va.double_q || va.single_q)
-		mini_sh.error=1;
+		{mini_sh.error=1;}
 	return (0);
 }
 int	add_to_list(int index)
@@ -112,6 +112,7 @@ int	add_to_list(int index)
 	t_var_add_tlis	va;
 
 	add_var_init(&va);
+	mini_sh.actind = index;
 	while (mini_sh.cmd_tables[index][va.i])
 	{
 		va.last = sep_link(index, &va.i, &va.type);
@@ -153,7 +154,11 @@ int	add_to_list(int index)
 	if(mini_sh.error==1)
 	{
 		ft_linklstclear(&mini_sh.ls_start);
-		printf("bash: syntax error near unexpected token `||'\n");
+		if(ft_strlen(mini_sh.error_log) > 1)
+			printf("bash: syntax error near unexpected token `%.2s\'\n",mini_sh.error_log);
+		else
+			printf("bash: syntax error near unexpected token `%s'\n",mini_sh.error_log);
+		free (mini_sh.error_log);
 		return (0);
 	}
 	else

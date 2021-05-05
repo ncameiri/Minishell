@@ -89,7 +89,6 @@ static void	ft_get_next_str1(char **next_str, unsigned int *next_str_len,
 	//o = *next_str_len;
 	while (**next_str && ft_strchr(delimiters, **next_str))
 		(*next_str)++;
-	printf("\\\\\\%c",**next_str);
 	o=0;
 	while ((*next_str)[i])
 	{
@@ -119,7 +118,6 @@ char	**ft_split_igquo(char const *s, const char *delimiters)
 	var.double_q = 0;
 	var.single_q = 0;
 	var.nb_strs = ft_get_splnb(s, delimiters, &var);
-	printf("**%d**\n",var.nb_strs);
 	var.single_q = 0;
 	var.double_q = 0;
 	var.tab = malloc(sizeof(char *) * (var.nb_strs + 1));

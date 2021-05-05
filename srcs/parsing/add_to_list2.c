@@ -44,7 +44,6 @@ void	ft_lstspli(void)
 	lst = mini_sh.ls_start;
 	while (lst)
 	{
-		//printf("||%s||",lst)
 		lst->content = ft_split_igquo(lst->pre_split, SHELL_DELIMITERS);
 		lst = lst->next;
 	}
@@ -74,4 +73,6 @@ void add_var_init(t_var_add_tlis *va)
 	va->last = 0;
 	va->temp = NULL;
 	mini_sh.error = 0;
+	mini_sh.error_log = NULL;
+	mini_sh.actind = 0;
 }

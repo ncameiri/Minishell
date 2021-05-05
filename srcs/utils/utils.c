@@ -120,3 +120,18 @@ void debug(int a)
 		ptr=ptr->next;
 	}
 }
+
+char	*ft_errstr(char c)
+{
+	char *ret;
+
+	ret = malloc(2);
+	if (!ret)
+		return NULL;
+	else 
+	{
+		ret[0] = c;
+		ret[1] = 0;
+		return ret;
+	}
+}

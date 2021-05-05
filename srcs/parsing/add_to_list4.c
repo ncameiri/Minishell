@@ -68,7 +68,11 @@ void	chck_dup_symbols(void)
 		while (lst->content[i])
 		{
 			if (lst->content[i] && check_inside_symbols(&var, lst->content[i]))
-				mini_sh.error = 1;
+				{	
+					if(!mini_sh.error_log)
+					mini_sh.error_log = ft_strjoin("",lst->content[i]);
+					mini_sh.error = 1;
+				}
 			i++;
 		}
 		lst = lst->next;
@@ -79,6 +83,8 @@ void	chck_begend_symbols(void)
 	t_linklis	*lst;
 	int			i;
 	char		*pt;
+	char		*old;
+	
 
 	lst = mini_sh.ls_start;
 	while (lst)
@@ -90,15 +96,23 @@ void	chck_begend_symbols(void)
 			while (pt[i] && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i++;
 			if (ft_strchr("|><", pt[i]))
-				mini_sh.error = 1;
+			{if(!mini_sh.error_log)
+					mini_sh.error_log = ft_errstr(pt[i]);	
+				mini_sh.error = 1;}
 			i = ft_strlen(pt) - 1;
 			while (pt[i] && i>0 && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i--;
 			if (ft_strchr("|><", pt[i]))
-				mini_sh.error = 1;
+				{if(!mini_sh.error_log)
+					mini_sh.error_log = ft_errstr(pt[i]);
+					mini_sh.error = 1;}
 		}
 		else
+		{	if (!mini_sh.error_log)
+			mini_sh.error_log = ft_strdup(mini_sh.cmd_tables[mini_sh.actind]+ft_strlen(old));
 			mini_sh.error =1;
+		}
 		lst = lst->next;
+		old = pt;
 	}
 }
