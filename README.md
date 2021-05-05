@@ -1,7 +1,6 @@
 # Minishell
 
 <pre>
-
 ------------------------------------------------------------------------------
 
 Lifetime of a Shell:
@@ -164,7 +163,8 @@ How our program works with examples:
 			Always add a last line that is NULL why is that?
 
 			If you do "while (cmd_tables[i] != NULL)", it will scroll all the way to the last
-			line. If you don't put line 5 as NULL, that command won't work.
+			line. If you don't put line 5 as NULL, that function won't work and it will read
+			an empty line and it will give segmentation fault.
 
 		Step 4:
 			We now check if we have an empty last line. Where it says line 4: env , there are
@@ -187,7 +187,8 @@ How our program works with examples:
 			mini_sh.cmd_tables[3]:	env
 			mini_sh.cmd_tables[4]:	NULL
 
-
+			We did this to separate several commands. We're going to send these commands
+			to be executed one by one instead of all of them together.
 
 
 
@@ -241,6 +242,319 @@ Errors:
 
 ------------------------------------------------------------------------------
 
+https://man7.org/linux/man-pages/man3/termios.3.html
+
+https://www.gnu.org/software/termutils/manual/termcap-1.3/html_chapter/termcap_4.html
+
+https://translate.google.com/translate?hl=en&sl=ko&tl=en&u=https%3A%2F%2Fhyeonski.tistory.com%2F5&prev=search
+
+https://translate.google.com/translate?hl=en&sl=ko&tl=en&u=https%3A%2F%2Fhyeonski.tistory.com%2F&prev=search
+
+https://p3tvohguut3jev2d2v27po3nce-adv7ofecxzh2qqi-m-blog-naver-com.translate.goog/PostView.nhn?blogId=y851004&logNo=20063499242&proxyReferer=https://www.google.com/
+
+
+Termcaps:
+
+					gcc -lncurses
+
+
+	Canonical Input - When you write on your terminal and you have to press enter
+	to enter the command.
+
+	Non Canonical Input - When you type on your terminal, and each letter you type
+	it enters immediately.
+
+	You're going to use non canonical input because you'll need to get the
+
+		^[[A -> Up Key
+		^[[B -> Down Key
+
+
+	Struct Termios:
+
+		Struct has 5 modes (input, output, control, local, special control character).
+
+		First you set it up.
+
+		***
+		*	struct termios term;
+		*
+		*	tcgetattr(fd, &term);
+		***
+
+		After setting it up you can change it's modes.
+
+		***
+		*	term.c_lflag &= ~ICANON;    // Enable canonical mode.
+		*	term.c_lflag &= ~ECHO;      // Invisible to the terminal when typing
+		*	term.c_cc[VMIN] = 1;        // Minimum input buffer size.
+		*	term.c_cc[VTIME] = 0;       // Buffer emptying time (timeout)
+		***
+
+		Now you initialize it with tcsetattr(int fd, int action, &term);
+
+		Actions are
+			TCSANOW: Change value immediately.
+			TCSADRAIN: Change the value when the current output is completed.
+			TCSAFLUSH: Change the value when the current output is completed.
+
+		***
+		*	struct termios term;
+		*
+		*	tcgetattr(fd, &term);
+		*
+		*	term.c_lflag &= ~ICANON;    // Enable canonical mode.
+		*	term.c_lflag &= ~ECHO;      // Invisible to the terminal when typing
+		*	term.c_cc[VMIN] = 1;        // Minimum input buffer size.
+		*	term.c_cc[VTIME] = 0;       // Buffer emptying time (timeout)
+		*
+		*	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		***
+
+
+
+------------------------------------------------------------------------------
+
+Each bash has an identification. If you open a bash and type tty you get an information.
+
+For example it might be 	/dev/pts/1
+
+If you open another bash and type tty the other one will probably be /dev/pts/2
+Each bash has it's own identification.
+
+Open 2 bashes, type tty take their infos:
+
+/dev/pts/1
+/dev/pts/2
+
+Now on /dev/pts/1 (the first bash you opened) type " echo Olah! > /dev/pts/2
+
+On your /dev/pts/1 should not appear anything, but it should appear on /dev/pts/2
+
+
+
+------------------------------------------------------------------------------
+
+Parsing:							(Major headache)
+
+	Example:
+		ps -a ";" ; ping -c 1 google.com | grep rtt | wc > aqui.txt ; echo ola < ali.txt < aqui.txt
+
+
+	1st Step - Command Tables:
+
+		Divide into Command Tables. Command tables are seperated by ; . It can't be inside
+		";".
+		char **cmd_tables;
+
+		cmd_tables[0] = "ps -a ";" ";
+		cmd_tables[1] = "ping -c 1 google.com | grep rtt | wc > aqui.txt ";
+		cmd_tables[2] = "echo ola < alix.txt < aqui.txt";
+		cmd_tables[3] = NULL;
+
+		Always finish with NULL. Because when you do
+		while (cmd_tables != NULL) it finishes at the last one and not give segmentation fault.
+
+
+	2nd Step - Lists:
+
+		Put it into lists. You have to put one cmd_tables[i] into a list at a time. You
+		don't put every cmd_table in lists at once. Once you list cmd_tables[0], you free it
+		and then do cmd_tables[1] etc... Heres how.
+
+		Let's do cmd_tables[1]. It has more things.
+
+		This is our list structure.
+
+		typedeft struct s_list
+		{
+			char			**args;
+			char			type;
+			struct s_list	*next;
+
+		}				t_list;
+
+		t_list->args[0] = "ping";							t_list->type = '|';
+			  ->args[1] = "-c";
+			  ->args[2] = "1";						// The root of the t_list is a Pipe.
+			  ->args[3] = "google.com";
+			  ->args[4] = NULL;
+
+		t_list->next->args[0] = "grep";						t_list->type = '|';
+					->args[1] = "rtt";
+					->args[2] = NULL;
+
+		t_list->next->next->args[0] = "wc";					t_list->type = '>';
+						  ->args[1] = NULL;
+
+		t_list->next->next->next->args[0] = "aqui.txt";		t_list->type = '>';
+						  		->args[1] = NULL;
+
+
+		Now we have it divided in lists. Now it's easier to divide it into the next
+		step.
+
+
+	3rd Step - Simple Commands:
+
+		Continuing our example.
+		S.C. = Simple Commmand.
+
+						ping -c 1 google.com | grep rtt | wc > aqui.txt
+					   |					 |			|			   |
+					   |					 |			|			   |
+					   |		S.C.		 |	 S.C.	|	  S.C.     |
+
+		Simple commands are divided when they find a '|'. If you find a > or >> or <
+		you're still on the simple command.
+
+		Another example:
+
+			ping google.com | grep rtt | wc > aqui.txt < ali.txt > aqui.txt | wc
+		   |				|		   |									|	  |
+		   |				|		   |									|	  |
+		   |	  S.C.		|	S.C.   |				S.C.				| S.C.|
+
+
+		Ok. Back on the cmd_tables[1].
+
+						ping -c 1 google.com | grep rtt | wc > aqui.txt".
+
+		Now we have to divide these in simple commands.
+		We make a struct.
+
+		typedeft struct s_simplecommand
+		{
+			char			**command;
+			char			**outfile;	// These are all outfiles.
+			char			**infile;	// These are all infile.
+			struct s_list	*next;
+
+		}				t_simplecommand;
+
+		t_simplecommand->command[0] = "ping";					..->outfile = NULL;
+					   ->command[1] = "-c";						..->infile	= NULL;
+					   ->command[2] = "1";
+					   ->command[3] = "google.com";
+					   ->command[4] = NULL;
+
+		t_simplecommand->next->command[0] = "grep";				..->outfile = NULL;
+					   		 ->command[1] = "rtt";				..->infile	= NULL;
+					   		 ->command[2] = NULL;
+
+		t_simplecommand->next->next->command[0] = "wc";			..->outfile[0] = "aqui.txt";
+					   		 	   ->command[1] = NULL;			..->outfile[1] = NULL;
+
+																..->infile = NULL;
+
+		The parsing is all done!
+
+
+	How it will look in the code:
+
+		Input on the bash:
+			"ping -c 1 google.com | wc > aqui.txt ; echo ola < ali.txt < aqui.txt";
+
+		void loop()
+		{
+			int i = 0;
+
+			command_tables(); // Here we divide the Input on the bash in command tables.
+							  // It's on a global struct. gstruct->cmd_tables;
+
+			while(cmd_tables[i] != NULL) // We loop one command table at a time.
+			{
+				convert_to_lists(cmd_tables[i]); // This is the Step 2.
+												 // It goes to gstruct->t_list.
+
+				convert_to_simple_commands(gstruct->t_list); // This is Step 3.
+															 // It goes to gstruct->simple_commands.
+
+				// Now we have simple commands we do a while loop on it.
+
+				int a = 0;
+
+				while(gstruct->simple_commands[a] != NULL)
+				{
+					execute(gstruct->simple_commands[a]);
+					a++;
+				}
+				i++;
+			}
+		}
+
+
+Execute:				(Another Major Headache)
+
+
+
+
+
+
+Info:
+
+outfile '>'
+		open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+
+outfile '>>'
+		open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0666);
+
+infile	'<'
+		open(infile, O_RDONLY);
+
+
+
+In any simple command there is only one and only ONE command!
+And the only command is ALWAYS the first argument of the simple command. Always.
+
+	 echo ola | echo adeus > te.txt < aqui.txt | ls | wc | wc >> ali.txt
+	|		  |								   |    |    |				|
+	|		  |								   |    |    |				|
+	|	echo  |				echo			   | ls	| wc | wc			|
+
+Antes do loop fazer todos os infiles.
+(Se o infile der fd = -1 "bash: aqui.txt: No such file or directory" e dar return (0);)
+
+No loop fazer os outfiles só na última iteração (que é quando vais buscar o fd [0]).
+Mas fazes os outfiles todos à mesma para criar ficheiros (mesmo se estão vazios).
+
+
+Exemplo : "echo ola > aqui.txt > alo.txt"
+	Vais abrir os dois ficheiros no loop do **outfile da struct. t_simplecommand.
+	open("aqui.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	open("alo.txt", O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	Só que o "ola" do echo vai só para o ficheiro alo.txt .
+	O aqui.txt vai estar vazio.
+
+Exemplo : "echo ola > aqui.txt adeus > alo.txt ali"
+
+	Neste exemplo guardas o "adeus" e "ali" e colocas dentro do alo.txt.
+	O outline é sempre o arg[0], os outros argumentos, neste caso, adeus e ali,
+	guardas à parte e metes no fim dentro do alo.txt.
+	Isto dentro do alo.txt vai ter "ola adeus ali".
+
+Exemplo : "cat < ali.txt"
+
+	int fd = open("ali.txt", O_RDONLY);
+	Se o ficheiro não existir fd vai ser -1, se existir vai ser outro valor.
+	Se não existir vais dar return.
+
+Exemplo : "cat < ali.txt < aqui.txt"
+
+	O ficheiro que vai levar o cat é sempre o ultimo infile.
+	int fd = open("ali.txt", O_RDONLY);
+	int fd = open("aqui.txt", O_RDONLY);
+
+Exemplo : "cat < ali.txt aqui.txt"
+
+	O ficheiro que vai levar o cat é sempre o ultimo argumento.
+	int fd = open("ali.txt", O_RDONLY);
+	int fd = open("aqui.txt", O_RDONLY);
+
+
+
+------------------------------------------------------------------------------
+
 
 Updates:
 		Added reading from executable files. ./a.out or /srcs/exec/exectest etc etc...
@@ -248,12 +562,26 @@ Updates:
 
 To Update:
 		Change mini_sh to g_minish (Norminette).
+		Change the syntax error of || >> etc...
+		Change the "hello" to show as "hello" and not hello.
+
 
 To Take in Consideration:
 		echo ola\n --> This removes \
 
+Bugs:
+
+
 
 gcc -fsanitize=address -o minishell shell.c ./srcs/parsing/* ./srcs/allocate/* ./srcs/utils/* ./srcs/builtin/*c ./srcs/exec/*.c ./get_next_line/*.c libft/libft.a
 
+gcc parsing_nuno.c ../../get_next_line/*.c ../../libft/libft.a
+valgrind --track-origins=yes --leak-check=full ./a.out
+
+gcc parsing_tiago.c ../../get_next_line/*.c ../../libft/libft.a
+valgrind --track-origins=yes --leak-check=full ./a.out
+
+gcc exec.c ../../get_next_line/*.c ../../libft/libft.a
+valgrind --track-origins=yes --leak-check=full ./a.out
 
 </pre>
