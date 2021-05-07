@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 15:39:03 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 00:23:17 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/07 03:34:18 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_simplecommand_temp		// <---- Adicionar este.
 	int			temp_append;
 
 	char		*temp_outfile_extra_text;
+	char		*temp_infile_extra_text;
 
 }		t_simplecommand_temp;
 
@@ -59,6 +60,7 @@ typedef struct s_simplecommand			// <---- Adicionar este.
 	int						append; // Se é para fazer append ou um outfile normal.
 
 	char					*outfile_extra_text; // Caso "echo ola > aqui.txt texto aqui > alo.txt"
+	char					*infile_extra_text; // Caso "echo ola < aqui.txt texto aqui < alo.txt"
 
 	struct s_simplecommand	*next;
 
@@ -840,29 +842,34 @@ void	debug_simple_commands()
 		printf("Command[%i] = %s \n",i, temp->command[i]);
 		if (i == 0)
 			printf("Command = (null)\n");
-
+		printf("Builtin = %i \n", temp->builtin);
 		i = 0;
 		while (temp->outfile[i] != NULL)
-			printf("Outfile = %s \n", temp->outfile[i]);
+		{
+			printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
+			i++;
+		}
 		if (i == 0)
-			printf("Outfile = %s \n", temp->outfile[i]);
+			printf("Outfile[%i] = %s \n",i ,temp->outfile[i]);
 		else
-			printf("Outfile = %s \n", temp->outfile[i]);
+			printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
 		printf("Outfiles = %i \n", temp->outfiles);
+		printf("Outfile extra text = %s\n", temp->outfile_extra_text);
+		printf("Append = %i \n", temp->append);
 
 		i = 0;
 		while (temp->infile[i] != NULL)
-			printf("Infile = %s \n", temp->infile[i]);
+		{
+			printf("Infile[%i] = %s \n", i, temp->infile[i]);
+			i++;
+		}
 		if (i == 0)
-			printf("Infile = %s \n", temp->infile[i]);
+			printf("Infile[%i] = %s \n",i, temp->infile[i]);
 		else
-			printf("Infile = %s \n", temp->infile[i]);
+			printf("Infile[%i] = %s \n",i, temp->infile[i]);
 
 		printf("Infiles = %i \n", temp->infiles);
-
-		printf("Builtin = %i \n", temp->builtin);
-		printf("Append = %i \n", temp->append);
-		printf("Outfile extra text = %s\n", temp->outfile_extra_text);
+		printf("Infile extra text = %s\n", temp->infile_extra_text);
 
 		temp = temp->next;
 		a++;
@@ -883,6 +890,7 @@ void	ft_lstclear_simple_struct(t_simplecommand **lst)
 		free_array(current->infile);
 		free_array(current->outfile);
 		free(current->outfile_extra_text);
+		free(current->infile_extra_text);
 		free(current);
 		current = next;
 	}
@@ -915,6 +923,34 @@ char	**new_array_array(char **args)
 	temp[i] = NULL;
 	return (temp);
 }
+char	*ft_strjoin_free(char *s1, char const *s2)
+{
+	char	*string;
+	int		len;
+	int		i;
+	int		b;
+
+	i = 0;
+	b = 0;
+	if (!s1)
+		return (NULL);
+	if (!s2 && s1)
+		return ((char *)s1);
+	len = strlen(s1) + strlen(s2);
+	string = malloc(len + 1 * sizeof(string));
+	if (string == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
+	{
+		string[i] = s1[i];
+		i++;
+	}
+	while (s2[b] != '\0')
+		string[i++] = s2[b++];
+	string[i] = '\0';
+	free(s1);
+	return (string);
+}
 
 
 void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
@@ -936,6 +972,10 @@ void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
 			mini_sh.simple_cmd->outfile_extra_text = ft_strdup(add.temp_outfile_extra_text);
 		else
 			mini_sh.simple_cmd->outfile_extra_text = NULL;
+		if (add.temp_infile_extra_text != NULL)
+				mini_sh.simple_cmd->infile_extra_text = ft_strdup(add.temp_infile_extra_text);
+		else
+			mini_sh.simple_cmd->infile_extra_text = NULL;
 		mini_sh.simple_cmd->next = NULL;
 	}
 }
@@ -961,29 +1001,35 @@ void	*ft_lstnew_simple_add2(t_simplecommand_temp add)
 	ft_lstnew_simple_add3(add);
 	mini_sh.simple_cmd = start;
 }
+void	*ft_lstnew_simple_add1(t_simplecommand_temp add)
+{
+	mini_sh.simple_cmd->command = new_array_array(add.temp_command);
+	mini_sh.simple_cmd->infile = new_array_array(add.temp_infile);
+	mini_sh.simple_cmd->outfile = new_array_array(add.temp_outfile);
+	mini_sh.simple_cmd->builtin = add.temp_builtin;
+	mini_sh.simple_cmd->outfiles = add.temp_outfiles;
+	mini_sh.simple_cmd->infiles = add.temp_infiles;
+	mini_sh.simple_cmd->append = add.temp_append;
+	if (add.temp_outfile_extra_text != NULL)
+		mini_sh.simple_cmd->outfile_extra_text = ft_strdup(add.temp_outfile_extra_text);
+	else
+		mini_sh.simple_cmd->outfile_extra_text = NULL;
+	if (add.temp_infile_extra_text != NULL)
+		mini_sh.simple_cmd->infile_extra_text = ft_strdup(add.temp_infile_extra_text);
+	else
+		mini_sh.simple_cmd->infile_extra_text = NULL;
+	mini_sh.simple_cmd->next = NULL;
+}
 void	*ft_lstnew_simple_add(t_simplecommand_temp add)
 {
 	if (mini_sh.simple_cmd == NULL)
 	{
-
 		mini_sh.simple_cmd = malloc(sizeof(t_simplecommand));
 		if (mini_sh.simple_cmd == NULL)
 			return (NULL);
 		if (mini_sh.simple_cmd)
 		{
-
-			mini_sh.simple_cmd->command = new_array_array(add.temp_command);
-			mini_sh.simple_cmd->infile = new_array_array(add.temp_infile);
-			mini_sh.simple_cmd->outfile = new_array_array(add.temp_outfile);
-			mini_sh.simple_cmd->builtin = add.temp_builtin;
-			mini_sh.simple_cmd->outfiles = add.temp_outfiles;
-			mini_sh.simple_cmd->infiles = add.temp_infiles;
-			mini_sh.simple_cmd->append = add.temp_append;
-			if (add.temp_outfile_extra_text != NULL)
-				mini_sh.simple_cmd->outfile_extra_text = ft_strdup(add.temp_outfile_extra_text);
-			else
-				mini_sh.simple_cmd->outfile_extra_text = NULL;
-			mini_sh.simple_cmd->next = NULL;
+			ft_lstnew_simple_add1(add);
 		}
 	}
 	else
@@ -1008,23 +1054,78 @@ int	iterations_in_simple_command(t_linklis *list)
 
 }
 
-//	temp.temp_command = NULL;
-//	temp.temp_infile = NULL;
-//	temp.temp_outfile = NULL;
-//	temp.temp_builtin = 0;
-//	temp.temp_outfiles = 0;
-//	temp.temp_infiles = 0;
-//	temp.temp_append = 0;
-//	temp.temp_outfile_extra_text = NULL;
 
-// "echo ola > aqui.txt > alo.txt"
+void *if_redirections_infile_2(t_linklis *list,
+											t_simplecommand_temp *temp, int i)
+{
+	while (list->content[i] != NULL)
+	{
+		if (temp->temp_infile_extra_text == NULL)
+			temp->temp_infile_extra_text = ft_strdup(list->content[i]);
+		else
+		{
+			temp->temp_infile_extra_text = ft_strjoin_free(temp->temp_infile_extra_text,
+													" ");
+			temp->temp_infile_extra_text = ft_strjoin_free(temp->temp_infile_extra_text,
+													list->content[i]);
+		}
+		i++;
+	}
+}
+
+t_linklis *if_redirections_infile(t_linklis *list,
+											t_simplecommand_temp *temp, int b)
+{
+	int i;
+	int a;
+
+	i = 0;
+	a = 0;
+	list = list->next;
+	if (temp->temp_infile == NULL)
+		temp->temp_infile = malloc(sizeof(char *) * 50);
+	else
+	{
+		while (temp->temp_infile[a] != NULL)
+			a++;
+	}
+	while (list->content[i] != NULL)
+	{
+		temp->temp_infile[a] = ft_strdup(list->content[i]);
+		i++;
+		a++;
+		temp->temp_infiles++;
+	}
+	temp->temp_infile[a] = NULL;
+	i = 1;
+	if_redirections_infile_2(list, temp, i);
+	return(list);
+}
+
+void	if_redirections_outfile_2(t_linklis *list,
+											t_simplecommand_temp *temp, int i)
+{
+	while (list->content[i] != NULL)
+	{
+		if (temp->temp_outfile_extra_text == NULL)
+			temp->temp_outfile_extra_text = ft_strdup(list->content[i]);
+		else
+		{
+			temp->temp_outfile_extra_text = ft_strjoin_free(temp->temp_outfile_extra_text,
+													" ");
+			temp->temp_outfile_extra_text = ft_strjoin_free(temp->temp_outfile_extra_text,
+													list->content[i]);
+		}
+		i++;
+	}
+}
 
 t_linklis *if_redirections_outfile(t_linklis *list,
-											t_simplecommand_temp *temp)
+											t_simplecommand_temp *temp, int a)
 {
 	int i;
 
-	i = 0;
+	i = 1;
 
 	if (list->type == 3) // >
 		temp->temp_append = 0;
@@ -1035,10 +1136,42 @@ t_linklis *if_redirections_outfile(t_linklis *list,
 
 	temp->temp_outfiles++;
 
+	if (temp->temp_outfile == NULL)
+		temp->temp_outfile = malloc(sizeof(char *) * 50);
+	temp->temp_outfile[a] = ft_strdup(list->content[0]);
+	temp->temp_outfile[a + 1] = NULL;
+
+	if_redirections_outfile_2(list, temp, i);
+
 	return (list);
+}
 
 
+void	if_redirections_3(t_simplecommand_temp temp)
+{
+	if (temp.temp_outfile != NULL)
+		free_array(temp.temp_outfile);
+	if (temp.temp_infile != NULL)
+		free_array(temp.temp_infile);
+	if (temp.temp_outfile_extra_text != NULL)
+		free(temp.temp_outfile_extra_text);
+	if (temp.temp_infile_extra_text != NULL)
+		free(temp.temp_infile_extra_text);
+}
 
+t_simplecommand_temp if_redirections_2(t_simplecommand_temp temp, t_linklis *list)
+{
+	temp.temp_command = list->content;
+	temp.temp_infile = NULL;
+	temp.temp_outfile = NULL;
+	temp.temp_builtin = list->builtin;
+	temp.temp_outfiles = 0;
+	temp.temp_infiles = 0;
+	temp.temp_append = 0;
+	temp.temp_outfile_extra_text = NULL;
+	temp.temp_infile_extra_text = NULL;
+
+	return (temp);
 }
 
 t_linklis  *if_redirections(t_linklis *list)
@@ -1046,42 +1179,26 @@ t_linklis  *if_redirections(t_linklis *list)
 	t_simplecommand_temp temp;
 	int iterations;
 	int i;
+	int a;
+	int b;
 
-	temp.temp_command = NULL;
-	temp.temp_infile = NULL;
-	temp.temp_outfile = NULL;
-	temp.temp_builtin = 0;
-	temp.temp_outfiles = 0;
-	temp.temp_infiles = 0;
-	temp.temp_append = 0;
-	temp.temp_outfile_extra_text = NULL;
-
+	temp = if_redirections_2(temp, list);
 	iterations = iterations_in_simple_command(list);
-	i = 0;
-
+	i = 1;
+	a = 0;
+	b = 0;
 	while(i < iterations)
 	{
-		if (i == 0) // o commando.
-		{
-			temp.temp_command = list->content;
-			temp.temp_builtin = list->builtin;
-		}
-		else // os outros
-		{
-			if (list->type == 3 || list->type == 2) // > outfile
-			{
-				list = if_redirections_outfile(list, &temp);
-			}
-		}
+		if (list->type == 3 || list->type == 2) // > ou >> outfile
+			list = if_redirections_outfile(list, &temp, a++);
+		else if (list->type == 4) // < infile
+			list = if_redirections_infile(list, &temp, b++);
 		i++;
 	}
 	list = list->next;
 	ft_lstnew_simple_add(temp);
-
+	if_redirections_3(temp);
 	return (list);
-
-
-
 }
 
 t_linklis	*if_no_redirections(t_linklis *list)
@@ -1096,6 +1213,7 @@ t_linklis	*if_no_redirections(t_linklis *list)
 	temp.temp_infiles = 0;
 	temp.temp_append = 0;
 	temp.temp_outfile_extra_text = NULL;
+	temp.temp_infile_extra_text = NULL;
 
 	ft_lstnew_simple_add(temp);
 
@@ -1119,7 +1237,7 @@ void	add_to_simple_commands_list()
 			list = if_no_redirections(list);
 		}
 		else
-		{												// "echo ola > aqui bla < ali bla"
+		{									// "echo ola > aqui bla < ali bla"
 			list = if_redirections(list);	// Se tiver redirections.
 		}
 	}
