@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 15:43:44 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 18:57:44 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/07 04:43:13 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	exit_cntrl_d(int free_list)
 	if (free_list == 1)
 		ft_linklstclear(&mini_sh.ls_start);
 
+	if (mini_sh.simple_cmd != NULL)
+		ft_lstclear_simple_struct(&mini_sh.simple_cmd);
 }
 
 // Meter o free dos links aqui.

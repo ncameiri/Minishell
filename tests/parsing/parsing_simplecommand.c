@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 15:39:03 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 03:34:18 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/07 04:22:25 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1054,7 +1054,6 @@ int	iterations_in_simple_command(t_linklis *list)
 
 }
 
-
 void *if_redirections_infile_2(t_linklis *list,
 											t_simplecommand_temp *temp, int i)
 {
@@ -1221,7 +1220,6 @@ t_linklis	*if_no_redirections(t_linklis *list)
 
 	return (list);
 }
-
 
 void	add_to_simple_commands_list()
 {

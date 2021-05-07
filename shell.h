@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 18:46:43 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/07 04:38:42 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,40 @@
 # define STDOUT 1
 # define STDERR 2
 
+typedef struct s_simplecommand_temp		// <---- Adicionar este.
+{
+	char		**temp_command;
+	char		**temp_infile;
+	char		**temp_outfile;
+	int			temp_builtin;
+
+	int			temp_outfiles;
+	int			temp_infiles;
+
+	int			temp_append;
+
+	char		*temp_outfile_extra_text;
+	char		*temp_infile_extra_text;
+
+}		t_simplecommand_temp;
+
+typedef struct s_simplecommand			// <---- Adicionar este.
+{
+	char					**command;
+	char					**outfile;	// These are all outfiles.
+	char					**infile;	// These are all infile.
+	int						builtin;
+
+	int						outfiles;
+	int						infiles;
+	int						append; // Se é para fazer append ou um outfile normal.
+
+	char					*outfile_extra_text; // Caso "echo ola > aqui.txt texto aqui > alo.txt"
+	char					*infile_extra_text; // Caso "echo ola < aqui.txt texto aqui < alo.txt"
+
+	struct s_simplecommand	*next;
+
+}				t_simplecommand;
 
 typedef struct s_splvariab
 {
@@ -59,6 +93,7 @@ typedef struct	s_var_seplink
 	int		double_q;
 	char	n;
 }				t_var_seplink;
+
 typedef struct s_var_add_tlis
 {
 	int		i;
@@ -67,12 +102,14 @@ typedef struct s_var_add_tlis
 	int		start;
 	int		last;
 	int		type;
-}t_var_add_tlis;
+}			t_var_add_tlis;
+
 typedef struct s_minishell
 {
 	// List
 
 	t_linklis 		*ls_start;
+	t_simplecommand	*simple_cmd;
 
 	// Parsed
 
@@ -165,7 +202,7 @@ char			**save_env(char **env);
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
 int				only_spaces(char *line);
-void			debug(int a);
+void			debug_command_table(int a);
 char			*ft_errstr(char c);
 
 /*	Signals */
@@ -188,6 +225,25 @@ void 			chck_dup_symbols(void);
 void 			chck_begend_symbols(void);
 void			ft_lstbuiltcheck(void);
 void 			ft_lstclear_zerolen(void);
+
+/*	Simple cmd parsing */
+
+void			add_to_simple_commands_list();
+t_linklis *if_redirections_infile(t_linklis *list,
+											t_simplecommand_temp *temp, int b);
+t_linklis *if_redirections_outfile(t_linklis *list,
+											t_simplecommand_temp *temp, int a);
+void			if_redirections_outfile_2(t_linklis *list,
+											t_simplecommand_temp *temp, int i);
+void 			*if_redirections_infile_2(t_linklis *list,
+											t_simplecommand_temp *temp, int i);
+
+int				iterations_in_simple_command(t_linklis *list);
+void			*ft_lstnew_simple_add(t_simplecommand_temp add);
+char			*ft_strjoin_free(char *s1, char const *s2);
+char			**new_array_array(char **args);
+void			ft_lstclear_simple_struct(t_simplecommand **lst);
+void			debug_simple_commands();
 
 /*	Free */
 

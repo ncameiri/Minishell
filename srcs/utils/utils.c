@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 18:17:44 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/07 04:17:55 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**add_str_to_arrarr(char **array, char *string)
 	return (temp);
 }
 
-void debug(int a)
+void debug_command_table(int a)
 {
 	t_linklis *ptr;
 
@@ -128,7 +128,7 @@ char	*ft_errstr(char c)
 	ret = malloc(2);
 	if (!ret)
 		return NULL;
-	else 
+	else
 	{
 		ret[0] = c;
 		ret[1] = 0;
