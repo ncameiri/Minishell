@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 16:26:10 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 17:10:58 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,36 @@ t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd)
 	return(simple_cmd);
 }
 
+int	check_builtin_no_fork(t_simplecommand *lista)
+{
+	if (ft_strcmp(lista->command[0], "cd") == 0)
+	{
+		ft_cd(lista->command);
+		return(1);
+	}
+	else if (ft_strcmp(lista->command[0], "env") == 0)
+	{
+		ft_env();
+		return(1);
+	}
+	else if (ft_strcmp(lista->command[0], "exit") == 0)
+	{
+		ft_exit();
+		return(1);
+	}
+	else if (ft_strcmp(lista->command[0], "export") == 0)
+	{
+		ft_export(lista->command);
+		return(1);
+	}
+	else if (ft_strcmp(lista->command[0], "unset") == 0)
+	{
+		ft_unset(lista->command);
+		return(1);
+	}
+	return(0);
+}
+
 void	run_builtin_complicated(t_simplecommand *lista)
 {
 	if (ft_strcmp(lista->command[0], "cd") == 0)
@@ -64,7 +94,6 @@ void	run_builtin_complicated(t_simplecommand *lista)
 		ft_pwd();
 	else if (ft_strcmp(lista->command[0], "unset") == 0)
 		ft_unset(lista->command);
-
 }
 
 void	complicated_execute(t_linklis *list)
@@ -117,15 +146,17 @@ void	complicated_execute(t_linklis *list)
 		dup2(norm.fdout,1);
 		close(norm.fdout);
 
+		if(check_builtin_no_fork(simple_cmd) == 1)
+		{
+			simple_cmd = simple_cmd->next;
+			continue;
+		}
 		mini_sh.pid = fork();
 		if (mini_sh.pid == 0)
 		{
 			simple_cmd = remove_quotation_marks(simple_cmd);
-			if (simple_cmd->builtin == 1) // Quando tiveres os builtins echo env unset etc...
-											// feitos. Metes este, e apagas os ifs de baixo.
-			{
+			if (simple_cmd->builtin == 1)
 				run_builtin_complicated(simple_cmd);
-			}
 			else
 			{
 				simple_cmd = remove_quotation_marks(simple_cmd);
