@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:38:42 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 15:15:16 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@
 # define STDOUT 1
 # define STDERR 2
 
+typedef struct s_complicated_exec
+{
+	int			tmpin;
+	int			tmpout;
+
+	int			fdin;
+	int			fdout;
+
+	int			ret;
+
+	int			fdpipe[2];
+
+}				t_complicated_exec;
+
 typedef struct s_simplecommand_temp		// <---- Adicionar este.
 {
 	char		**temp_command;
@@ -41,7 +55,6 @@ typedef struct s_simplecommand_temp		// <---- Adicionar este.
 
 	int			temp_append;
 
-	char		*temp_outfile_extra_text;
 	char		*temp_infile_extra_text;
 
 }		t_simplecommand_temp;
@@ -57,7 +70,6 @@ typedef struct s_simplecommand			// <---- Adicionar este.
 	int						infiles;
 	int						append; // Se é para fazer append ou um outfile normal.
 
-	char					*outfile_extra_text; // Caso "echo ola > aqui.txt texto aqui > alo.txt"
 	char					*infile_extra_text; // Caso "echo ola < aqui.txt texto aqui < alo.txt"
 
 	struct s_simplecommand	*next;
@@ -172,8 +184,13 @@ void			remove_cmd_blanks();
 /*	Exec */
 
 void			exec_command();
-
 void			simple_execute(t_linklis *list);
+
+void			complicated_execute(t_linklis *list);
+int				check_infile(t_simplecommand *smp_cmd);
+int				check_outfile(t_simplecommand *smp_cmd);
+int				take_infile(t_simplecommand *smp_cmd);
+int				take_outfile(t_simplecommand *smp_cmd);
 
 
 /* 	Builtins */
@@ -248,6 +265,6 @@ void			debug_simple_commands();
 /*	Free */
 
 void			free_global(char *f1, char *f2, char *f3, char *f4);
-void			exit_cntrl_d();
+void			exit_cntrl_d(int free_list);
 
 #endif

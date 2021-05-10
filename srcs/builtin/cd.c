@@ -10,7 +10,7 @@ int	ft_cd()
 	ptr = mini_sh.ls_start;
 	if(ptr->content[i] && !ft_strcmp(ptr->content[i],"-n"))
 		i++;
-	
+
 	if (chdir(ptr->content[i]) == -1)
 	{
 		ft_putstr_fd("cd: not a directory",1);

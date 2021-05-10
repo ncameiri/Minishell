@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:45:25 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 15:18:07 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	loop_command_tables()
 			break;
 		//debug_command_table(i); // Debugger. Podemos apagar no fim.
 		add_to_simple_commands_list();
-		debug_simple_commands();
+		//debug_simple_commands();
 		exec_command();
 		ft_linklstclear(&mini_sh.ls_start);
 		ft_lstclear_simple_struct(&mini_sh.simple_cmd);

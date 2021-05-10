@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:23:22 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:23:41 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 15:16:19 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	debug_simple_commands()
 		else
 			printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
 		printf("Outfiles = %i \n", temp->outfiles);
-		printf("Outfile extra text = %s\n", temp->outfile_extra_text);
 		printf("Append = %i \n", temp->append);
 
 		i = 0;
@@ -86,7 +85,6 @@ void	ft_lstclear_simple_struct(t_simplecommand **lst)
 		free_array(current->command);
 		free_array(current->infile);
 		free_array(current->outfile);
-		free(current->outfile_extra_text);
 		free(current->infile_extra_text);
 		free(current);
 		current = next;

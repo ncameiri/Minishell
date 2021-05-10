@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:20:00 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:20:57 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 15:15:35 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,29 @@ void	if_redirections_3(t_simplecommand_temp temp)
 		free_array(temp.temp_outfile);
 	if (temp.temp_infile != NULL)
 		free_array(temp.temp_infile);
-	if (temp.temp_outfile_extra_text != NULL)
-		free(temp.temp_outfile_extra_text);
 	if (temp.temp_infile_extra_text != NULL)
 		free(temp.temp_infile_extra_text);
 }
 
 t_simplecommand_temp if_redirections_2(t_simplecommand_temp temp, t_linklis *list)
 {
-	temp.temp_command = list->content;
+	int i;
+
+	i = 0;
+	temp.temp_command = malloc(sizeof(char *) * 60);
+	while (list->content[i] != NULL)
+	{
+		temp.temp_command[i] = ft_strdup(list->content[i]);
+		i++;
+	}
+	temp.temp_command[i] = NULL;
+
 	temp.temp_infile = NULL;
 	temp.temp_outfile = NULL;
 	temp.temp_builtin = list->builtin;
 	temp.temp_outfiles = 0;
 	temp.temp_infiles = 0;
 	temp.temp_append = 0;
-	temp.temp_outfile_extra_text = NULL;
 	temp.temp_infile_extra_text = NULL;
 
 	return (temp);
@@ -70,14 +77,23 @@ t_linklis	*if_no_redirections(t_linklis *list)
 {
 	t_simplecommand_temp temp;
 
-	temp.temp_command = list->content;
+	int i;
+
+	i = 0;
+	temp.temp_command = malloc(sizeof(char *) * 60);
+	while (list->content[i] != NULL)
+	{
+		temp.temp_command[i] = ft_strdup(list->content[i]);
+		i++;
+	}
+	temp.temp_command[i] = NULL;
+
 	temp.temp_infile = NULL;
 	temp.temp_outfile = NULL;
 	temp.temp_builtin = list->builtin;
 	temp.temp_outfiles = 0;
 	temp.temp_infiles = 0;
 	temp.temp_append = 0;
-	temp.temp_outfile_extra_text = NULL;
 	temp.temp_infile_extra_text = NULL;
 
 	ft_lstnew_simple_add(temp);

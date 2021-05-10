@@ -1,0 +1,4 @@
+FLAGS= bla bla
+flags= bla bla
+texto aqui
+helooooooo worlda

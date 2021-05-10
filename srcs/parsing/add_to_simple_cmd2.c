@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:21:27 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:21:51 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 15:07:55 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,17 @@ t_linklis *if_redirections_infile(t_linklis *list,
 											t_simplecommand_temp *temp, int b)
 {
 	int i;
-	int a;
 
 	i = 0;
-	a = 0;
 	list = list->next;
 	if (temp->temp_infile == NULL)
 		temp->temp_infile = malloc(sizeof(char *) * 50);
-	else
-	{
-		while (temp->temp_infile[a] != NULL)
-			a++;
-	}
-	while (list->content[i] != NULL)
-	{
-		temp->temp_infile[a] = ft_strdup(list->content[i]);
-		i++;
-		a++;
-		temp->temp_infiles++;
-	}
-	temp->temp_infile[a] = NULL;
+
+	temp->temp_infiles++;
+
+	temp->temp_infile[b] = ft_strdup(list->content[0]);
+	temp->temp_infile[b + 1] = NULL;
+
 	i = 1;
 	if_redirections_infile_2(list, temp, i);
 	return(list);
@@ -79,17 +70,17 @@ t_linklis *if_redirections_infile(t_linklis *list,
 void	if_redirections_outfile_2(t_linklis *list,
 											t_simplecommand_temp *temp, int i)
 {
+	int a;
+
 	while (list->content[i] != NULL)
 	{
-		if (temp->temp_outfile_extra_text == NULL)
-			temp->temp_outfile_extra_text = ft_strdup(list->content[i]);
-		else
-		{
-			temp->temp_outfile_extra_text = ft_strjoin_free(temp->temp_outfile_extra_text,
-													" ");
-			temp->temp_outfile_extra_text = ft_strjoin_free(temp->temp_outfile_extra_text,
-													list->content[i]);
-		}
+		a = 0;
+		while(temp->temp_command[a] != NULL)
+			a++;
+
+		temp->temp_command[a] = ft_strdup(list->content[i]);
+		temp->temp_command[a + 1] = NULL;
+
 		i++;
 	}
 }
