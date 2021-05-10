@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:09:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 18:50:09 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:06:54 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void	run_builtin()
 		ft_testing();
 	else if(ft_strcmp(mini_sh.args[0],"pwd") == 0)
 		ft_pwd();
-	else if(ft_strcmp(mini_sh.args[0],"echo") == 0)
-		ft_echo();
+	/*else if(ft_strcmp(mini_sh.args[0],"echo") == 0)
+		ft_echo(ft_echo);
 	else if(ft_strcmp(mini_sh.args[0],"env") == 0)
 		ft_env();
 	else if(ft_strcmp(mini_sh.args[0],"cd") == 0)
-		ft_cd();
+		ft_cd();*/
 
 	// Vai adicionando estas conforme vais fazendo os builtins.
 	/*

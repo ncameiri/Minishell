@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 15:15:16 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:24:48 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,12 @@ void			ft_testing();
 void			ft_history();
 void 			ft_exit();
 int				ft_pwd();
-int				ft_echo();
+int				ft_echo(char **content);
 void 			ft_env();
-int				ft_cd();
+int				ft_cd(char **content);
+int				ft_export(char **content);
+int				ft_unset(char **content);
+
 
 /* 	Parsing */
 
@@ -266,5 +269,12 @@ void			debug_simple_commands();
 
 void			free_global(char *f1, char *f2, char *f3, char *f4);
 void			exit_cntrl_d(int free_list);
+
+/*	Env_func */
+
+int				env_rm_elem (char *set);
+char			*env_isex_elem (char *set);
+int				env_var_update(char *set_tbc, char *new_ct, int is_env);
+int				env_list_upd_elem ();
 
 #endif

@@ -1,21 +1,21 @@
 #include "../../shell.h"
 
-int ft_export()
+int ft_export(char **content)
 {
     char *elem;
     char *set;
     int i;
 
     i=0;
-    if (!ft_strchr(mini_sh.ls_start->content[1],'='))
+    if (!ft_strchr(content[1],'='))
     return -1;
-    while(mini_sh.ls_start->content[1][i] && mini_sh.ls_start->content[1][i]!= '=')
-        i++;    
-    set = ft_substr(mini_sh.ls_start->content[1],0,i);
+    while(content[1][i] && content[1][i]!= '=')
+        i++;
+    set = ft_substr(content[1],0,i);
     elem=env_isex_elem(set);
     if(ft_strlen(elem))
        env_rm_elem(set);
     free(set);
-    mini_sh.env=add_str_to_arrarr(mini_sh.env,mini_sh.ls_start->content[1]);
-    return (1); 
+    mini_sh.env=add_str_to_arrarr(mini_sh.env,content[1]);
+    return (1);
 }

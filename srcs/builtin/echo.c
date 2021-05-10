@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:12:50 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 19:05:26 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:05:38 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,27 +45,27 @@ static void	echo_out(char **str, int pos)
 		write(1," ",1);
 }
 
-int	ft_echo()
+int	ft_echo(char **content)
 {
 	int		i;
 	int		n_flag;
 
 	n_flag = 0;
-	if (!mini_sh.ls_start->content[1])
+	if (!content[1])
 	{
 		write(1, "\n", 1);
 		return (1);
 	}
-	else if (!ft_strcmp(mini_sh.ls_start->content[1] ,"-n"))
+	else if (!ft_strcmp(content[1] ,"-n"))
 		n_flag = 1;
 	i = 0;
 	if (n_flag)
 		++i;
-	while (mini_sh.ls_start->content[++i])
+	while (content[++i])
 	{
-		if(ft_strlen(mini_sh.ls_start->content[i]))
-		echo_out(mini_sh.ls_start->content, i);
-		if (!mini_sh.ls_start->content[i + 1] && !n_flag)
+		if(ft_strlen(content[i]))
+		echo_out(content, i);
+		if (!content[i + 1] && !n_flag)
 			write(1,"\n",1);
 	}
 	return (1);

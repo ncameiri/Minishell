@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:46:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/23 17:13:19 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:24:18 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,3 @@ int	ft_pwd()
 	else
 		return (-1); // em caso de erro
 }
-
-
-/*
-echo
--n
-"ola; > ;adeeus"
-ola
-|
-cat
--e
->
-file.txt
-;
-echo
-ola
-
--pipe on ou off
-- seta de file???
--contar ; fora das aspas
-
-*/

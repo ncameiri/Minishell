@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 18:44:28 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 19:05:34 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:07:05 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void	run_builtin_simple(t_linklis *list)
 		ft_testing();
 	else if(ft_strcmp(list->content[0],"pwd") == 0)
 		ft_pwd();
-	else if(ft_strcmp(list->content[0],"echo") == 0)
+	/*else if(ft_strcmp(list->content[0],"echo") == 0)
 		ft_echo();
 	else if(ft_strcmp(list->content[0],"env") == 0)
 		ft_env();
 	else if(ft_strcmp(list->content[0],"cd") == 0)
 		ft_cd();
 	else if(ft_strcmp(list->content[0],"exit") == 0)
-		ft_exit();
+		ft_exit();*/
 
 	// Vai adicionando estas conforme vais fazendo os builtins.
 	/*

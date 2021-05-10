@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 01:34:56 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 16:26:10 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,21 @@ t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd)
 
 void	run_builtin_complicated(t_simplecommand *lista)
 {
-	if (ft_strcmp(lista->command[0], "env") == 0)
-	{
+	if (ft_strcmp(lista->command[0], "cd") == 0)
+		ft_cd(lista->command);
+	else if (ft_strcmp(lista->command[0], "echo") == 0)
+		ft_echo(lista->command);
+	else if (ft_strcmp(lista->command[0], "env") == 0)
 		ft_env();
-	}
+	else if (ft_strcmp(lista->command[0], "exit") == 0)
+		ft_exit();
+	else if (ft_strcmp(lista->command[0], "export") == 0)
+		ft_export(lista->command);
+	else if (ft_strcmp(lista->command[0], "pwd") == 0)
+		ft_pwd();
+	else if (ft_strcmp(lista->command[0], "unset") == 0)
+		ft_unset(lista->command);
+
 }
 
 void	complicated_execute(t_linklis *list)
@@ -110,14 +121,10 @@ void	complicated_execute(t_linklis *list)
 		if (mini_sh.pid == 0)
 		{
 			simple_cmd = remove_quotation_marks(simple_cmd);
-			/*if (simple_cmd->builtin == 1) // Quando tiveres os builtins echo env unset etc...
+			if (simple_cmd->builtin == 1) // Quando tiveres os builtins echo env unset etc...
 											// feitos. Metes este, e apagas os ifs de baixo.
 			{
 				run_builtin_complicated(simple_cmd);
-			}*/
-			if (ft_strcmp(simple_cmd->command[0], "env") == 0)
-			{
-				ft_env(simple_cmd);
 			}
 			else
 			{

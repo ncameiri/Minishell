@@ -18,16 +18,16 @@ int	change_dir(char *path)
 	return (ret);
 }
 
-int	ft_cd()
+int	ft_cd(char **content)
 {
 	char	pwd[1001];
 
 	
-	if (!ft_strcmp(mini_sh.ls_start->content[1],"~"))
+	if (!ft_strcmp(content[1],"~"))
 		change_dir("~");
-	else if (change_dir(mini_sh.ls_start->content[1]) == -1)
+	else if (change_dir(content[1]) == -1)
 	{
-		printf("bash: cd: %s: No such file or directory\n", mini_sh.ls_start->content[1]);
+		printf("bash: cd: %s: No such file or directory\n", content[1]);
 		return -1;
 	}
 		getcwd(pwd, 1000);
