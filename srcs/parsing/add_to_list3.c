@@ -25,13 +25,14 @@ char	**ft_clsplit(char **tab)
 	free(tab);
 	return (NULL);
 }
-int che_open_quo(t_splvariab * varia, char t)
+
+int	che_open_quo(t_splvariab *varia, char t)
 {
 	if (t == '\"' && varia->double_q == 0 && varia->single_q == 0 )
 		varia->double_q = 1;
 	else if (t == '\"' && varia->double_q == 1 && varia->single_q == 0 )
 		varia->double_q = 0;
-	else if (t == '\'' && varia->single_q == 0  && varia->double_q == 0)
+	else if (t == '\'' && varia->single_q == 0 && varia->double_q == 0)
 		varia->single_q = 1;
 	else if (t == '\'' && varia->single_q == 1 && varia->double_q == 0 )
 		varia->single_q = 0;
@@ -40,12 +41,13 @@ int che_open_quo(t_splvariab * varia, char t)
 	else
 		return (0);
 }
+
 static unsigned int	ft_get_splnb(char const *s,
 	const char *delimiters, t_splvariab *variab)
 {
 	unsigned int	i;
 	unsigned int	nb_strs;
-	int k;
+	int				k;
 
 	if (!s[0])
 		return (0);
@@ -55,8 +57,7 @@ static unsigned int	ft_get_splnb(char const *s,
 		i++;
 	while (s[i])
 	{
-
-		k=che_open_quo(variab, s[i]);
+		k = che_open_quo(variab, s[i]);
 		if (ft_strchr(delimiters, s[i]) && k)
 		{
 			nb_strs++;
@@ -64,53 +65,36 @@ static unsigned int	ft_get_splnb(char const *s,
 				i++;
 			continue ;
 		}
-		/*else if(k && chck_iespac(s[i + 1], s[i]) )
-			{nb_strs++;}
-		else if(i>0 && k && chck_iespac(s[i],s[i - 1]) )
-			{nb_strs++;}*/
 		i++;
-		
 	}
 	if (!ft_strchr(delimiters, s[i - 1]))
 		nb_strs++;
 	return (nb_strs);
 }
+
 static void	ft_get_next_str1(char **next_str, unsigned int *next_str_len,
 					const char *delimiters, t_splvariab *varia)
 {
 	unsigned int	i;
 	char			k;
 	int				a;
-	int				o;
 
 	*next_str += *next_str_len;
 	*next_str_len = 0;
 	i = 0;
-	//o = *next_str_len;
 	while (**next_str && ft_strchr(delimiters, **next_str))
 		(*next_str)++;
-	o=0;
 	while ((*next_str)[i])
 	{
 		k = (*next_str)[i];
-		a=che_open_quo(varia, k);
-		/*if(i>0)
-		k = (*next_str)[i+1];
-		else 
-		k = (*next_str)[i];
-		
-		if (chck_iespac((*next_str)[i],k) )
-			{printf("**1%c**",k);
-			return ;}
-		(*next_str_len)++;
-		i++;*/
-			if (a && ft_strchr(delimiters, (*next_str)[i]))
+		a = che_open_quo(varia, k);
+		if (a && ft_strchr(delimiters, (*next_str)[i]))
 			return ;
 		(*next_str_len)++;
 		i++;
-
 	}
 }
+
 char	**ft_split_igquo(char const *s, const char *delimiters)
 {
 	t_splvariab	var;

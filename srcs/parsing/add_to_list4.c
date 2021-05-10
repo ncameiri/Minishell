@@ -36,9 +36,7 @@ int	chck_iespac(char s1, char s)
 int	check_inside_symbols(t_splvariab *var, char *str)
 {
 	int	i;
-	int	ch;
 
-	ch = 0;
 	i = 0;
 	{
 		/*while(str[i] && (str[i] == '\t' || str[i] == '\n' || str[i] == '\a' || str[i] == ' ' || str[i] == '\r'))
@@ -53,31 +51,7 @@ int	check_inside_symbols(t_splvariab *var, char *str)
 	}
 	return 0;
 }
-void	chck_dup_symbols(void)
-{
-	t_linklis	*lst;
-	int			i;
-	t_splvariab	var;
 
-	var.double_q = 0;
-	var.single_q = 0;
-	lst = mini_sh.ls_start;
-	while (lst)
-	{
-		i = 0;
-		while (lst->content[i])
-		{
-			if (lst->content[i] && check_inside_symbols(&var, lst->content[i]))
-				{	
-					if(!mini_sh.error_log)
-					mini_sh.error_log = ft_strjoin("",lst->content[i]);
-					mini_sh.error = 1;
-				}
-			i++;
-		}
-		lst = lst->next;
-	}
-}
 void	chck_begend_symbols(void)
 {
 	t_linklis	*lst;

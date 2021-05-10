@@ -15,10 +15,7 @@
 t_linklis	*ft_linknew(char *pre_split, int type)
 {
 	t_linklis	*new;
-	int			i;
-	int			no_args;
 
-	i = 0;
 	new = malloc(sizeof(t_linklis));
 	if (new == NULL)
 		return (NULL);
@@ -30,6 +27,7 @@ t_linklis	*ft_linknew(char *pre_split, int type)
 	}
 	return (new);
 }
+
 void	ft_linkadd_back(t_linklis **lst, t_linklis *new)
 {
 	t_linklis		*begin;
@@ -52,31 +50,7 @@ void	ft_linkadd_back(t_linklis **lst, t_linklis *new)
 		}
 	}
 }
-void	ft_lsttrim(void)
-{
-	t_linklis	*lst;
-	int			i;
-	char		*tmp;
 
-	lst = mini_sh.ls_start;
-	while (lst)
-	{
-		i = 0;
-		while (lst->content[i])
-		{
-			if (lst->content[i][0] == '\'')
-				tmp = ft_strtrim(lst->content[i], "\'");
-			else if (lst->content[i][0] == '\"')
-				tmp = ft_strtrim(lst->content[i], "\"");
-			else
-				tmp = ft_strdup(lst->content[i]);
-			free (lst->content[i]);
-			lst->content[i] = tmp;
-			i++;
-		}
-		lst = lst->next;
-	}
-}
 int	sep_link(int index, int *a, int *type)
 {
 	t_var_seplink	va;
@@ -99,14 +73,15 @@ int	sep_link(int index, int *a, int *type)
 			va.single_q = 0;
 		else if (is_separator(va.n, mini_sh.cmd_tables[index][va.i + 1],
 			type) && va.single_q == 0 && va.double_q == 0)
-			return (va.i /*+(va.n == '>' && mini_sh.cmd_tables[index][va.i + 1] == '>')*/);
+			return (va.i);
 		va.i++;
 		va.n = mini_sh.cmd_tables[index][va.i];
 	}
-	if(va.double_q || va.single_q)
-		{mini_sh.error=1;}
+	if (va.double_q || va.single_q)
+		mini_sh.error = 1;
 	return (0);
 }
+
 int	add_to_list(int index)
 {
 	t_var_add_tlis	va;
@@ -116,7 +91,7 @@ int	add_to_list(int index)
 	while (mini_sh.cmd_tables[index][va.i])
 	{
 		va.last = sep_link(index, &va.i, &va.type);
-		if (va.last > 0 /*&& (va.last - va.start) > 1*/)
+		if (va.last > 0)
 		{
 			va.aux = ft_substr(mini_sh.cmd_tables[index],
 					va.start, va.last - va.start);
@@ -127,7 +102,6 @@ int	add_to_list(int index)
 				va.start += 1;
 				va.i++;
 			}
-
 		}
 		if (!mini_sh.cmd_tables[index][va.i + 1])
 		{
@@ -138,30 +112,21 @@ int	add_to_list(int index)
 		}
 		va.i++;
 	}
-
 	ft_lstspli();
-
-	//chck_dup_symbols();
-
-
-
 	chck_begend_symbols();
-	//ft_lsttrim();
 	ft_lstclear_zerolen();
+	env_list_upd_elem ();
 	ft_lstbuiltcheck();
-
-
-	if(mini_sh.error==1)
+	if (mini_sh.error == 1)
 	{
 		ft_linklstclear(&mini_sh.ls_start);
-		if(ft_strlen(mini_sh.error_log) > 1)
-			printf("bash: syntax error near unexpected token `%.2s\'\n",mini_sh.error_log);
+		if (ft_strlen(mini_sh.error_log) > 1)
+			printf("bash: syntax error near unexpected token `%.2s\'\n", mini_sh.error_log);
 		else
-			printf("bash: syntax error near unexpected token `%s'\n",mini_sh.error_log);
+			printf("bash: syntax error near unexpected token `%s'\n", mini_sh.error_log);
 		free (mini_sh.error_log);
 		return (0);
 	}
 	else
 		return (1);
 }
-

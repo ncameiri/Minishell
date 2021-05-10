@@ -95,9 +95,7 @@ void	ft_lstclear_zerolen(void)
 
 {
 	t_linklis	*lst;
-	int i;
 
-	i = 0;
 	lst = mini_sh.ls_start;
 	while (lst)
 	{

@@ -37,6 +37,7 @@ int	is_separator(char check, char check2, int *type)
 	else
 		return (0);
 }
+
 void	ft_lstspli(void)
 {
 	t_linklis	*lst;
@@ -48,6 +49,7 @@ void	ft_lstspli(void)
 		lst = lst->next;
 	}
 }
+
 void	ft_linklstclear(t_linklis **lst)
 {
 	t_linklis	*current;
@@ -66,9 +68,10 @@ void	ft_linklstclear(t_linklis **lst)
 	}
 	*lst = NULL;
 }
-void add_var_init(t_var_add_tlis *va)
+
+void	add_var_init(t_var_add_tlis *va)
 {
-    va->i = 0;
+	va->i = 0;
 	va->start = 0;
 	va->last = 0;
 	va->temp = NULL;

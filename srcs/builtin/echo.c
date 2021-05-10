@@ -31,19 +31,14 @@ void	ft_putnstr(char *str, int n)
 
 static void	echo_out(char **str, int pos)
 {
-	int		starts_with;
-	int		ends_with;
-	int		str_len;
+	int		quote;
+	//int		str_len;
 
-	starts_with = (str[pos][0] == '"');
-	str_len = (int)ft_strlen(str[pos]);
-	ends_with = (str[pos][str_len - 1] == '"');
-	if (ends_with && starts_with)
+	quote = (str[pos][0] == '"' || str[pos][0] == '\'');
+	//str_len = (int)ft_strlen(str[pos]);
+	//ends_with = (str[pos][str_len - 1] == '"');
+	if (quote)
 		ft_putnstr(str[pos] + 1, -1);
-	else if (ends_with)
-		ft_putnstr(str[pos], -1);
-	else if (starts_with)
-		ft_putstr_fd(str[pos] + 1,1);
 	else
 		ft_putstr_fd(str[pos],1);
 	if (str[pos + 1])
@@ -68,6 +63,7 @@ int	ft_echo()
 		++i;
 	while (mini_sh.ls_start->content[++i])
 	{
+		if(ft_strlen(mini_sh.ls_start->content[i]))
 		echo_out(mini_sh.ls_start->content, i);
 		if (!mini_sh.ls_start->content[i + 1] && !n_flag)
 			write(1,"\n",1);
