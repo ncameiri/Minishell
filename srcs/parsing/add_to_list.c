@@ -51,35 +51,49 @@ void	ft_linkadd_back(t_linklis **lst, t_linklis *new)
 	}
 }
 
-int	sep_link(int index, int *a, int *type)
+int	sep_link_2(t_var_seplink *va, int *a, int index, int *type)
 {
-	t_var_seplink	va;
-
-	va.i = *a;
-	va.s = 0;
-	va.single_q = 0;
-	va.double_q = 0;
-	va.n = mini_sh.cmd_tables[index][va.i];
-	while (va.n != '\0')
+	while (va->n != '\0')
 	{
-		*a = va.i;
-		if (va.n == '\"' && va.double_q == 0 && va.single_q == 0 )
-			va.double_q = 1;
-		else if (va.n == '\"' && va.double_q == 1 && va.single_q == 0 )
-			va.double_q = 0;
-		else if (va.n == '\'' && va.single_q == 0 && va.double_q == 0)
-			va.single_q = 1;
-		else if (va.n == '\'' && va.single_q == 1 && va.double_q == 0 )
-			va.single_q = 0;
-		else if (is_separator(va.n, mini_sh.cmd_tables[index][va.i + 1],
-			type) && va.single_q == 0 && va.double_q == 0)
-			return (va.i);
-		va.i++;
-		va.n = mini_sh.cmd_tables[index][va.i];
+		*a = va->i;
+		if (va->n == '\"' && va->double_q == 0 && va->single_q == 0 )
+			va->double_q = 1;
+		else if (va->n == '\"' && va->double_q == 1 && va->single_q == 0 )
+			va->double_q = 0;
+		else if (va->n == '\'' && va->single_q == 0 && va->double_q == 0)
+			va->single_q = 1;
+		else if (va->n == '\'' && va->single_q == 1 && va->double_q == 0 )
+			va->single_q = 0;
+		else if (is_separator(va->n, mini_sh.cmd_tables[index][va->i + 1],
+			type) && va->single_q == 0 && va->double_q == 0)
+			return (va->i);
+		va->i++;
+		va->n = mini_sh.cmd_tables[index][va->i];
 	}
-	if (va.double_q || va.single_q)
-		mini_sh.error = 1;
-	return (0);
+}
+
+int	add_to_list_run(void)
+{
+	char	*err_message;
+
+	err_message = "bash: syntax error near unexpected token";
+	ft_lstspli();
+	chck_begend_symbols();
+	ft_lstclear_zerolen();
+	env_list_upd_elem ();
+	ft_lstbuiltcheck();
+	if (mini_sh.error == 1)
+	{
+		ft_linklstclear(&mini_sh.ls_start);
+		if (ft_strlen(mini_sh.error_log) > 1)
+			printf("%s `%.2s\'\n", err_message, mini_sh.error_log);
+		else
+			printf("%s `%s'\n", err_message, mini_sh.error_log);
+		free (mini_sh.error_log);
+		return (0);
+	}
+	else
+		return (1);
 }
 
 int	add_to_list(int index)
@@ -104,29 +118,8 @@ int	add_to_list(int index)
 			}
 		}
 		if (!mini_sh.cmd_tables[index][va.i + 1])
-		{
-			va.type = 8;
-			va.aux = ft_substr(mini_sh.cmd_tables[index],
-					va.start, (va.i + 1) - va.start);
-			ft_linkadd_back(&mini_sh.ls_start, ft_linknew(va.aux, va.type));
-		}
+			last_elem_lis(&va, index);
 		va.i++;
 	}
-	ft_lstspli();
-	chck_begend_symbols();
-	ft_lstclear_zerolen();
-	env_list_upd_elem ();
-	ft_lstbuiltcheck();
-	if (mini_sh.error == 1)
-	{
-		ft_linklstclear(&mini_sh.ls_start);
-		if (ft_strlen(mini_sh.error_log) > 1)
-			printf("bash: syntax error near unexpected token `%.2s\'\n", mini_sh.error_log);
-		else
-			printf("bash: syntax error near unexpected token `%s'\n", mini_sh.error_log);
-		free (mini_sh.error_log);
-		return (0);
-	}
-	else
-		return (1);
+	return (add_to_list_run());
 }

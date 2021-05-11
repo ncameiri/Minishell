@@ -12,7 +12,7 @@
 
 #include "../../shell.h"
 
-int	ft_pwd()
+int	ft_pwd(void)
 {
 	char	cwd[1001];
 
@@ -22,5 +22,5 @@ int	ft_pwd()
 		return (1);
 	}
 	else
-		return (-1); // em caso de erro
+		return (-1);
 }

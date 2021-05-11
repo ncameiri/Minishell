@@ -8,16 +8,14 @@ int	change_dir(char *path)
 	if (!ft_strncmp(path, "~", 1))
 		buf = ft_strdup(env_isex_elem("HOME"));
 	else if (!ft_strncmp(path, "-", 1))
-	{
 		buf = ft_strdup(env_isex_elem("OLDPWD"));
-	}
 	else
 		buf = ft_strdup(path);
 	if (!buf)
-		return -1;
+		return (-1);
 	ret = chdir(buf);
 	if (ret != -1 && !ft_strncmp(path, "-", 1))
-	ft_pwd();
+		ft_pwd();
 	free(buf);
 	return (ret);
 }
@@ -26,23 +24,22 @@ int	ft_cd(char **content)
 {
 	char	pwd[1001];
 
-	if(!content[1] || !ft_strlen(content[1]))
-		return -1;
-
-	if(content[2])
+	if (!content[1] || !ft_strlen(content[1]))
+		return (-1);
+	if (content[2])
 	{
 		printf("bash: cd: Too much arguments\n");
 		return (-1);
 	}
-	if (!ft_strcmp(content[1],"~") && ft_strlen(env_isex_elem ("HOME")))
+	if (!ft_strcmp(content[1], "~") && ft_strlen(env_isex_elem ("HOME")))
 		change_dir("~");
 	else if (change_dir(content[1]) == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", content[1]);
-		return -1;
+		return (-1);
 	}
-		getcwd(pwd, 1000);
-		env_var_update("OLDPWD","PWD",1);
-		env_var_update("PWD", pwd, 0);
+	getcwd(pwd, 1000);
+	env_var_update("OLDPWD", "PWD", 1);
+	env_var_update("PWD", pwd, 0);
 	return (0);
 }

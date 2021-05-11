@@ -24,6 +24,7 @@ int	is_a_shell_symbol(char a, char a1)
 		return (1);
 	return (0);
 }
+
 int	chck_iespac(char s1, char s)
 {
 	if (!ft_strchr(SHELL_DELIMITERS, s1) && s == '\"')
@@ -33,23 +34,38 @@ int	chck_iespac(char s1, char s)
 	else
 		return (0);
 }
+
 int	check_inside_symbols(t_splvariab *var, char *str)
 {
 	int	i;
 
 	i = 0;
 	{
-		/*while(str[i] && (str[i] == '\t' || str[i] == '\n' || str[i] == '\a' || str[i] == ' ' || str[i] == '\r'))
-			i++;
-		ch = is_a_shell_symbol(str[i],str[i+1]);
-		if(str[i+1] == '>' && str[i+1]!= '\0')
-			i++;
-		while(str[i] && (str[i] == '\t' || str[i] == '\n' || str[i] == '\a' || str[i] == ' ' || str[i] == '\r'))
-			i++;*/
-		if (str[i+1] && is_a_shell_symbol(str[i], str[i + 1]))
+		if (str[i + 1] && is_a_shell_symbol(str[i], str[i + 1]))
 			return (1);
 	}
-	return 0;
+	return (0);
+}
+
+void	chck_begend_symbols2(int i, char *pt)
+{	
+	while (pt[i] && ft_strchr(SHELL_DELIMITERS, pt[i]))
+		i++;
+	if (ft_strchr("|><", pt[i]))
+	{
+		if (!mini_sh.error_log)
+			mini_sh.error_log = ft_errstr(pt[i]);
+		mini_sh.error = 1;
+	}
+	i = ft_strlen(pt) - 1;
+	while (pt[i] && i > 0 && ft_strchr(SHELL_DELIMITERS, pt[i]))
+		i--;
+	if (ft_strchr("|><", pt[i]))
+	{
+		if (!mini_sh.error_log)
+			mini_sh.error_log = ft_errstr(pt[i]);
+		mini_sh.error = 1;
+	}
 }
 
 void	chck_begend_symbols(void)
@@ -57,8 +73,7 @@ void	chck_begend_symbols(void)
 	t_linklis	*lst;
 	int			i;
 	char		*pt;
-	char		*old;
-	
+	char		*old;	
 
 	lst = mini_sh.ls_start;
 	while (lst)
@@ -66,25 +81,13 @@ void	chck_begend_symbols(void)
 		pt = lst->pre_split;
 		i = 0;
 		if (pt[i])
-		{
-			while (pt[i] && ft_strchr(SHELL_DELIMITERS,pt[i]))
-				i++;
-			if (ft_strchr("|><", pt[i]))
-			{if(!mini_sh.error_log)
-					mini_sh.error_log = ft_errstr(pt[i]);	
-				mini_sh.error = 1;}
-			i = ft_strlen(pt) - 1;
-			while (pt[i] && i>0 && ft_strchr(SHELL_DELIMITERS,pt[i]))
-				i--;
-			if (ft_strchr("|><", pt[i]))
-				{if(!mini_sh.error_log)
-					mini_sh.error_log = ft_errstr(pt[i]);
-					mini_sh.error = 1;}
-		}
+			chck_begend_symbols2(i, pt);
 		else
-		{	if (!mini_sh.error_log)
-			mini_sh.error_log = ft_strdup(mini_sh.cmd_tables[mini_sh.actind]+ft_strlen(old));
-			mini_sh.error =1;
+		{	
+			if (!mini_sh.error_log)
+				mini_sh.error_log = ft_strdup(mini_sh.cmd_tables[mini_sh.actind]
+						+ ft_strlen(old));
+			mini_sh.error = 1;
 		}
 		lst = lst->next;
 		old = pt;

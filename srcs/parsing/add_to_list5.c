@@ -12,66 +12,72 @@
 
 #include "../../shell.h"
 
-char	**re_alloc_parse(char **original)
+int	count_elems1(char **original)
 {
-	int elems;
-	int i;
-	int k;
-	char **ret;
+	int	i;
+	int	elems;
 
-	i = 0;
 	elems = 0;
-	if(!original)
-	return NULL;
-	while(original[i]/* && ft_strlen(original[i])*/)
-	{	
-		if(ft_strlen(original[i]))
-		elems++;
-		i++;
-	}
-	ret = malloc(sizeof(char*)*(elems+1));
-	if (!ret)
-		return NULL;
-	
 	i = 0;
-	k = 0;
-	while(i < elems)
-	{
-		while(!ft_strlen(original[k]) && original[k])
-			k++;
-		if(original[k])
-		ret[i] = ft_strdup(original[k]);
+	while (original[i])
+	{	
+		if (ft_strlen(original[i]))
+			elems++;
 		i++;
-		k++;
 	}
-	ret[i] = NULL;
-	free_array(original);
-	return (ret);
-
+	return (elems);
 }
 
-int check_builtinlst(char *str)
+char	**re_alloc_parse(char **original)
 {
-	if(ft_strcmp(str,"echo") == 0)
-		return(1);
-	else if(ft_strcmp(str,"cd") == 0)
-		return(1);
-	else if(ft_strcmp(str,"pwd") == 0)
-		return(1);
-	else if(ft_strcmp(str,"export") == 0)
-		return(1);
-	else if(ft_strcmp(str,"unset") == 0)
-		return(1);
-	else if(ft_strcmp(str,"env") == 0)
-		return(1);
-	else if(ft_strcmp(str,"exit") == 0)
-		return(1);
-	else if(ft_strcmp(str,"absolute_path") == 0)
-		return(1);
-	else if(ft_strcmp(str,"testing") == 0)
-		return(1);
-	else if(ft_strcmp(str,"history") == 0)
-		return(1);
+	t_re_alloc_var	va;
+
+	va.i = 0;
+	va.elems = 0;
+	if (!original)
+		return (NULL);
+	va.elems = count_elems1(original);
+	va.ret = malloc(sizeof(char *) * (va.elems + 1));
+	if (!va.ret)
+		return (NULL);
+	va.i = 0;
+	va.k = 0;
+	while (va.i < va.elems)
+	{
+		while (!ft_strlen(original[va.k]) && original[va.k])
+			va.k++;
+		if (original[va.k])
+			va.ret[va.i] = ft_strdup(original[va.k]);
+		va.i++;
+		va.k++;
+	}
+	va.ret[va.i] = NULL;
+	free_array(original);
+	return (va.ret);
+}
+
+int	check_builtinlst(char *str)
+{
+	if (ft_strcmp(str, "echo") == 0)
+		return (1);
+	else if (ft_strcmp(str, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "pwd") == 0)
+		return (1);
+	else if (ft_strcmp(str, "export") == 0)
+		return (1);
+	else if (ft_strcmp(str, "unset") == 0)
+		return (1);
+	else if (ft_strcmp(str, "env") == 0)
+		return (1);
+	else if (ft_strcmp(str, "exit") == 0)
+		return (1);
+	else if (ft_strcmp(str, "absolute_path") == 0)
+		return (1);
+	else if (ft_strcmp(str, "testing") == 0)
+		return (1);
+	else if (ft_strcmp(str, "history") == 0)
+		return (1);
 	else
 		return (0);
 }
@@ -83,7 +89,7 @@ void	ft_lstbuiltcheck(void)
 	lst = mini_sh.ls_start;
 	while (lst)
 	{
-		if(lst->content[0] && check_builtinlst(lst->content[0]))
+		if (lst->content[0] && check_builtinlst(lst->content[0]))
 			lst->builtin = 1;
 		else
 			lst->builtin = 0;

@@ -74,6 +74,14 @@ typedef struct s_simplecommand			// <---- Adicionar este.
 
 }				t_simplecommand;
 
+typedef struct s_re_alloc_var //ADICIONADO 11MAIO
+{
+	int		elems;
+	int		i;
+	int		k;
+	char	**ret;
+}				t_re_alloc_var;
+
 typedef struct s_splvariab
 {
 	char			**tab;
@@ -243,6 +251,11 @@ void 			chck_dup_symbols(void);
 void 			chck_begend_symbols(void);
 void			ft_lstbuiltcheck(void);
 void 			ft_lstclear_zerolen(void);
+int				last_elem_lis(t_var_add_tlis *va, int index);//adicionei 11 maio
+t_linklis		*ft_linknew(char *pre_split, int type);//adicionei 11 maio
+void			ft_linkadd_back(t_linklis **lst, t_linklis *new);//adicionei 11 maio
+int				sep_link_2(t_var_seplink *va, int *a, int index, int *type);//adicionei 11 maio
+int				sep_link(int index, int *a, int *type);//adicionei 11 maio
 
 /*	Simple cmd parsing */
 
