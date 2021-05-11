@@ -1,7 +1,9 @@
 #include "../../shell.h"
 
 int ft_unset(char **content)
-{
+{	
+	if (!content[1])
+		return (-1);
 	if (ft_strchr(content[1],'='))
 	{
 		printf("bash: unset: `%s\': not a valid identifier\n",content[1]);
