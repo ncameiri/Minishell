@@ -41,7 +41,7 @@ void found_env(char ***original)
 			if(ret[i][k] == '$' && ret[i][k+1] && !ft_strchr(SHELL_DELIMITERS,ret[i][k + 1]))
 			{
 				old_index = k;
-				while(!ft_strchr(SHELL_DELIMITERS,ret[i][k + 1]) && ret[i][k+1])
+				while(!ft_strchr(DELIMITERS3,ret[i][k + 1]) && ret[i][k+1])
 				{
 					
 					if(ret[i][k+1] == '\"')

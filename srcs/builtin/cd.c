@@ -8,12 +8,16 @@ int	change_dir(char *path)
 	if (!ft_strncmp(path, "~", 1))
 		buf = ft_strdup(env_isex_elem("HOME"));
 	else if (!ft_strncmp(path, "-", 1))
+	{
 		buf = ft_strdup(env_isex_elem("OLDPWD"));
+	}
 	else
 		buf = ft_strdup(path);
 	if (!buf)
 		return -1;
 	ret = chdir(buf);
+	if (ret != -1 && !ft_strncmp(path, "-", 1))
+	ft_pwd();
 	free(buf);
 	return (ret);
 }
@@ -22,8 +26,12 @@ int	ft_cd(char **content)
 {
 	char	pwd[1001];
 
-	
-	if (!ft_strcmp(content[1],"~"))
+	if(content[2])
+	{
+		printf("bash: cd: Too much arguments\n");
+		return (-1);
+	}	
+	if (!ft_strcmp(content[1],"~") && ft_strlen(env_isex_elem ("HOME")))
 		change_dir("~");
 	else if (change_dir(content[1]) == -1)
 	{

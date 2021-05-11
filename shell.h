@@ -24,6 +24,8 @@
 
 # define SHELL_DELIMITERS " \t\r\n\a"
 # define DELIMETERS2 " \t\r\n\a\'\""
+# define DELIMITERS3 " \t\r\n\a\'\"/"
+# define OPEN_QUOTE_EC "\'\""
 
 # define STDIN 0
 # define STDOUT 1

@@ -1,4 +1,16 @@
 #include "../../shell.h"
+int only_export()
+{
+
+	int	i;
+
+	i = 0;
+	while(mini_sh.env[i])
+	{
+		printf("declare -x %s\n",mini_sh.env[i++]);
+	}
+    return(0);
+}
 
 int ft_export(char **content)
 {
@@ -7,6 +19,17 @@ int ft_export(char **content)
     int i;
 
     i=0;
+
+    if(!content[1])
+    {
+        only_export();
+        return(0);
+    }
+    if (ft_isdigit((int)content[1][0]))
+    {
+        printf("bash: export: `%s\': not a valid identifier\n",content[1]);
+        return(-1);
+    }
     if (!ft_strchr(content[1],'='))
     return -1;
     while(content[1][i] && content[1][i]!= '=')

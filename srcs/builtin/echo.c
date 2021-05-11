@@ -11,21 +11,56 @@
 /* ************************************************************************** */
 
 #include "../../shell.h"
+int	its_open_quo(t_splvariab *varia, char t)
+{
+	if (t == '\"' && varia->double_q == 0 && varia->single_q == 0 )
+		varia->double_q = 1;
+	else if (t == '\"' && varia->double_q == 1 && varia->single_q == 0 )
+		varia->double_q = 0;
+	else if (t == '\'' && varia->single_q == 0 && varia->double_q == 0)
+		varia->single_q = 1;
+	else if (t == '\'' && varia->single_q == 1 && varia->double_q == 0 )
+		varia->single_q = 0;
+	if (varia->double_q == 0 && varia->single_q == 0)
+		return (1);
+	else
+		return (0);
+}
 
 void	ft_putnstr(char *str, int n)
 {
 	int		i;
+	t_splvariab varia;
+	int its_clos;
 
 	i = -1;
+	its_clos=1;
+	varia.double_q=0;
+	varia.single_q=0;
 	if (n < 0)
 	{
 		while (str[++i] && i < (int)ft_strlen(str) + n)
-			write(1,&str[i],1);
+		{	
+			if(its_clos)
+				its_clos=its_open_quo(&varia,str[i+1]);
+			else
+				its_clos=its_open_quo(&varia,str[i]);
+			if(!ft_strchr(OPEN_QUOTE_EC,str[i]) ||	!its_clos)
+				write(1,&str[i],1);
+		}
 	}
 	else
 	{
 		while (str[++i] && i < n)
-			write(1,&str[i],1);
+		{
+			if(its_clos)
+				its_clos=its_open_quo(&varia,str[i+1]);
+			else
+				its_clos=its_open_quo(&varia,str[i]);
+			if(!ft_strchr(OPEN_QUOTE_EC,str[i]) ||	!its_clos)
+				write(1,&str[i],1);
+			
+		}
 	}
 }
 
@@ -40,7 +75,7 @@ static void	echo_out(char **str, int pos)
 	if (quote)
 		ft_putnstr(str[pos] + 1, -1);
 	else
-		ft_putstr_fd(str[pos],1);
+		ft_putnstr(str[pos],ft_strlen(str[pos]));
 	if (str[pos + 1])
 		write(1," ",1);
 }
