@@ -26,6 +26,9 @@ int	ft_cd(char **content)
 {
 	char	pwd[1001];
 
+	if(!content[1] || !ft_strlen(content[1]))
+		return -1;
+
 	if(content[2])
 	{
 		printf("bash: cd: Too much arguments\n");
