@@ -30,7 +30,7 @@ int	ft_cd(char **content)
 	{
 		printf("bash: cd: Too much arguments\n");
 		return (-1);
-	}	
+	}
 	if (!ft_strcmp(content[1],"~") && ft_strlen(env_isex_elem ("HOME")))
 		change_dir("~");
 	else if (change_dir(content[1]) == -1)

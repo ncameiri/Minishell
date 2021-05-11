@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 16:24:48 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 12:16:06 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ typedef struct s_simplecommand_temp		// <---- Adicionar este.
 
 	int			temp_append;
 
-	char		*temp_infile_extra_text;
-
 }		t_simplecommand_temp;
 
 typedef struct s_simplecommand			// <---- Adicionar este.
@@ -71,8 +69,6 @@ typedef struct s_simplecommand			// <---- Adicionar este.
 	int						outfiles;
 	int						infiles;
 	int						append; // Se é para fazer append ou um outfile normal.
-
-	char					*infile_extra_text; // Caso "echo ola < aqui.txt texto aqui < alo.txt"
 
 	struct s_simplecommand	*next;
 
@@ -188,7 +184,7 @@ void			remove_cmd_blanks();
 void			exec_command();
 void			simple_execute(t_linklis *list);
 
-void			complicated_execute(t_linklis *list);
+void			complicated_execute(t_simplecommand *simple_cmd);
 int				check_infile(t_simplecommand *smp_cmd);
 int				check_outfile(t_simplecommand *smp_cmd);
 int				take_infile(t_simplecommand *smp_cmd);

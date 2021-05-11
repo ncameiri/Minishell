@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:12:50 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 16:05:38 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 12:17:41 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_putnstr(char *str, int n)
 	if (n < 0)
 	{
 		while (str[++i] && i < (int)ft_strlen(str) + n)
-		{	
+		{
 			if(its_clos)
 				its_clos=its_open_quo(&varia,str[i+1]);
 			else
@@ -59,7 +59,7 @@ void	ft_putnstr(char *str, int n)
 				its_clos=its_open_quo(&varia,str[i]);
 			if(!ft_strchr(OPEN_QUOTE_EC,str[i]) ||	!its_clos)
 				write(1,&str[i],1);
-			
+
 		}
 	}
 }

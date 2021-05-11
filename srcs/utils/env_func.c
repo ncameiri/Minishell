@@ -27,7 +27,7 @@ void found_env(char ***original)
 	char temp[1001];
 	i = -1;
 	ret = *original;
-	
+
 	if(!(ret))
 	return ;
 	while(ret[++i])
@@ -37,27 +37,27 @@ void found_env(char ***original)
 		k = 0;
 		l = 0;
 		while(ret[i][k])
-		{			
+		{
 			if(ret[i][k] == '$' && ret[i][k+1] && !ft_strchr(SHELL_DELIMITERS,ret[i][k + 1]))
 			{
 				old_index = k;
 				while(!ft_strchr(DELIMITERS3,ret[i][k + 1]) && ret[i][k+1])
 				{
-					
+
 					if(ret[i][k+1] == '\"')
 					break;
 					k++;
 				}
 				search = ft_substr(ret[i], old_index + 1, k - old_index);
 				if(ft_strlen(env_isex_elem(search)))
-				{	
+				{
 					ft_strlcpy(temp + l, env_isex_elem(search), ft_strlen(env_isex_elem(search)-1));
 					l+=ft_strlen(env_isex_elem(search));
 				}
 				else
 					k=old_index + k + 1;
 				free(search);
-			
+
 			}
 			else
 			{
@@ -75,7 +75,7 @@ void found_env(char ***original)
 		{
 			free(ret[i]);
 			ret[i] = ft_strdup(temp);
-		}		
+		}
 	}
 }
 
@@ -124,7 +124,7 @@ int env_rm_elem (char *set)
 
 
 
-	
+
 int env_list_upd_elem ()
 {
 	t_linklis	*lst;
@@ -144,7 +144,7 @@ char *env_isex_elem (char *set)
 	int i;
 	int k;
 	char *set_equal;
-	
+
 	set_equal = ft_strjoin(set, "=");
 	i = 0;
 	k = ft_strlen(set_equal);
@@ -154,7 +154,7 @@ char *env_isex_elem (char *set)
 		{
 			free(set_equal);
 			return(mini_sh.env[i] + k );
-		}		
+		}
 		i++;
 	}
 	ft_strlen(set_equal);
@@ -164,7 +164,7 @@ char *env_isex_elem (char *set)
     ol=env_isex_elem(mini_sh.ls_start->content[1]);
     if(ft_strlen(ol))
     printf("%s\n",ol);
-    else 
+    else
     printf("DEU BOSTA\n");*/
 }
 int env_var_update(char *set_tbc, char *new_ct, int is_env)

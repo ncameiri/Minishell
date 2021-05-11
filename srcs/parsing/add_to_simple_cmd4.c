@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:23:22 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 15:16:19 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 23:34:17 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	debug_simple_commands()
 			printf("Infile[%i] = %s \n",i, temp->infile[i]);
 
 		printf("Infiles = %i \n", temp->infiles);
-		printf("Infile extra text = %s\n", temp->infile_extra_text);
 
 		temp = temp->next;
 		a++;
@@ -85,7 +84,6 @@ void	ft_lstclear_simple_struct(t_simplecommand **lst)
 		free_array(current->command);
 		free_array(current->infile);
 		free_array(current->outfile);
-		free(current->infile_extra_text);
 		free(current);
 		current = next;
 	}

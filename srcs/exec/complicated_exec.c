@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 17:10:58 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 02:09:11 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,29 +80,16 @@ int	check_builtin_no_fork(t_simplecommand *lista)
 
 void	run_builtin_complicated(t_simplecommand *lista)
 {
-	if (ft_strcmp(lista->command[0], "cd") == 0)
-		ft_cd(lista->command);
-	else if (ft_strcmp(lista->command[0], "echo") == 0)
+	if (ft_strcmp(lista->command[0], "echo") == 0)
 		ft_echo(lista->command);
-	else if (ft_strcmp(lista->command[0], "env") == 0)
-		ft_env();
-	else if (ft_strcmp(lista->command[0], "exit") == 0)
-		ft_exit();
-	else if (ft_strcmp(lista->command[0], "export") == 0)
-		ft_export(lista->command);
 	else if (ft_strcmp(lista->command[0], "pwd") == 0)
 		ft_pwd();
-	else if (ft_strcmp(lista->command[0], "unset") == 0)
-		ft_unset(lista->command);
 }
 
-void	complicated_execute(t_linklis *list)
+void	complicated_execute(t_simplecommand *simple_cmd)
 {
-	t_simplecommand *simple_cmd;
 	t_complicated_exec norm;
 	char				*bin_path;
-
-	simple_cmd = mini_sh.simple_cmd;
 
 	norm.tmpin = dup(0);
 	norm.tmpout = dup(1);
@@ -110,7 +97,16 @@ void	complicated_execute(t_linklis *list)
 	// set the initial input
 
 	if(check_infile(simple_cmd) == 1)
+	{
 		norm.fdin = take_infile(simple_cmd);
+		if (norm.fdin == -1)
+		{
+			simple_cmd = simple_cmd->next;
+			if (simple_cmd != NULL)
+				complicated_execute(simple_cmd);
+			return ;
+		}
+	}
 	else // Use default input
 		norm.fdin = dup(norm.tmpin);
 
@@ -122,7 +118,9 @@ void	complicated_execute(t_linklis *list)
 			close(norm.fdin);
 		//setup output
 
-		if (simple_cmd->next == NULL)
+		if (check_outfile(simple_cmd) == 1 && simple_cmd->next != NULL)
+				norm.fdout = take_outfile(simple_cmd);
+		else if (simple_cmd->next == NULL)
 		{
 				//last simple command
 			if (check_outfile(simple_cmd) == 1)
@@ -159,9 +157,9 @@ void	complicated_execute(t_linklis *list)
 				run_builtin_complicated(simple_cmd);
 			else
 			{
-				simple_cmd = remove_quotation_marks(simple_cmd);
 				bin_path = ft_strjoin("/usr/bin/", simple_cmd->command[0]);
 				execve(bin_path, simple_cmd->command, mini_sh.env);
+				printf("%s: command not found\n", simple_cmd->command[0]);
 				free(bin_path);
 			}
 			exit_cntrl_d(1);

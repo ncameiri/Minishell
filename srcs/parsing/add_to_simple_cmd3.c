@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:22:41 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 15:16:06 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/10 23:34:27 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
 		mini_sh.simple_cmd->outfiles = add.temp_outfiles;
 		mini_sh.simple_cmd->infiles = add.temp_infiles;
 		mini_sh.simple_cmd->append = add.temp_append;
-		if (add.temp_infile_extra_text != NULL)
-				mini_sh.simple_cmd->infile_extra_text = ft_strdup(add.temp_infile_extra_text);
-		else
-			mini_sh.simple_cmd->infile_extra_text = NULL;
 		mini_sh.simple_cmd->next = NULL;
 	}
 }
@@ -67,10 +63,6 @@ void	*ft_lstnew_simple_add1(t_simplecommand_temp add)
 	mini_sh.simple_cmd->outfiles = add.temp_outfiles;
 	mini_sh.simple_cmd->infiles = add.temp_infiles;
 	mini_sh.simple_cmd->append = add.temp_append;
-	if (add.temp_infile_extra_text != NULL)
-		mini_sh.simple_cmd->infile_extra_text = ft_strdup(add.temp_infile_extra_text);
-	else
-		mini_sh.simple_cmd->infile_extra_text = NULL;
 	mini_sh.simple_cmd->next = NULL;
 }
 
