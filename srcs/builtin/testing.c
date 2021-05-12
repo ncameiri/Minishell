@@ -12,7 +12,7 @@
 
 #include "../../shell.h"
 
-void	ft_testing()
+void	ft_testing(void)
 {
 	if (mini_sh.testing == 1)
 	{

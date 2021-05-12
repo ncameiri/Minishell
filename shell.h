@@ -82,6 +82,35 @@ typedef struct s_re_alloc_var //ADICIONADO 11MAIO
 	char	**ret;
 }				t_re_alloc_var;
 
+typedef struct s_fou_env_var //ADICIONADO 11MAIO
+{
+	int		i;
+	int		k;
+	int		l;
+	int		old_index;
+	char	**ret;
+	char	*search;
+	char	temp[1001];
+}				t_fou_env_var;
+
+typedef struct s_env_rm_vars //ADICIONADO 11MAIO
+{
+	int		a;
+	int		i;
+	int		k;
+	char	**temp;
+	char	*set_equal;
+}				t_env_rm_vars;
+
+typedef struct s_built_ex_var //ADICIONADO 11MAIO
+{
+	char	*elem;
+	char	*set;
+	int		i;
+}				t_built_ex_var;
+
+
+
 typedef struct s_splvariab
 {
 	char			**tab;
@@ -91,6 +120,7 @@ typedef struct s_splvariab
 	unsigned int	i;
 	int 			single_q;
 	int 			double_q;
+	int				its_clos;
 
 }				t_splvariab;
 
@@ -211,6 +241,8 @@ void 			ft_env();
 int				ft_cd(char **content);
 int				ft_export(char **content);
 int				ft_unset(char **content);
+void	ft_putnstr2(t_splvariab	*varia , char *str, int n ,int i);//11MAIO
+int	its_open_quo(t_splvariab *varia, char t);//11MAIO
 
 
 /* 	Parsing */
@@ -257,6 +289,7 @@ void			ft_linkadd_back(t_linklis **lst, t_linklis *new);//adicionei 11 maio
 int				sep_link_2(t_var_seplink *va, int *a, int index, int *type);//adicionei 11 maio
 int				sep_link(int index, int *a, int *type);//adicionei 11 maio
 
+
 /*	Simple cmd parsing */
 
 void			add_to_simple_commands_list();
@@ -287,5 +320,7 @@ int				env_rm_elem (char *set);
 char			*env_isex_elem (char *set);
 int				env_var_update(char *set_tbc, char *new_ct, int is_env);
 int				env_list_upd_elem ();
+void	found_env(char ***original);//adicionei 11 MAIO
+void	found_env5(t_fou_env_var *var);//adicionei 11 MAIO
 
 #endif

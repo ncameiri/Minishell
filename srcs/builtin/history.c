@@ -12,9 +12,9 @@
 
 #include "../../shell.h"
 
-void	ft_history()
+void	ft_history(void)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (mini_sh.history[i] != NULL)

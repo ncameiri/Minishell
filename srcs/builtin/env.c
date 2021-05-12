@@ -12,13 +12,13 @@
 
 #include "../../shell.h"
 
-void	ft_env()
+void	ft_env(void)
 {
 	int	i;
 
 	i = 0;
-	while(mini_sh.env[i])
+	while (mini_sh.env[i])
 	{
-		printf("%s\n",mini_sh.env[i++]);
+		printf("%s\n", mini_sh.env[i++]);
 	}
 }

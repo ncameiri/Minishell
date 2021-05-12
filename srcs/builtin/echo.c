@@ -27,39 +27,32 @@ int	its_open_quo(t_splvariab *varia, char t)
 		return (0);
 }
 
+void	var_putnstr_a_init(t_splvariab	*varia, int *i)
+{
+	*i = -1;
+	varia->its_clos = 1;
+	varia->double_q = 0;
+	varia->single_q = 0;
+}
+
 void	ft_putnstr(char *str, int n)
 {
-	int		i;
-	t_splvariab varia;
-	int its_clos;
+	int			i;
+	t_splvariab	varia;	
 
-	i = -1;
-	its_clos=1;
-	varia.double_q=0;
-	varia.single_q=0;
+	var_putnstr_a_init(&varia, &i);
 	if (n < 0)
-	{
-		while (str[++i] && i < (int)ft_strlen(str) + n)
-		{
-			if(its_clos)
-				its_clos=its_open_quo(&varia,str[i+1]);
-			else
-				its_clos=its_open_quo(&varia,str[i]);
-			if(!ft_strchr(OPEN_QUOTE_EC,str[i]) ||	!its_clos)
-				write(1,&str[i],1);
-		}
-	}
+		ft_putnstr2(&varia, str, n, i);
 	else
 	{
 		while (str[++i] && i < n)
 		{
-			if(its_clos)
-				its_clos=its_open_quo(&varia,str[i+1]);
+			if (varia.its_clos)
+				varia.its_clos = its_open_quo(&varia, str[i + 1]);
 			else
-				its_clos=its_open_quo(&varia,str[i]);
-			if(!ft_strchr(OPEN_QUOTE_EC,str[i]) ||	!its_clos)
-				write(1,&str[i],1);
-
+				varia.its_clos = its_open_quo(&varia, str[i]);
+			if (!ft_strchr(OPEN_QUOTE_EC, str[i]) || !varia.its_clos)
+				write(1, &str[i], 1);
 		}
 	}
 }
@@ -67,17 +60,14 @@ void	ft_putnstr(char *str, int n)
 static void	echo_out(char **str, int pos)
 {
 	int		quote;
-	//int		str_len;
 
 	quote = (str[pos][0] == '"' || str[pos][0] == '\'');
-	//str_len = (int)ft_strlen(str[pos]);
-	//ends_with = (str[pos][str_len - 1] == '"');
 	if (quote)
 		ft_putnstr(str[pos] + 1, -1);
 	else
-		ft_putnstr(str[pos],ft_strlen(str[pos]));
+		ft_putnstr(str[pos], ft_strlen(str[pos]));
 	if (str[pos + 1])
-		write(1," ",1);
+		write(1, " ", 1);
 }
 
 int	ft_echo(char **content)
@@ -91,17 +81,17 @@ int	ft_echo(char **content)
 		write(1, "\n", 1);
 		return (1);
 	}
-	else if (!ft_strcmp(content[1] ,"-n"))
+	else if (!ft_strcmp(content[1], "-n"))
 		n_flag = 1;
 	i = 0;
 	if (n_flag)
 		++i;
 	while (content[++i])
 	{
-		if(ft_strlen(content[i]))
-		echo_out(content, i);
+		if (ft_strlen(content[i]))
+			echo_out(content, i);
 		if (!content[i + 1] && !n_flag)
-			write(1,"\n",1);
+			write(1, "\n", 1);
 	}
 	return (1);
 }

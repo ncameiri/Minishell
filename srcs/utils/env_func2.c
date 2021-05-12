@@ -39,3 +39,51 @@ int	env_var_update(char *set_tbc, char *new_ct, int is_env)
 	free(elem);
 	return (0);
 }
+
+void	init_var_rm_elem (t_env_rm_vars	*va)
+{
+	va->i = 0;
+	va->a = 0;
+	va->k = 0;
+}
+
+int	env_rm_elem (char *set)
+{
+	t_env_rm_vars	va;
+
+	init_var_rm_elem(&va);
+	va.set_equal = ft_strjoin(set, "=");
+	while (mini_sh.env[va.i] != NULL)
+		va.i++;
+	va.temp = malloc(sizeof(char *) * va.i);
+	if (va.temp == NULL)
+		return (-1);
+	while (va.a < (va.i - 1))
+	{
+		if (ft_strncmp(va.set_equal, mini_sh.env[va.k],
+				ft_strlen(va.set_equal)))
+		{
+			va.temp[va.a] = ft_strdup(mini_sh.env[va.k]);
+			va.a++;
+		}
+		va.k++;
+	}
+	va.temp[va.a] = NULL;
+	free(va.set_equal);
+	free_array(mini_sh.env);
+	mini_sh.env = va.temp;
+	return (0);
+}
+
+int	env_list_upd_elem (void)
+{
+	t_linklis	*lst;
+
+	lst = mini_sh.ls_start;
+	while (lst)
+	{
+		found_env(&(lst->content));
+		lst = lst->next;
+	}
+	return (0);
+}
