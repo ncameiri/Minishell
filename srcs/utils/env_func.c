@@ -3,16 +3,11 @@
 void	found_env4(t_fou_env_var *var)
 {
 	if (var->ret[var->i][var->k] == '$' && var->ret[var->i][var->k + 1]
-				&& !ft_strchr(SHELL_DELIMITERS, var->ret[var->i][var->k + 1]))
+				&& !ft_strchr(SHELL_DELIMITERS, var->ret[var->i][var->k + 1])
+					&& ft_strcmp(var->ret[var->i], "$?"))
 	{
 		var->old_index = var->k;
-		while (!ft_strchr(DELIMITERS3, var->ret[var->i][var->k + 1])
-			&& var->ret[var->i][var->k + 1])
-		{
-			if (var->ret[var->i][var->k + 1] == '\"')
-				break ;
-			var->k++;
-		}
+		found_env6(var);
 		var->search = ft_substr(var->ret[var->i], var->old_index + 1,
 				var->k - var->old_index);
 		if (ft_strlen(env_isex_elem(var->search)))

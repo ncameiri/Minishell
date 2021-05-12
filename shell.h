@@ -169,6 +169,7 @@ typedef struct s_minishell
 	// Env
 
 	char			**env; // Env file.
+	
 
 	// Loop
 
@@ -322,5 +323,6 @@ int				env_var_update(char *set_tbc, char *new_ct, int is_env);
 int				env_list_upd_elem ();
 void	found_env(char ***original);//adicionei 11 MAIO
 void	found_env5(t_fou_env_var *var);//adicionei 11 MAIO
+void	found_env6(t_fou_env_var *var);//11MAIO
 
 #endif

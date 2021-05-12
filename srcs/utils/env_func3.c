@@ -22,3 +22,14 @@ void	found_env5(t_fou_env_var *var)
 		ft_strlen(env_isex_elem(var->search) - 1));
 	var->l += ft_strlen(env_isex_elem(var->search));
 }
+
+void	found_env6(t_fou_env_var *var)
+{
+	while (!ft_strchr(DELIMITERS3, var->ret[var->i][var->k + 1])
+			&& var->ret[var->i][var->k + 1])
+	{
+		if (var->ret[var->i][var->k + 1] == '\"')
+			break ;
+		var->k++;
+	}
+}
