@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:50:29 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/12 02:53:12 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/13 17:07:15 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ int	take_infile(t_simplecommand *smp_cmd, t_complicated_exec *norm)
 		if (fd > 0)
 			close(fd);
 		fd = open(smp_cmd->infile[i], O_RDONLY);
+		mini_sh.dollar_error = 1;
 		if (fd == -1)
 		{
 			dup2(norm->tmpin, 0);
 			dup2(norm->tmpout, 1);
 			close(norm->tmpin);
 			close(norm->tmpout);
-			printf("bash: %s: No such file or directory\n", smp_cmd->infile[i]);
+			printf("bash: %s: %s\n", smp_cmd->infile[i], strerror(errno));
 			break ;
 		}
 		i++;

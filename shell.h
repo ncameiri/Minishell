@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 12:16:06 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/13 16:21:08 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <string.h>
+# include <signal.h>
+# include <errno.h>
 
 # define SHELL_DELIMITERS " \t\r\n\a"
 # define DELIMETERS2 " \t\r\n\a\'\""
@@ -181,7 +183,7 @@ typedef struct s_minishell
 	// Env
 
 	char			**env; // Env file.
-	
+
 
 	// Loop
 
@@ -206,6 +208,14 @@ typedef struct s_minishell
 	int 			error;
 	char			*error_log;
 	int				actind;
+
+	// Linux or Mac
+
+	int				islinux;
+
+	// Dollar Error
+
+	int				dollar_error;
 
 }					t_minishell;
 
@@ -248,6 +258,7 @@ int				check_builtin_no_fork(t_simplecommand **lista);
 t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd);
 int				infile_stuff(t_simplecommand **simple_cmd,
 							t_complicated_exec *norm);
+char			*get_path(char *command);
 
 
 /* 	Builtins */
@@ -262,6 +273,7 @@ void 			ft_env();
 int				ft_cd(char **content);
 int				ft_export(char **content);
 int				ft_unset(char **content);
+void			ft_error(void);
 void	ft_putnstr2(t_splvariab	*varia , char *str, int n ,int i);//11MAIO
 int	its_open_quo(t_splvariab *varia, char t);//11MAIO
 

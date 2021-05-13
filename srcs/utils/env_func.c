@@ -3,8 +3,8 @@
 void	found_env4(t_fou_env_var *var)
 {
 	if (var->ret[var->i][var->k] == '$' && var->ret[var->i][var->k + 1]
-				&& !ft_strchr(SHELL_DELIMITERS, var->ret[var->i][var->k + 1])
-					&& ft_strcmp(var->ret[var->i], "$?"))
+		&& !ft_strchr(SHELL_DELIMITERS, var->ret[var->i][var->k + 1])
+		&& ft_strcmp(var->ret[var->i], "$?"))
 	{
 		var->old_index = var->k;
 		found_env6(var);
@@ -28,7 +28,7 @@ void	found_env3(t_fou_env_var *var)
 {
 	var->temp[var->l] = '\0';
 	if (var->l == 0)
-	{	
+	{
 		free(var->ret[var->i]);
 		var->ret[var->i] = ft_strdup("");
 	}

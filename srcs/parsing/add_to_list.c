@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 11:26:39 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 18:20:46 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/13 17:32:17 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	sep_link_2(t_var_seplink *va, int *a, int index, int *type)
 	else if (va->n == '\'' && va->single_q == 1 && va->double_q == 0 )
 		va->single_q = 0;
 	else if (is_separator(va->n, mini_sh.cmd_tables[index][va->i + 1],
-		type) && va->single_q == 0 && va->double_q == 0)
+			type) && va->single_q == 0 && va->double_q == 0)
 		return (va->i);
 	va->i += 1;
 }

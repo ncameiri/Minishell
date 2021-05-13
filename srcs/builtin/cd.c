@@ -25,10 +25,14 @@ int	ft_cd(char **content)
 	char	pwd[1001];
 
 	if (!content[1] || !ft_strlen(content[1]))
+	{
+		change_dir("~");
+		env_var_update("OLDPWD", "PWD", 1);
 		return (-1);
+	}
 	if (content[2])
 	{
-		printf("bash: cd: Too much arguments\n");
+		printf("bash: cd: Too many arguments\n");
 		return (-1);
 	}
 	if (!ft_strcmp(content[1], "~") && ft_strlen(env_isex_elem ("HOME")))

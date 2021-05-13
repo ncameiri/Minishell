@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/12 02:54:30 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/13 17:12:30 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	complicated_execute4(t_simplecommand **simple_cmd,
 {
 	char	*bin_path;
 
+	mini_sh.dollar_error = 0;
 	mini_sh.pid = fork();
 	if (mini_sh.pid == 0)
 	{
@@ -40,11 +41,13 @@ void	complicated_execute4(t_simplecommand **simple_cmd,
 			if (ft_strchr((*simple_cmd)->command[0], '/'))
 				execve((*simple_cmd)->command[0],
 					(*simple_cmd)->command, mini_sh.env);
-			bin_path = ft_strjoin("/usr/bin/", (*simple_cmd)->command[0]);
+			bin_path = get_path((*simple_cmd)->command[0]);
 			execve(bin_path, (*simple_cmd)->command, mini_sh.env);
 			printf("%s: command not found\n", (*simple_cmd)->command[0]);
+			mini_sh.dollar_error = errno;
 			free(bin_path);
 		}
+		mini_sh.dollar_error = 127;
 		exit_finale(1);
 		exit(0);
 	}

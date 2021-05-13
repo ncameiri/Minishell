@@ -6,22 +6,22 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 19:48:47 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 20:10:57 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/13 15:41:06 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-void ft_exit(char **content)
+void	ft_exit(char **content)
 {
-	int a;
-	int i;
+	int	a;
+	int	i;
 
 	a = 255;
 	i = 0;
 	while (content[i] != NULL)
 		i++;
-	i = i-1;
+	i = i - 1;
 	if (i == 0)
 	{
 		exit_finale(1);

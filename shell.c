@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 22:43:28 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/13 16:38:13 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ int	main (int argc, char **argv, char **env)
 	mini_sh.env = save_env(env); // <-- Meter este alocado, uma função qualquer, get_env(), qualquer coisa. tá no utils
 	mini_sh.pid = 0;	// Até agora  é para matar o filho no signals.
 	mini_sh.status = 1;	// Para o loop o shell_loop não parar.
+	mini_sh.islinux = 1;
+	mini_sh.dollar_error = errno;
+
 
 	signal(SIGINT, &sig_int);	// cntrl-c
 	signal(SIGQUIT, &sig_quit);	// cntrl-\

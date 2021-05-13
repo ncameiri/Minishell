@@ -26,7 +26,7 @@ void	found_env5(t_fou_env_var *var)
 void	found_env6(t_fou_env_var *var)
 {
 	while (!ft_strchr(DELIMITERS3, var->ret[var->i][var->k + 1])
-			&& var->ret[var->i][var->k + 1])
+		&& var->ret[var->i][var->k + 1])
 	{
 		if (var->ret[var->i][var->k + 1] == '\"')
 			break ;

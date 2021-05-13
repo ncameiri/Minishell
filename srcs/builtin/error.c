@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   absolute_path.c                                    :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 02:53:37 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/13 15:40:46 by tisantos         ###   ########.fr       */
+/*   Created: 2021/05/13 16:11:28 by tisantos          #+#    #+#             */
+/*   Updated: 2021/05/13 17:03:43 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-void	ft_absolute_path(void)
+void	ft_error(void)
 {
-	if (mini_sh.absolute_path == 1)
-		mini_sh.absolute_path = 0;
-	else
-		mini_sh.absolute_path = 1;
+	printf("%i: command not found\n", mini_sh.dollar_error);
+	mini_sh.dollar_error = 127;
 }
