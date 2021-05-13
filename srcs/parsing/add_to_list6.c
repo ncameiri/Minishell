@@ -17,7 +17,12 @@ int	sep_link(int index, int *a, int *type)
 	va.single_q = 0;
 	va.double_q = 0;
 	va.n = mini_sh.cmd_tables[index][va.i];
-	sep_link_2(&va, a, index, type);
+	while (va.n != '\0')
+	{
+		if (sep_link_2(&va, a, index, type) == va.i)
+			return (va.i);
+		va.n = mini_sh.cmd_tables[index][va.i];
+	}
 	if (va.double_q || va.single_q)
 		mini_sh.error = 1;
 	return (0);

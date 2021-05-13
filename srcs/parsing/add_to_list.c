@@ -53,23 +53,19 @@ void	ft_linkadd_back(t_linklis **lst, t_linklis *new)
 
 int	sep_link_2(t_var_seplink *va, int *a, int index, int *type)
 {
-	while (va->n != '\0')
-	{
-		*a = va->i;
-		if (va->n == '\"' && va->double_q == 0 && va->single_q == 0 )
-			va->double_q = 1;
-		else if (va->n == '\"' && va->double_q == 1 && va->single_q == 0 )
-			va->double_q = 0;
-		else if (va->n == '\'' && va->single_q == 0 && va->double_q == 0)
-			va->single_q = 1;
-		else if (va->n == '\'' && va->single_q == 1 && va->double_q == 0 )
-			va->single_q = 0;
-		else if (is_separator(va->n, mini_sh.cmd_tables[index][va->i + 1],
-			type) && va->single_q == 0 && va->double_q == 0)
-			return (va->i);
-		va->i++;
-		va->n = mini_sh.cmd_tables[index][va->i];
-	}
+	*a = va->i;
+	if (va->n == '\"' && va->double_q == 0 && va->single_q == 0 )
+		va->double_q = 1;
+	else if (va->n == '\"' && va->double_q == 1 && va->single_q == 0 )
+		va->double_q = 0;
+	else if (va->n == '\'' && va->single_q == 0 && va->double_q == 0)
+		va->single_q = 1;
+	else if (va->n == '\'' && va->single_q == 1 && va->double_q == 0 )
+		va->single_q = 0;
+	else if (is_separator(va->n, mini_sh.cmd_tables[index][va->i + 1],
+		type) && va->single_q == 0 && va->double_q == 0)
+		return (va->i);
+	va->i += 1;
 }
 
 int	add_to_list_run(void)
