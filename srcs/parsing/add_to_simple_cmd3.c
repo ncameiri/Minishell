@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:22:41 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 23:34:27 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:15:24 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
 
 void	*ft_lstnew_simple_add2(t_simplecommand_temp add)
 {
-	t_simplecommand *start;
-	t_simplecommand *temp;
-	int i;
+	t_simplecommand	*start;
+	t_simplecommand	*temp;
+	int				i;
 
 	start = mini_sh.simple_cmd;
 	temp = mini_sh.simple_cmd;
@@ -74,9 +74,7 @@ void	*ft_lstnew_simple_add(t_simplecommand_temp add)
 		if (mini_sh.simple_cmd == NULL)
 			return (NULL);
 		if (mini_sh.simple_cmd)
-		{
 			ft_lstnew_simple_add1(add);
-		}
 	}
 	else
 		ft_lstnew_simple_add2(add);

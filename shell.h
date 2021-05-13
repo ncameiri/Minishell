@@ -31,6 +31,18 @@
 # define STDOUT 1
 # define STDERR 2
 
+typedef struct s_norminette_struct
+{
+	int		i;
+	int		a;
+	int		b;
+	int		c;
+	int		s;
+	int		single_q;
+	int		double_q;
+	int		copy;
+}		t_norminette_struct;
+
 typedef struct s_complicated_exec
 {
 	int			tmpin;
@@ -217,6 +229,8 @@ int				initial_cmd_error_handling(int *semicolon_location, int semicolon_count);
 int				final_cmd_error_handling();
 void			remove_cmd_semicolons();
 void			remove_cmd_blanks();
+void			syntax_error(int value);
+void			remove_cmd_blanks2(void);
 
 /*	Exec */
 
@@ -226,8 +240,14 @@ void			simple_execute(t_linklis *list);
 void			complicated_execute(t_simplecommand *simple_cmd);
 int				check_infile(t_simplecommand *smp_cmd);
 int				check_outfile(t_simplecommand *smp_cmd);
-int				take_infile(t_simplecommand *smp_cmd);
+int				take_infile(t_simplecommand *smp_cmd, t_complicated_exec *norm);
 int				take_outfile(t_simplecommand *smp_cmd);
+
+void			run_builtin_complicated(t_simplecommand *lista);
+int				check_builtin_no_fork(t_simplecommand **lista);
+t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd);
+int				infile_stuff(t_simplecommand **simple_cmd,
+							t_complicated_exec *norm);
 
 
 /* 	Builtins */
@@ -235,7 +255,7 @@ int				take_outfile(t_simplecommand *smp_cmd);
 void			ft_absolute_path();
 void			ft_testing();
 void			ft_history();
-void 			ft_exit();
+void 			ft_exit(char **content);
 int				ft_pwd();
 int				ft_echo(char **content);
 void 			ft_env();
@@ -313,7 +333,7 @@ void			debug_simple_commands();
 /*	Free */
 
 void			free_global(char *f1, char *f2, char *f3, char *f4);
-void			exit_cntrl_d(int free_list);
+void			exit_finale(int free_list);
 
 /*	Env_func */
 

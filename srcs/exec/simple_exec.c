@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 18:44:28 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 16:07:05 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:39:33 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	run_bin_simple(t_linklis *list)
 		printf("%s: command not found\n", list->content[0]);
 		free(bin_path);
 
-		exit_cntrl_d(1);
+		exit_finale(1);
 
 		exit(0);
 	}
@@ -82,7 +82,7 @@ void	run_bin_simple(t_linklis *list)
 void	simple_execute(t_linklis *list)
 {
 
-	
+
 	if (list->builtin == 1 && mini_sh.testing == 0)
 		run_builtin_simple(list);
 	else if (list->builtin == 0 || mini_sh.testing == 1)

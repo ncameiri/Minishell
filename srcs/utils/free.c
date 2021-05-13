@@ -6,11 +6,27 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 15:43:44 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:43:13 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:39:38 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
+
+void	free_global2(char *f1, char *f2, char *f3, char *f4)
+{
+	if (!ft_strcmp(f1, "env") || !ft_strcmp(f2, "env")
+		|| !ft_strcmp(f3, "env") || !ft_strcmp(f4, "env"))
+	{
+		free_array(mini_sh.env);
+		mini_sh.env = NULL;
+	}
+	if (!ft_strcmp(f1, "args") || !ft_strcmp(f2, "args")
+		|| !ft_strcmp(f3, "args") || !ft_strcmp(f4, "args"))
+	{
+		free_array(mini_sh.args);
+		mini_sh.args = NULL;
+	}
+}
 
 void	free_global(char *f1, char *f2, char *f3, char *f4)
 {
@@ -32,35 +48,19 @@ void	free_global(char *f1, char *f2, char *f3, char *f4)
 		free_array(mini_sh.cmd_tables);
 		mini_sh.cmd_tables = NULL;
 	}
-	if (!ft_strcmp(f1, "env") || !ft_strcmp(f2, "env")
-		|| !ft_strcmp(f3, "env") || !ft_strcmp(f4, "env"))
-	{
-		free_array(mini_sh.env);
-		mini_sh.env = NULL;
-	}
-	if (!ft_strcmp(f1, "args") || !ft_strcmp(f2, "args")
-		|| !ft_strcmp(f3, "args") || !ft_strcmp(f4, "args"))
-	{
-		free_array(mini_sh.args);
-		mini_sh.args = NULL;
-	}
+	free_global2(f1, f2, f3, f4);
 }
 
-void	exit_cntrl_d(int free_list)
+void	exit_finale(int free_list)
 {
 	free_array(mini_sh.env);
 	free(mini_sh.line);
-
 	if (mini_sh.history_len > 0)
 		free_array(mini_sh.history);
 	if (mini_sh.cmd_tables != NULL)
 		free_array(mini_sh.cmd_tables);
-
 	if (free_list == 1)
 		ft_linklstclear(&mini_sh.ls_start);
-
 	if (mini_sh.simple_cmd != NULL)
 		ft_lstclear_simple_struct(&mini_sh.simple_cmd);
 }
-
-// Meter o free dos links aqui.

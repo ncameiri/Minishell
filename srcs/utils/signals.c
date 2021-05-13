@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 14:15:02 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 18:05:38 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:39:24 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	sig_int(int signo)
 {
-	char *path;
-	char buf[1001];
+	char	*path;
+	char	buf[1001];
 
 	path = getcwd(buf, 1000);
-
 	if (mini_sh.pid != 0)
 	{
 		kill(mini_sh.pid, SIGINT);
@@ -44,15 +43,13 @@ void	sig_int(int signo)
 
 void	sig_quit(int signo)
 {
-	char backspace;
-	char empty;
-	char *sig_number;
+	char	backspace;
+	char	empty;
+	char	*sig_number;
 
 	backspace = 8;
 	empty = ' ';
-
 	sig_number = ft_itoa(signo);
-
 	if (mini_sh.pid != 0)
 	{
 		kill(mini_sh.pid, SIGQUIT);
@@ -71,4 +68,3 @@ void	sig_quit(int signo)
 	}
 	free(sig_number);
 }
-

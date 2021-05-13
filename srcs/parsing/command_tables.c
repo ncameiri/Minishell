@@ -6,17 +6,17 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:00:42 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/25 18:17:56 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 16:27:37 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-int	check_complete_quotation()
+int	check_complete_quotation(void)
 {
-	int i;
-	int single_q;
-	int double_q;
+	int	i;
+	int	single_q;
+	int	double_q;
 
 	i = 0;
 	single_q = 0;
@@ -39,9 +39,9 @@ int	check_complete_quotation()
 		return (0);
 }
 
-int	cmd_parsing()
+int	cmd_parsing(void)
 {
-	if (check_complete_quotation() == 0) // (Input is missing a " or '". It's invalid.).
+	if (check_complete_quotation() == 0)
 	{
 		printf("%s\n", "bash: quotation incomplete");
 		free_global("line", "empty", "empty", "empty");

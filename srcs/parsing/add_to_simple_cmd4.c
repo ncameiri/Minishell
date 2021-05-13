@@ -6,25 +6,47 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:23:22 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/10 23:34:17 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:27:18 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-void	debug_simple_commands()
+t_simplecommand	*debug_simple_commands2(t_simplecommand *temp, int i)
 {
-	// DEBUG //
+	while (temp->outfile[i] != NULL)
+	{
+		printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
+		i++;
+	}
+	if (i == 0)
+		printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
+	else
+		printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
+	printf("Outfiles = %i \n", temp->outfiles);
+	printf("Append = %i \n", temp->append);
+	i = 0;
+	while (temp->infile[i] != NULL)
+	{
+		printf("Infile[%i] = %s \n", i, temp->infile[i]);
+		i++;
+	}
+	if (i == 0)
+		printf("Infile[%i] = %s \n", i, temp->infile[i]);
+	else
+		printf("Infile[%i] = %s \n", i, temp->infile[i]);
+	printf("Infiles = %i \n", temp->infiles);
+	return (temp);
+}
 
-	int i;
-	int a;
+void	debug_simple_commands(void)
+{
+	t_simplecommand	*temp;
+	int				i;
+	int				a;
 
 	a = 0;
-
-	t_simplecommand *temp;
-
 	temp = mini_sh.simple_cmd;
-
 	while (temp != NULL)
 	{
 		i = 0;
@@ -32,39 +54,15 @@ void	debug_simple_commands()
 		printf("\n------------SIMPLE COMMAND[%i]------------\n", a);
 		while (temp->command[i] != NULL)
 		{
-			printf("Command[%i] = %s \n",i, temp->command[i]);
+			printf("Command[%i] = %s \n", i, temp->command[i]);
 			i++;
 		}
-		printf("Command[%i] = %s \n",i, temp->command[i]);
+		printf("Command[%i] = %s \n", i, temp->command[i]);
 		if (i == 0)
 			printf("Command = (null)\n");
 		printf("Builtin = %i \n", temp->builtin);
 		i = 0;
-		while (temp->outfile[i] != NULL)
-		{
-			printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
-			i++;
-		}
-		if (i == 0)
-			printf("Outfile[%i] = %s \n",i ,temp->outfile[i]);
-		else
-			printf("Outfile[%i] = %s \n", i, temp->outfile[i]);
-		printf("Outfiles = %i \n", temp->outfiles);
-		printf("Append = %i \n", temp->append);
-
-		i = 0;
-		while (temp->infile[i] != NULL)
-		{
-			printf("Infile[%i] = %s \n", i, temp->infile[i]);
-			i++;
-		}
-		if (i == 0)
-			printf("Infile[%i] = %s \n",i, temp->infile[i]);
-		else
-			printf("Infile[%i] = %s \n",i, temp->infile[i]);
-
-		printf("Infiles = %i \n", temp->infiles);
-
+		temp = debug_simple_commands2(temp, i);
 		temp = temp->next;
 		a++;
 	}
@@ -92,9 +90,9 @@ void	ft_lstclear_simple_struct(t_simplecommand **lst)
 
 char	**new_array_array(char **args)
 {
-	int a;
-	int i;
-	char **temp;
+	int		a;
+	int		i;
+	char	**temp;
 
 	a = 0;
 	i = 0;
@@ -109,7 +107,7 @@ char	**new_array_array(char **args)
 	temp = malloc(sizeof(char *) * (a + 1));
 	if (temp == NULL)
 		return (NULL);
-	while(args[i] != NULL)
+	while (args[i] != NULL)
 	{
 		temp[i] = ft_strdup(args[i]);
 		i++;
@@ -146,4 +144,3 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	free(s1);
 	return (string);
 }
-

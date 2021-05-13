@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 18:09:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/07 04:17:55 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/11 18:46:23 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	only_spaces(char *line)
 {
-	int i;
-	int a;
+	int	i;
+	int	a;
 
 	i = 0;
 	a = 0;
@@ -33,36 +33,33 @@ int	only_spaces(char *line)
 
 int	*add_int_to_arr(int *array, int location, int count)
 {
-	int a;
-	int i;
-	int *temp;
+	int	a;
+	int	i;
+	int	*temp;
 
 	i = 0;
 	a = 0;
-
 	while (i < count)
 		i++;
 	temp = malloc(sizeof(int) * (i + 2));
 	if (temp == NULL)
 		return (NULL);
-	while(a < i)
+	while (a < i)
 	{
 		temp[a] = array[a];
 		a++;
 	}
 	temp[a++] = location;
 	temp[a] = '\0';
-
 	free(array);
-
 	return (temp);
 }
 
 char	**add_str_to_arrarr(char **array, char *string)
 {
-	int a;
-	int i;
-	char **temp;
+	int		a;
+	int		i;
+	char	**temp;
 
 	i = 0;
 	a = 0;
@@ -71,7 +68,7 @@ char	**add_str_to_arrarr(char **array, char *string)
 	temp = malloc(sizeof(char *) * (i + 2));
 	if (temp == NULL)
 		return (NULL);
-	while(a < i)
+	while (a < i)
 	{
 		temp[a] = ft_strdup(array[a]);
 		a++;
@@ -82,56 +79,17 @@ char	**add_str_to_arrarr(char **array, char *string)
 	return (temp);
 }
 
-void debug_command_table(int a)
-{
-	t_linklis *ptr;
-
-	int i = 0;
-	printf("\n------------COMMAND TABLE [%i]------------\n", a);
-	printf("\n%s\n", mini_sh.cmd_tables[a]);
-	ptr = mini_sh.ls_start;
-	while(ptr)
-	{
-		printf("\n");
-		printf("[ %s]\n", ptr->pre_split);
-
-
-		if (ptr->type == 1)
-			printf("Type %d = | \n", ptr->type);
-		else if (ptr->type == 2)
-			printf("Type %d = >> \n", ptr->type);
-		else if (ptr->type == 3)
-			printf("Type %d = > \n", ptr->type);
-		else if (ptr->type == 4)
-			printf("Type %d = < \n", ptr->type);
-		else if (ptr->type == 8)
-			printf("Type %d = last arg \n", ptr->type);
-
-		printf("Builtin: %i\n", ptr->builtin);
-
-		while(ptr->content[i] != NULL)
-		{
-			printf("arg[%i] = %s\n", i, ptr->content[i]);
-			i++;
-		}
-		printf("arg[%i] = %s\n", i, ptr->content[i]);
-
-		i = 0;
-		ptr=ptr->next;
-	}
-}
-
 char	*ft_errstr(char c)
 {
-	char *ret;
+	char	*ret;
 
 	ret = malloc(2);
 	if (!ret)
-		return NULL;
+		return (NULL);
 	else
 	{
 		ret[0] = c;
 		ret[1] = 0;
-		return ret;
+		return (ret);
 	}
 }

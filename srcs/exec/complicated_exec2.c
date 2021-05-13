@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:50:29 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/09 23:05:04 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/12 02:53:12 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	take_outfile(t_simplecommand *smp_cmd)
 {
-	int fd;
-	int i;
+	int	fd;
+	int	i;
 
 	fd = 0;
 	i = 0;
@@ -32,10 +32,10 @@ int	take_outfile(t_simplecommand *smp_cmd)
 	return (fd);
 }
 
-int	take_infile(t_simplecommand *smp_cmd)
+int	take_infile(t_simplecommand *smp_cmd, t_complicated_exec *norm)
 {
-	int i;
-	int fd;
+	int	i;
+	int	fd;
 
 	i = 0;
 	fd = 0;
@@ -46,12 +46,15 @@ int	take_infile(t_simplecommand *smp_cmd)
 		fd = open(smp_cmd->infile[i], O_RDONLY);
 		if (fd == -1)
 		{
+			dup2(norm->tmpin, 0);
+			dup2(norm->tmpout, 1);
+			close(norm->tmpin);
+			close(norm->tmpout);
 			printf("bash: %s: No such file or directory\n", smp_cmd->infile[i]);
-			break;
+			break ;
 		}
 		i++;
 	}
-
 	return (fd);
 }
 
@@ -67,4 +70,24 @@ int	check_infile(t_simplecommand *smp_cmd)
 	if (smp_cmd->infile[0] != NULL)
 		return (1);
 	return (0);
+}
+
+int	infile_stuff(t_simplecommand **simple_cmd,
+							t_complicated_exec *norm)
+{
+	if (check_infile((*simple_cmd)) == 1)
+	{
+		norm->fdin = take_infile((*simple_cmd), norm);
+		if (norm->fdin == -1)
+		{
+			(*simple_cmd) = (*simple_cmd)->next;
+			if ((*simple_cmd) != NULL)
+				complicated_execute((*simple_cmd));
+			return (-1);
+		}
+	}
+	dup2(norm->fdin, 0);
+	if (norm->fdin != -1)
+		close(norm->fdin);
+	return (1);
 }
