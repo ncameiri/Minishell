@@ -12,8 +12,6 @@ void	found_env4(t_fou_env_var *var)
 				var->k - var->old_index);
 		if (ft_strlen(env_isex_elem(var->search)))
 			found_env5(var);
-		else
-			var->k = var->old_index + var->k + 1;
 		free(var->search);
 	}
 	else
