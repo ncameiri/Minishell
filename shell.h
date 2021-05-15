@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/13 16:21:08 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/15 18:07:30 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <string.h>
 # include <signal.h>
 # include <errno.h>
+# include <termios.h>
+# include <termcap.h>
 
 # define SHELL_DELIMITERS " \t\r\n\a"
 # define DELIMETERS2 " \t\r\n\a\'\""
@@ -168,54 +170,47 @@ typedef struct s_var_add_tlis
 
 typedef struct s_minishell
 {
-	// List
-
 	t_linklis 		*ls_start;
 	t_simplecommand	*simple_cmd;
 
-	// Parsed
+	char			*line;
+	char			**cmd_tables;
+	char			**args;
 
-	char			*line; // Line you write on your stdin.
+	char			**env;
 
-	char			**cmd_tables; // Command tables where you store your commands separated by ;
-	char			**args; // Line divided in arguments.
+	int				status;
 
-	// Env
+	int				absolute_path;
+	int				testing;
 
-	char			**env; // Env file.
-
-
-	// Loop
-
-	int				status; // Status of while loop.
-
-	// Added Builtins
-
-	int				absolute_path; // 1 to change to absolute, 0 for minishell 	>.
-	int				testing; // Changes subject commands for real builtin commands.
-
-	// History
-
-	char			**history; // Saves the history of commands you typed.
-	int				history_len; // How many commands you've typed.
-
-	// PID
+	char			**history;
+	int				history_len;
+	int				current_history;
 
 	pid_t			pid;
 
-
-	// Add to List
 	int 			error;
 	char			*error_log;
 	int				actind;
 
-	// Linux or Mac
-
 	int				islinux;
 
-	// Dollar Error
-
 	int				dollar_error;
+
+	struct termios	old_term;
+	struct termios	new_term;
+	char			*buffer;
+
+	char			*keys_on;
+	char			*keys_off;
+	char			*up_arrow;
+	char			*down_arrow;
+	char			*backspace;
+	char			*del_line;
+	char			*cursor_left;
+
+	char			last_key_pressed;
 
 }					t_minishell;
 
@@ -356,5 +351,18 @@ int				env_list_upd_elem ();
 void	found_env(char ***original);//adicionei 11 MAIO
 void	found_env5(t_fou_env_var *var);//adicionei 11 MAIO
 void	found_env6(t_fou_env_var *var);//11MAIO
+
+/*	Termcaps */
+
+int		ft_putint(int c);
+void	init_termcaps();
+void	turn_off_canonical_mode();
+void	turn_on_canonical_mode();
+int		has_history();
+void	parse_input_history(char *buf, int *i);
+int		is_up_down_arrow(char *buf);
+void	delete_single_char(char *buf, int *i);
+char	*ft_strcpy(char *dest, char *src);
+void	*shell_prompt_line();
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/13 17:12:30 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/15 21:19:12 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	complicated_execute5(t_complicated_exec *norm)
 {
-	dup2(norm->tmpin, 0);
-	dup2(norm->tmpout, 1);
+	dup2(norm->tmpin, STDIN_FILENO);
+	dup2(norm->tmpout, STDOUT_FILENO);
 	close(norm->tmpin);
 	close(norm->tmpout);
 	if (mini_sh.pid > 0)
@@ -43,7 +43,7 @@ void	complicated_execute4(t_simplecommand **simple_cmd,
 					(*simple_cmd)->command, mini_sh.env);
 			bin_path = get_path((*simple_cmd)->command[0]);
 			execve(bin_path, (*simple_cmd)->command, mini_sh.env);
-			printf("%s: command not found\n", (*simple_cmd)->command[0]);
+			printf("bash: %s: %s\n", (*simple_cmd)->command[0], strerror(errno));
 			mini_sh.dollar_error = errno;
 			free(bin_path);
 		}
@@ -84,8 +84,8 @@ void	complicated_execute(t_simplecommand *simple_cmd)
 {
 	t_complicated_exec	norm;
 
-	norm.tmpin = dup(0);
-	norm.tmpout = dup(1);
+	norm.tmpin = dup(STDIN_FILENO);
+	norm.tmpout = dup(STDOUT_FILENO);
 	norm.fdin = dup(norm.tmpin);
 	while (simple_cmd != NULL)
 	{

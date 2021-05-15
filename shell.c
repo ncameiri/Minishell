@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/13 16:38:13 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/15 22:22:20 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,55 @@ void	*shell_prompt_line()
 	}
 }
 
-void	*shell_prompt()
+void	shell_prompt()
 {
-	char *line;
+	char buf[BUFSIZ];
+	int i;
+	int nb_char_read;
 
-	line = NULL;
+	i = 0;
+
+	ft_bzero(buf, BUFSIZ);
+	mini_sh.current_history = mini_sh.history_len;
+
 	mini_sh.line = NULL;
 
 	shell_prompt_line();
-	if (get_next_line(0, &mini_sh.line) == 0)
+
+	while(!ft_strchr(buf, '\n'))
 	{
-		write (1, "exit\n", 6);
-		exit_finale(0);
-		exit(0);
+		nb_char_read = read(STDIN_FILENO, &buf[i], BUFSIZ - i);
+
+		if (*buf == 4)
+		{
+			turn_on_canonical_mode();
+			write (1, "exit\n", 6);
+			exit_finale(0);
+			exit(0);
+		}
+		else if (buf[i] == 3)
+		{
+			printf("^C\n");
+			shell_prompt_line();
+			ft_bzero(buf, BUFSIZ);
+			i = 0;
+		}
+		else if (buf[i] == 28 || buf[i] == 4 || buf[i] == 26)
+		{
+			if (buf != '\0');
+				buf[i-1];
+		}
+		else if (is_up_down_arrow(&buf[i]))
+			parse_input_history(buf, &i);
+		else if (ft_strcmp(&buf[i], mini_sh.backspace) == 0)
+			delete_single_char(buf, &i);
+		else if (nb_char_read > 1)
+			ft_bzero(&buf[i], BUFSIZ - i);
+		else
+			i += write(STDOUT_FILENO, &buf[i], 1);
 	}
+	buf[i - 1] = '\0';
+	mini_sh.line = ft_strdup(buf);
 	if (only_spaces(mini_sh.line) == 1)
 		free_global("line", "empty", "empty", "empty");
 	if (mini_sh.line == NULL || mini_sh.line[0] == '\0')
@@ -73,8 +108,10 @@ void	shell_loop()
 {
 	while (mini_sh.status == 1)
 	{
+		turn_off_canonical_mode();
 		shell_prompt();
 		save_history();
+		turn_on_canonical_mode();
 		if (cmd_parsing() == 0)
 			continue;
 		loop_command_tables();
@@ -94,9 +131,10 @@ int	main (int argc, char **argv, char **env)
 	mini_sh.islinux = 1;
 	mini_sh.dollar_error = errno;
 
+	signal(SIGQUIT, &sig_quit);
+	signal(SIGINT, &sig_int);
 
-	signal(SIGINT, &sig_int);	// cntrl-c
-	signal(SIGQUIT, &sig_quit);	// cntrl-\
+	init_termcaps();
 
 	shell_loop();
 

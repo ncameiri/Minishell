@@ -1,5 +1,5 @@
-# include "../get_next_line/get_next_line.h"
-# include "../libft/libft.h"
+# include "../../../get_next_line/get_next_line.h"
+# include "../../../libft/libft.h"
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -436,6 +436,7 @@ void	termcaps_init(t_micli *micli, t_termcaps *tcaps)
 
 	capbuf = &tcaps->capbuf[0];
 	termtype = find_var("TERM", 4, micli->envp);	// Sets the Termtype to = "TERM=xterm-256color"
+	printf("-->%s\n", termtype);
 	if (termtype)
 	{
 		termtype += 5;
@@ -495,8 +496,11 @@ char	micli_loop(t_micli *micli)
 int	main(int argc, char **argv, char **envp)
 {
 	t_micli	micli;
+	char *termtype;
 
 	set_history();
+
+	termtype = find_var("TERM", 4, micli->envp);
 	micli.envp = ft_envdup(envp, &micli);
 
 	tcgetattr(STDIN_FILENO, &orig_term); // Gets the attr.

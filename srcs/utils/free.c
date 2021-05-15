@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 15:43:44 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:39:38 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/15 15:44:38 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,9 @@ void	exit_finale(int free_list)
 		ft_linklstclear(&mini_sh.ls_start);
 	if (mini_sh.simple_cmd != NULL)
 		ft_lstclear_simple_struct(&mini_sh.simple_cmd);
+	//if (mini_sh.keys_off)
+	//	tputs(mini_sh.keys_off, 1, ft_putint);
+	if (mini_sh.islinux == 0)
+		free(mini_sh.backspace);
+	//turn_on_canonical_mode();
 }

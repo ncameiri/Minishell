@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 14:15:02 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:39:24 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/15 21:56:25 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,43 @@
 
 void	sig_int(int signo)
 {
-	char	*path;
+	(void)signo;
+	printf("\n");
+	/*char	*path;
 	char	buf[1001];
 
 	path = getcwd(buf, 1000);
 	if (mini_sh.pid != 0)
 	{
-		kill(mini_sh.pid, SIGINT);
 		printf("\n");
+		write(1, "\x1b[90mminishell\x1b[91m$ ", 22);
+		kill(mini_sh.pid, SIGINT);
 		mini_sh.pid = 0;
 	}
 	else if (mini_sh.pid == 0)
 	{
 		if (mini_sh.absolute_path == 0)
 		{
-			printf("\n");
+			printf("C^\n");
 			write(1, "\x1b[90mminishell\x1b[91m$ ", 22);
 		}
 		else
 		{
-			printf("\n");
+			printf("C^\n");
 			write(1, "\x1b[90m", 6);
 			write(1, path, ft_strlen(path));
 			write(1, "\x1b[91m$ ", 8);
 		}
-	}
+	}*/
 }
 
 void	sig_quit(int signo)
 {
+	(void)signo;
+	ft_putstr_fd("Quit (core dumped)\n", STDERR);
+	kill(0, SIGCHLD);
+
+	/*
 	char	backspace;
 	char	empty;
 	char	*sig_number;
@@ -66,5 +74,5 @@ void	sig_quit(int signo)
 		write(2, &backspace, 1);
 		write(2, &backspace, 1);
 	}
-	free(sig_number);
+	free(sig_number);*/
 }

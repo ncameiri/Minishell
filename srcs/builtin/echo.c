@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:12:50 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 12:17:41 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/14 23:13:46 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	var_putnstr_a_init(t_splvariab	*varia, int *i)
 void	ft_putnstr(char *str, int n)
 {
 	int			i;
-	t_splvariab	varia;	
+	t_splvariab	varia;
 
 	var_putnstr_a_init(&varia, &i);
 	if (n < 0)
