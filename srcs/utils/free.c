@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 15:43:44 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 15:44:38 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 02:45:29 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ void	exit_finale(int free_list)
 	//	tputs(mini_sh.keys_off, 1, ft_putint);
 	if (mini_sh.islinux == 0)
 		free(mini_sh.backspace);
+	if (mini_sh.islinux == 1)
+		free(mini_sh.buffer);
 	//turn_on_canonical_mode();
 }

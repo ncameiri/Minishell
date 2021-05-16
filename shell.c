@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 22:22:20 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:15:49 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	main (int argc, char **argv, char **env)
 
 	init_termcaps();
 
-	shell_loop();
+	//shell_loop();
 
 	return (0);
 }
