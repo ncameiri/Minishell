@@ -82,7 +82,7 @@ void	shell_prompt(void)
 		else if (buf[i] == 28 || buf[i] == 4 || buf[i] == 26)
 		{
 			if (buf != '\0')
-				buf[i - 1];
+				buf[i] = 0;
 		}
 		else if (is_up_down_arrow(&buf[i]))
 			parse_input_history(buf, &i);
