@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 11:29:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 11:29:48 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:35 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,23 @@ int	check_inside_symbols(t_splvariab *var, char *str)
 }
 
 void	chck_begend_symbols2(int i, char *pt)
-{	
+{
 	while (pt[i] && ft_strchr(SHELL_DELIMITERS, pt[i]))
 		i++;
 	if (ft_strchr("|><", pt[i]))
 	{
-		if (!mini_sh.error_log)
-			mini_sh.error_log = ft_errstr(pt[i]);
-		mini_sh.error = 1;
+		if (!g_sh.error_log)
+			g_sh.error_log = ft_errstr(pt[i]);
+		g_sh.error = 1;
 	}
 	i = ft_strlen(pt) - 1;
 	while (pt[i] && i > 0 && ft_strchr(SHELL_DELIMITERS, pt[i]))
 		i--;
 	if (ft_strchr("|><", pt[i]))
 	{
-		if (!mini_sh.error_log)
-			mini_sh.error_log = ft_errstr(pt[i]);
-		mini_sh.error = 1;
+		if (!g_sh.error_log)
+			g_sh.error_log = ft_errstr(pt[i]);
+		g_sh.error = 1;
 	}
 }
 
@@ -73,9 +73,9 @@ void	chck_begend_symbols(void)
 	t_linklis	*lst;
 	int			i;
 	char		*pt;
-	char		*old;	
+	char		*old;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		pt = lst->pre_split;
@@ -83,11 +83,11 @@ void	chck_begend_symbols(void)
 		if (pt[i])
 			chck_begend_symbols2(i, pt);
 		else
-		{	
-			if (!mini_sh.error_log)
-				mini_sh.error_log = ft_strdup(mini_sh.cmd_tables[mini_sh.actind]
+		{
+			if (!g_sh.error_log)
+				g_sh.error_log = ft_strdup(g_sh.cmd_tables[g_sh.actind]
 						+ ft_strlen(old));
-			mini_sh.error = 1;
+			g_sh.error = 1;
 		}
 		lst = lst->next;
 		old = pt;

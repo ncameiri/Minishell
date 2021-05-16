@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 21:19:12 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 05:35:33 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	complicated_execute5(t_complicated_exec *norm)
 	dup2(norm->tmpout, STDOUT_FILENO);
 	close(norm->tmpin);
 	close(norm->tmpout);
-	if (mini_sh.pid > 0)
-		waitpid(mini_sh.pid, NULL, 0);
-	else if (mini_sh.pid < 0)
+	if (g_sh.pid > 0)
+		waitpid(g_sh.pid, NULL, 0);
+	else if (g_sh.pid < 0)
 		printf("ERROR\n");
 }
 
@@ -29,9 +29,9 @@ void	complicated_execute4(t_simplecommand **simple_cmd,
 {
 	char	*bin_path;
 
-	mini_sh.dollar_error = 0;
-	mini_sh.pid = fork();
-	if (mini_sh.pid == 0)
+	g_sh.dollar_error = 0;
+	g_sh.pid = fork();
+	if (g_sh.pid == 0)
 	{
 		(*simple_cmd) = remove_quotation_marks((*simple_cmd));
 		if ((*simple_cmd)->builtin == 1)
@@ -40,14 +40,15 @@ void	complicated_execute4(t_simplecommand **simple_cmd,
 		{
 			if (ft_strchr((*simple_cmd)->command[0], '/'))
 				execve((*simple_cmd)->command[0],
-					(*simple_cmd)->command, mini_sh.env);
+					(*simple_cmd)->command, g_sh.env);
 			bin_path = get_path((*simple_cmd)->command[0]);
-			execve(bin_path, (*simple_cmd)->command, mini_sh.env);
+			execve(bin_path, (*simple_cmd)->command, g_sh.env);
 			printf("bash: %s: %s\n", (*simple_cmd)->command[0], strerror(errno));
-			mini_sh.dollar_error = errno;
 			free(bin_path);
+			exit_finale(1);
+			exit(127);
 		}
-		mini_sh.dollar_error = 127;
+		g_sh.dollar_error = 0;
 		exit_finale(1);
 		exit(0);
 	}

@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 15:39:03 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/04 13:02:08 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:45:08 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_minishell
 	int 			error;
 }					t_minishell;
 
-t_minishell mini_sh;
+t_minishell g_sh;
 
 
 /**************************************************************/
@@ -164,8 +164,8 @@ void debug(int a)
 
 	int i = 0;
 	printf("\n------------COMMAND TABLE [%i]------------\n", a);
-	printf("\n%s\n", mini_sh.cmd_tables[a]);
-	ptr = mini_sh.ls_start;
+	printf("\n%s\n", g_sh.cmd_tables[a]);
+	ptr = g_sh.ls_start;
 	while(ptr)
 	{
 		printf("\n");
@@ -265,7 +265,7 @@ void	ft_lstbuiltcheck(void)
 {
 	t_linklis	*lst;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		if(lst->content[0] && check_builtinlst(lst->content[0]))
@@ -282,7 +282,7 @@ void	ft_lstclear_zerolen(void)
 	int i;
 
 	i = 0;
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		lst->content = re_alloc_parse(lst->content);
@@ -341,14 +341,14 @@ void	chck_dup_symbols(void)
 
 	var.double_q = 0;
 	var.single_q = 0;
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		i = 0;
 		while (lst->content[i])
 		{
 			if (lst->content[i] && check_inside_symbols(&var, lst->content[i]))
-				mini_sh.error = 1;
+				g_sh.error = 1;
 			i++;
 		}
 		lst = lst->next;
@@ -360,7 +360,7 @@ void	chck_begend_symbols(void)
 	int			i;
 	char		*pt;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		pt = lst->pre_split;
@@ -370,15 +370,15 @@ void	chck_begend_symbols(void)
 			while (pt[i] && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i++;
 			if (ft_strchr("|><", pt[i]))
-				mini_sh.error = 1;
+				g_sh.error = 1;
 			i = ft_strlen(pt) - 1;
 			while (pt[i] && i>0 && ft_strchr(SHELL_DELIMITERS,pt[i]))
 				i--;
 			if (ft_strchr("|><", pt[i]))
-				mini_sh.error = 1;
+				g_sh.error = 1;
 		}
 		else
-			mini_sh.error =1;
+			g_sh.error =1;
 		lst = lst->next;
 	}
 }
@@ -525,7 +525,7 @@ void	ft_lstspli(void)
 {
 	t_linklis	*lst;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		//printf("||%s||",lst)
@@ -557,7 +557,7 @@ void add_var_init(t_var_add_tlis *va)
 	va->start = 0;
 	va->last = 0;
 	va->temp = NULL;
-	mini_sh.error = 0;
+	g_sh.error = 0;
 }
 
 /* add_to_list */
@@ -608,7 +608,7 @@ void	ft_lsttrim(void)
 	int			i;
 	char		*tmp;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		i = 0;
@@ -635,7 +635,7 @@ int	sep_link(int index, int *a, int *type)
 	va.s = 0;
 	va.single_q = 0;
 	va.double_q = 0;
-	va.n = mini_sh.cmd_tables[index][va.i];
+	va.n = g_sh.cmd_tables[index][va.i];
 	while (va.n != '\0')
 	{
 		*a = va.i;
@@ -647,14 +647,14 @@ int	sep_link(int index, int *a, int *type)
 			va.single_q = 1;
 		else if (va.n == '\'' && va.single_q == 1 && va.double_q == 0 )
 			va.single_q = 0;
-		else if (is_separator(va.n, mini_sh.cmd_tables[index][va.i + 1],
+		else if (is_separator(va.n, g_sh.cmd_tables[index][va.i + 1],
 			type) && va.single_q == 0 && va.double_q == 0)
 			return (va.i /*+(va.n == '>' && mini_sh.cmd_tables[index][va.i + 1] == '>')*/);
 		va.i++;
-		va.n = mini_sh.cmd_tables[index][va.i];
+		va.n = g_sh.cmd_tables[index][va.i];
 	}
 	if(va.double_q || va.single_q)
-		mini_sh.error=1;
+		g_sh.error=1;
 	return (0);
 }
 int	add_to_list(int index)
@@ -662,14 +662,14 @@ int	add_to_list(int index)
 	t_var_add_tlis	va;
 
 	add_var_init(&va);
-	while (mini_sh.cmd_tables[index][va.i])
+	while (g_sh.cmd_tables[index][va.i])
 	{
 		va.last = sep_link(index, &va.i, &va.type);
 		if (va.last > 0 /*&& (va.last - va.start) > 1*/)
 		{
-			va.aux = ft_substr(mini_sh.cmd_tables[index],
+			va.aux = ft_substr(g_sh.cmd_tables[index],
 					va.start, va.last - va.start);
-			ft_linkadd_back(&mini_sh.ls_start, ft_linknew(va.aux, va.type));
+			ft_linkadd_back(&g_sh.ls_start, ft_linknew(va.aux, va.type));
 			va.start = va.last + 1;
 			if (va.type == 2)
 			{
@@ -678,12 +678,12 @@ int	add_to_list(int index)
 			}
 
 		}
-		if (!mini_sh.cmd_tables[index][va.i + 1])
+		if (!g_sh.cmd_tables[index][va.i + 1])
 		{
 			va.type = 8;
-			va.aux = ft_substr(mini_sh.cmd_tables[index],
+			va.aux = ft_substr(g_sh.cmd_tables[index],
 					va.start, (va.i + 1) - va.start);
-			ft_linkadd_back(&mini_sh.ls_start, ft_linknew(va.aux, va.type));
+			ft_linkadd_back(&g_sh.ls_start, ft_linknew(va.aux, va.type));
 		}
 		va.i++;
 	}
@@ -700,9 +700,9 @@ int	add_to_list(int index)
 	ft_lstbuiltcheck();
 
 
-	if(mini_sh.error==1)
+	if(g_sh.error==1)
 	{
-		ft_linklstclear(&mini_sh.ls_start);
+		ft_linklstclear(&g_sh.ls_start);
 		printf("bash: syntax error near unexpected token `||'\n");
 		return (0);
 	}
@@ -936,24 +936,24 @@ void	run_bin_simple(t_linklis *list)
 
 	bin_path = ft_strjoin("/usr/bin/", list->content[0]);
 
-	mini_sh.pid = fork();
+	g_sh.pid = fork();
 
-	if(mini_sh.pid == 0)
+	if(g_sh.pid == 0)
 	{
 		if (ft_strchr(list->content[0], '/'))
-			execve(list->content[0], list->content, mini_sh.env); // This one is in case it's to read an ./a.out or other executable.
-		execve(bin_path, list->content, mini_sh.env); // If it's not an executable, you read from /usr/bin/
+			execve(list->content[0], list->content, g_sh.env); // This one is in case it's to read an ./a.out or other executable.
+		execve(bin_path, list->content, g_sh.env); // If it's not an executable, you read from /usr/bin/
 		printf("%s: command not found\n", list->content[0]);
 		free(bin_path);
-		ft_linklstclear(&mini_sh.ls_start);
+		ft_linklstclear(&g_sh.ls_start);
 		exit(0);
 	}
-	else if (mini_sh.pid > 0)
-		wait(&mini_sh.pid);
-	else if (mini_sh.pid < 0)
+	else if (g_sh.pid > 0)
+		wait(&g_sh.pid);
+	else if (g_sh.pid < 0)
 		write(1,"ERROR",5);
 
-	mini_sh.pid = 0;
+	g_sh.pid = 0;
 
 	free(bin_path);
 }
@@ -964,7 +964,7 @@ void	exec_command()
 {
 	t_linklis *list;
 
-	list = mini_sh.ls_start;
+	list = g_sh.ls_start;
 
 	if (list->content[0] == NULL)
 	{
@@ -989,9 +989,9 @@ void	set_cmds()
 {
 	int i = 0;
 
-	mini_sh.cmd_tables = malloc(sizeof(char *) * 2);
+	g_sh.cmd_tables = malloc(sizeof(char *) * 2);
 
-	mini_sh.cmd_tables[1] = NULL;
+	g_sh.cmd_tables[1] = NULL;
 }
 
 
@@ -1008,9 +1008,9 @@ int main ()
 
 	while(i < 500)
 	{
-		mini_sh.line = NULL;
-		get_next_line(0, &mini_sh.line);
-		mini_sh.cmd_tables[0] = ft_strdup(mini_sh.line);
+		g_sh.line = NULL;
+		get_next_line(0, &g_sh.line);
+		g_sh.cmd_tables[0] = ft_strdup(g_sh.line);
 		//**********************************************//
 
 		add_to_list(0);
@@ -1020,18 +1020,18 @@ int main ()
 		exec_command();
 		printf("\n");
 
-		ft_linklstclear(&mini_sh.ls_start);
+		ft_linklstclear(&g_sh.ls_start);
 
 
 
 		//**********************************************//
-		if (ft_strcmp(mini_sh.line, "exit") == 0)
+		if (ft_strcmp(g_sh.line, "exit") == 0)
 		{
-			free(mini_sh.line);
-			free_array(mini_sh.cmd_tables);
+			free(g_sh.line);
+			free_array(g_sh.cmd_tables);
 			break;
 		}
-		if (ft_strcmp(mini_sh.line, "debug") == 0)
+		if (ft_strcmp(g_sh.line, "debug") == 0)
 		{
 			if (debuga == 0)
 			{
@@ -1044,7 +1044,7 @@ int main ()
 				debuga = 0;
 			}
 		}
-		free(mini_sh.line);
-		free(mini_sh.cmd_tables[0]);
+		free(g_sh.line);
+		free(g_sh.cmd_tables[0]);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 21:40:49 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 19:22:57 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:37 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,26 @@ void	save_history(void)
 	int	i;
 
 	i = 0;
-	if (mini_sh.history == NULL)
+	if (g_sh.history == NULL)
 	{
-		if (mini_sh.line != NULL || mini_sh.line[0] != '\0')
+		if (g_sh.line != NULL || g_sh.line[0] != '\0')
 		{
-			mini_sh.history = malloc(sizeof(char *) * 2);
-			if (mini_sh.history == NULL)
+			g_sh.history = malloc(sizeof(char *) * 2);
+			if (g_sh.history == NULL)
 				return ;
-			mini_sh.history[0] = ft_strdup(mini_sh.line);
-			mini_sh.history[1] = NULL;
-			mini_sh.history_len = 1;
+			g_sh.history[0] = ft_strdup(g_sh.line);
+			g_sh.history[1] = NULL;
+			g_sh.history_len = 1;
 		}
 	}
 	else
 	{
-		if (mini_sh.line[0] != '\0'
-			&& ft_strcmp(mini_sh.history[mini_sh.history_len - 1],
-				mini_sh.line) != 0)
+		if (g_sh.line[0] != '\0'
+			&& ft_strcmp(g_sh.history[g_sh.history_len - 1],
+				g_sh.line) != 0)
 		{
-			mini_sh.history = add_str_to_arrarr(mini_sh.history, mini_sh.line);
-			mini_sh.history_len++;
+			g_sh.history = add_str_to_arrarr(g_sh.history, g_sh.line);
+			g_sh.history_len++;
 		}
 	}
 }

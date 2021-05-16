@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 18:46:03 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:50:05 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:25 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	debug_command_table(int a)
 
 	i = 0;
 	printf("\n------------COMMAND TABLE [%i]------------\n", a);
-	printf("\n%s\n", mini_sh.cmd_tables[a]);
-	ptr = mini_sh.ls_start;
+	printf("\n%s\n", g_sh.cmd_tables[a]);
+	ptr = g_sh.ls_start;
 	while (ptr)
 	{
 		printf("\n");

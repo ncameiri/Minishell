@@ -67,6 +67,6 @@ int	env_add_elem (char *set, char *content)
 	char	*new_elem;
 
 	new_elem = ft_strjoin(set, content);
-	add_str_to_arrarr(mini_sh.env, new_elem);
+	add_str_to_arrarr(g_sh.env, new_elem);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 17:40:05 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 17:56:12 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:27 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	count_elems1(char **original)
 	elems = 0;
 	i = 0;
 	while (original[i])
-	{	
+	{
 		if (ft_strlen(original[i]))
 			elems++;
 		i++;
@@ -86,7 +86,7 @@ void	ft_lstbuiltcheck(void)
 {
 	t_linklis	*lst;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		if (lst->content[0] && check_builtinlst(lst->content[0]))
@@ -102,7 +102,7 @@ void	ft_lstclear_zerolen(void)
 {
 	t_linklis	*lst;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		lst->content = re_alloc_parse(lst->content);

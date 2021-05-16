@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:23:22 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:27:18 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:12 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	debug_simple_commands(void)
 	int				a;
 
 	a = 0;
-	temp = mini_sh.simple_cmd;
+	temp = g_sh.simple_cmd;
 	while (temp != NULL)
 	{
 		i = 0;

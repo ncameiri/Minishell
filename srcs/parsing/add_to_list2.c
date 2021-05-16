@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 11:26:57 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 11:27:18 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:42:59 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	ft_lstspli(void)
 {
 	t_linklis	*lst;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		lst->content = ft_split_igquo(lst->pre_split, SHELL_DELIMITERS);
@@ -75,7 +75,7 @@ void	add_var_init(t_var_add_tlis *va)
 	va->start = 0;
 	va->last = 0;
 	va->temp = NULL;
-	mini_sh.error = 0;
-	mini_sh.error_log = NULL;
-	mini_sh.actind = 0;
+	g_sh.error = 0;
+	g_sh.error_log = NULL;
+	g_sh.actind = 0;
 }

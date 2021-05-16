@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:22:41 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:15:24 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:45:10 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
 {
-	mini_sh.simple_cmd->next = malloc(sizeof(t_simplecommand));
-	mini_sh.simple_cmd = mini_sh.simple_cmd->next;
-	if (mini_sh.simple_cmd == NULL)
+	g_sh.simple_cmd->next = malloc(sizeof(t_simplecommand));
+	g_sh.simple_cmd = g_sh.simple_cmd->next;
+	if (g_sh.simple_cmd == NULL)
 		return (NULL);
-	if (mini_sh.simple_cmd)
+	if (g_sh.simple_cmd)
 	{
-		mini_sh.simple_cmd->command = add.temp_command;
-		mini_sh.simple_cmd->infile = new_array_array(add.temp_infile);
-		mini_sh.simple_cmd->outfile = new_array_array(add.temp_outfile);
-		mini_sh.simple_cmd->builtin = add.temp_builtin;
-		mini_sh.simple_cmd->outfiles = add.temp_outfiles;
-		mini_sh.simple_cmd->infiles = add.temp_infiles;
-		mini_sh.simple_cmd->append = add.temp_append;
-		mini_sh.simple_cmd->next = NULL;
+		g_sh.simple_cmd->command = add.temp_command;
+		g_sh.simple_cmd->infile = new_array_array(add.temp_infile);
+		g_sh.simple_cmd->outfile = new_array_array(add.temp_outfile);
+		g_sh.simple_cmd->builtin = add.temp_builtin;
+		g_sh.simple_cmd->outfiles = add.temp_outfiles;
+		g_sh.simple_cmd->infiles = add.temp_infiles;
+		g_sh.simple_cmd->append = add.temp_append;
+		g_sh.simple_cmd->next = NULL;
 	}
 }
 
@@ -37,8 +37,8 @@ void	*ft_lstnew_simple_add2(t_simplecommand_temp add)
 	t_simplecommand	*temp;
 	int				i;
 
-	start = mini_sh.simple_cmd;
-	temp = mini_sh.simple_cmd;
+	start = g_sh.simple_cmd;
+	temp = g_sh.simple_cmd;
 	i = 0;
 	while (temp != NULL)
 	{
@@ -47,33 +47,33 @@ void	*ft_lstnew_simple_add2(t_simplecommand_temp add)
 	}
 	while (i > 1)
 	{
-		mini_sh.simple_cmd = mini_sh.simple_cmd->next;
+		g_sh.simple_cmd = g_sh.simple_cmd->next;
 		i--;
 	}
 	ft_lstnew_simple_add3(add);
-	mini_sh.simple_cmd = start;
+	g_sh.simple_cmd = start;
 }
 
 void	*ft_lstnew_simple_add1(t_simplecommand_temp add)
 {
-	mini_sh.simple_cmd->command = add.temp_command;
-	mini_sh.simple_cmd->infile = new_array_array(add.temp_infile);
-	mini_sh.simple_cmd->outfile = new_array_array(add.temp_outfile);
-	mini_sh.simple_cmd->builtin = add.temp_builtin;
-	mini_sh.simple_cmd->outfiles = add.temp_outfiles;
-	mini_sh.simple_cmd->infiles = add.temp_infiles;
-	mini_sh.simple_cmd->append = add.temp_append;
-	mini_sh.simple_cmd->next = NULL;
+	g_sh.simple_cmd->command = add.temp_command;
+	g_sh.simple_cmd->infile = new_array_array(add.temp_infile);
+	g_sh.simple_cmd->outfile = new_array_array(add.temp_outfile);
+	g_sh.simple_cmd->builtin = add.temp_builtin;
+	g_sh.simple_cmd->outfiles = add.temp_outfiles;
+	g_sh.simple_cmd->infiles = add.temp_infiles;
+	g_sh.simple_cmd->append = add.temp_append;
+	g_sh.simple_cmd->next = NULL;
 }
 
 void	*ft_lstnew_simple_add(t_simplecommand_temp add)
 {
-	if (mini_sh.simple_cmd == NULL)
+	if (g_sh.simple_cmd == NULL)
 	{
-		mini_sh.simple_cmd = malloc(sizeof(t_simplecommand));
-		if (mini_sh.simple_cmd == NULL)
+		g_sh.simple_cmd = malloc(sizeof(t_simplecommand));
+		if (g_sh.simple_cmd == NULL)
 			return (NULL);
-		if (mini_sh.simple_cmd)
+		if (g_sh.simple_cmd)
 			ft_lstnew_simple_add1(add);
 	}
 	else

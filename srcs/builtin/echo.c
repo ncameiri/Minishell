@@ -6,11 +6,12 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:12:50 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/14 23:13:46 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:53:37 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
+
 int	its_open_quo(t_splvariab *varia, char t)
 {
 	if (t == '\"' && varia->double_q == 0 && varia->single_q == 0 )
@@ -53,7 +54,7 @@ void	ft_putnstr(char *str, int n)
 				varia.its_clos = its_open_quo(&varia, str[i]);
 			if (str[i] == '$' && str[i + 1] == '?')
 			{
-				ft_putnbr_fd(mini_sh.dollar_error, 1);
+				ft_putnbr_fd(g_sh.dollar_error, 1);
 				i++;
 			}
 			else if (!ft_strchr(OPEN_QUOTE_EC, str[i]) || !varia.its_clos)

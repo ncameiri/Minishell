@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 11:26:39 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/13 17:32:17 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:36 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	sep_link_2(t_var_seplink *va, int *a, int index, int *type)
 		va->single_q = 1;
 	else if (va->n == '\'' && va->single_q == 1 && va->double_q == 0 )
 		va->single_q = 0;
-	else if (is_separator(va->n, mini_sh.cmd_tables[index][va->i + 1],
+	else if (is_separator(va->n, g_sh.cmd_tables[index][va->i + 1],
 			type) && va->single_q == 0 && va->double_q == 0)
 		return (va->i);
 	va->i += 1;
@@ -78,14 +78,14 @@ int	add_to_list_run(void)
 	ft_lstclear_zerolen();
 	env_list_upd_elem ();
 	ft_lstbuiltcheck();
-	if (mini_sh.error == 1)
+	if (g_sh.error == 1)
 	{
-		ft_linklstclear(&mini_sh.ls_start);
-		if (ft_strlen(mini_sh.error_log) > 1)
-			printf("%s `%.2s\'\n", err_message, mini_sh.error_log);
+		ft_linklstclear(&g_sh.ls_start);
+		if (ft_strlen(g_sh.error_log) > 1)
+			printf("%s `%.2s\'\n", err_message, g_sh.error_log);
 		else
-			printf("%s `%s'\n", err_message, mini_sh.error_log);
-		free (mini_sh.error_log);
+			printf("%s `%s'\n", err_message, g_sh.error_log);
+		free (g_sh.error_log);
 		return (0);
 	}
 	else
@@ -97,15 +97,15 @@ int	add_to_list(int index)
 	t_var_add_tlis	va;
 
 	add_var_init(&va);
-	mini_sh.actind = index;
-	while (mini_sh.cmd_tables[index][va.i])
+	g_sh.actind = index;
+	while (g_sh.cmd_tables[index][va.i])
 	{
 		va.last = sep_link(index, &va.i, &va.type);
 		if (va.last > 0)
 		{
-			va.aux = ft_substr(mini_sh.cmd_tables[index],
+			va.aux = ft_substr(g_sh.cmd_tables[index],
 					va.start, va.last - va.start);
-			ft_linkadd_back(&mini_sh.ls_start, ft_linknew(va.aux, va.type));
+			ft_linkadd_back(&g_sh.ls_start, ft_linknew(va.aux, va.type));
 			va.start = va.last + 1;
 			if (va.type == 2)
 			{
@@ -113,7 +113,7 @@ int	add_to_list(int index)
 				va.i++;
 			}
 		}
-		if (!mini_sh.cmd_tables[index][va.i + 1])
+		if (!g_sh.cmd_tables[index][va.i + 1])
 			last_elem_lis(&va, index);
 		va.i++;
 	}

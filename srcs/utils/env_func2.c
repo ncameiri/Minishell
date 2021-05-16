@@ -9,12 +9,12 @@ char	*env_isex_elem (char *set)
 	set_equal = ft_strjoin(set, "=");
 	i = 0;
 	k = ft_strlen(set_equal);
-	while (mini_sh.env[i] != NULL)
+	while (g_sh.env[i] != NULL)
 	{
-		if (!strncmp(set_equal, mini_sh.env[i], k))
+		if (!strncmp(set_equal, g_sh.env[i], k))
 		{
 			free(set_equal);
-			return (mini_sh.env[i] + k);
+			return (g_sh.env[i] + k);
 		}
 		i++;
 	}
@@ -34,7 +34,7 @@ int	env_var_update(char *set_tbc, char *new_ct, int is_env)
 		elem = ft_strjoin(set, env_isex_elem(new_ct));
 	else
 		elem = ft_strjoin(set, new_ct);
-	mini_sh.env = add_str_to_arrarr(mini_sh.env, elem);
+	g_sh.env = add_str_to_arrarr(g_sh.env, elem);
 	free(set);
 	free(elem);
 	return (0);
@@ -53,25 +53,25 @@ int	env_rm_elem (char *set)
 
 	init_var_rm_elem(&va);
 	va.set_equal = ft_strjoin(set, "=");
-	while (mini_sh.env[va.i] != NULL)
+	while (g_sh.env[va.i] != NULL)
 		va.i++;
 	va.temp = malloc(sizeof(char *) * va.i);
 	if (va.temp == NULL)
 		return (-1);
 	while (va.a < (va.i - 1))
 	{
-		if (ft_strncmp(va.set_equal, mini_sh.env[va.k],
+		if (ft_strncmp(va.set_equal, g_sh.env[va.k],
 				ft_strlen(va.set_equal)))
 		{
-			va.temp[va.a] = ft_strdup(mini_sh.env[va.k]);
+			va.temp[va.a] = ft_strdup(g_sh.env[va.k]);
 			va.a++;
 		}
 		va.k++;
 	}
 	va.temp[va.a] = NULL;
 	free(va.set_equal);
-	free_array(mini_sh.env);
-	mini_sh.env = va.temp;
+	free_array(g_sh.env);
+	g_sh.env = va.temp;
 	return (0);
 }
 
@@ -79,7 +79,7 @@ int	env_list_upd_elem (void)
 {
 	t_linklis	*lst;
 
-	lst = mini_sh.ls_start;
+	lst = g_sh.ls_start;
 	while (lst)
 	{
 		found_env(&(lst->content));

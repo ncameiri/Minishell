@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/13 18:38:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 22:45:35 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:45:07 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_minishell
 
 } t_minishell;
 
-t_minishell mini_sh;
+t_minishell g_sh;
 
 
 
@@ -214,10 +214,10 @@ void	free_array(char **array)
 
 void ft_exit()
 {
-	if (mini_sh.keys_off)
-		tputs(mini_sh.keys_off, 1, ft_putint);
-	if (mini_sh.islinux == 0)
-		free(mini_sh.backspace);
+	if (g_sh.keys_off)
+		tputs(g_sh.keys_off, 1, ft_putint);
+	if (g_sh.islinux == 0)
+		free(g_sh.backspace);
 	turn_on_canonical_mode();
 }
 
@@ -228,7 +228,7 @@ void ft_exit()
 
 int		has_history()
 {
-	if (mini_sh.history_len == 0)
+	if (g_sh.history_len == 0)
 		return(0);
 	else
 		return(1);
@@ -240,32 +240,32 @@ void	parse_input_history(char *buf, int *i)
 
 	only_up_arrow = 0;
 
-	if (mini_sh.current_history == mini_sh.history_len)
+	if (g_sh.current_history == g_sh.history_len)
 		only_up_arrow = 1;
 	if (has_history() == 0)
 	{
 		ft_bzero(&buf[*i], BUFSIZ - *i);
 		return ;
 	}
-	if (ft_strcmp(mini_sh.up_arrow, &buf[*i]) == 0)
+	if (ft_strcmp(g_sh.up_arrow, &buf[*i]) == 0)
 	{
-		if (mini_sh.current_history > 0)
-			mini_sh.current_history--;
-		input = mini_sh.history[mini_sh.current_history];
-		tputs(mini_sh.cursor_left, 1, ft_putint);
-		tputs(mini_sh.del_line, 1, ft_putint);
+		if (g_sh.current_history > 0)
+			g_sh.current_history--;
+		input = g_sh.history[g_sh.current_history];
+		tputs(g_sh.cursor_left, 1, ft_putint);
+		tputs(g_sh.del_line, 1, ft_putint);
 		prompt();
 		ft_bzero(buf, BUFSIZ);
 		ft_strcpy(buf, input);
 		*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 	}
-	else if (ft_strcmp(mini_sh.down_arrow, &buf[*i]) == 0 && only_up_arrow == 0)
+	else if (ft_strcmp(g_sh.down_arrow, &buf[*i]) == 0 && only_up_arrow == 0)
 	{
-		if (mini_sh.current_history < mini_sh.history_len - 1)
-			mini_sh.current_history++;
-		input = mini_sh.history[mini_sh.current_history];
-		tputs(mini_sh.cursor_left, 1, ft_putint);
-		tputs(mini_sh.del_line, 1, ft_putint);
+		if (g_sh.current_history < g_sh.history_len - 1)
+			g_sh.current_history++;
+		input = g_sh.history[g_sh.current_history];
+		tputs(g_sh.cursor_left, 1, ft_putint);
+		tputs(g_sh.del_line, 1, ft_putint);
 		prompt();
 		ft_bzero(buf, BUFSIZ);
 		ft_strcpy(buf, input);
@@ -274,21 +274,21 @@ void	parse_input_history(char *buf, int *i)
 }
 void	save_history()
 {
-	if (mini_sh.history_len > 0 &&
-		ft_strcmp(mini_sh.history[mini_sh.history_len - 1], mini_sh.line) == 0)
+	if (g_sh.history_len > 0 &&
+		ft_strcmp(g_sh.history[g_sh.history_len - 1], g_sh.line) == 0)
 		return;
 
-	mini_sh.history[mini_sh.history_len] = ft_strdup(mini_sh.line);
-	mini_sh.history_len++;
-	mini_sh.history[mini_sh.history_len] = NULL;
+	g_sh.history[g_sh.history_len] = ft_strdup(g_sh.line);
+	g_sh.history_len++;
+	g_sh.history[g_sh.history_len] = NULL;
 }
 void	set_history()
 {
-	mini_sh.history = malloc(sizeof(char *) + 100);
-	if (mini_sh.history == NULL)
+	g_sh.history = malloc(sizeof(char *) + 100);
+	if (g_sh.history == NULL)
 		return;
-	mini_sh.history_len = 0;
-	mini_sh.history[0] = NULL;
+	g_sh.history_len = 0;
+	g_sh.history[0] = NULL;
 }
 
 
@@ -298,18 +298,18 @@ void	set_history()
 
 void	turn_off_canonical_mode()
 {
-	mini_sh.new_term = mini_sh.old_term;
-	mini_sh.new_term.c_lflag &= ~ICANON;
-	mini_sh.new_term.c_lflag &= ~ECHO;
-	mini_sh.new_term.c_lflag &= ~ISIG;
-	mini_sh.new_term.c_cc[VMIN] = 1;
-	mini_sh.new_term.c_cc[VTIME] = 0;
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &mini_sh.new_term) == -1)
+	g_sh.new_term = g_sh.old_term;
+	g_sh.new_term.c_lflag &= ~ICANON;
+	g_sh.new_term.c_lflag &= ~ECHO;
+	g_sh.new_term.c_lflag &= ~ISIG;
+	g_sh.new_term.c_cc[VMIN] = 1;
+	g_sh.new_term.c_cc[VTIME] = 0;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &g_sh.new_term) == -1)
 		ft_exit(EXIT_FAILURE);
 }
 void	turn_on_canonical_mode()
 {
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &mini_sh.old_term) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &g_sh.old_term) == -1)
 		ft_exit();
 }
 
@@ -319,21 +319,21 @@ void	turn_on_canonical_mode()
 
 int		set_capabilities()
 {
-	mini_sh.keys_on = tgetstr("ks", &mini_sh.buffer);
-	if (mini_sh.keys_on)
-		tputs(mini_sh.keys_on, 1, ft_putint);
-	mini_sh.keys_off = tgetstr("ke", &mini_sh.buffer);
-	mini_sh.up_arrow = tgetstr("ku", &mini_sh.buffer);
-	mini_sh.down_arrow = tgetstr("kd", &mini_sh.buffer);
-	if (mini_sh.islinux == 1)
-		mini_sh.backspace = tgetstr("kb", &mini_sh.buffer);
+	g_sh.keys_on = tgetstr("ks", &g_sh.buffer);
+	if (g_sh.keys_on)
+		tputs(g_sh.keys_on, 1, ft_putint);
+	g_sh.keys_off = tgetstr("ke", &g_sh.buffer);
+	g_sh.up_arrow = tgetstr("ku", &g_sh.buffer);
+	g_sh.down_arrow = tgetstr("kd", &g_sh.buffer);
+	if (g_sh.islinux == 1)
+		g_sh.backspace = tgetstr("kb", &g_sh.buffer);
 	else
-		mini_sh.backspace = ft_strdup("\x7f");
-	mini_sh.del_line = tgetstr("dl", &mini_sh.buffer);
-	mini_sh.cursor_left = tgetstr("cr", &mini_sh.buffer);
-	if ((!mini_sh.keys_on) || (!mini_sh.up_arrow) || (!mini_sh.down_arrow)
-		|| (!mini_sh.backspace) || (!mini_sh.del_line) || (!mini_sh.keys_off)
-		|| (!mini_sh.cursor_left))
+		g_sh.backspace = ft_strdup("\x7f");
+	g_sh.del_line = tgetstr("dl", &g_sh.buffer);
+	g_sh.cursor_left = tgetstr("cr", &g_sh.buffer);
+	if ((!g_sh.keys_on) || (!g_sh.up_arrow) || (!g_sh.down_arrow)
+		|| (!g_sh.backspace) || (!g_sh.del_line) || (!g_sh.keys_off)
+		|| (!g_sh.cursor_left))
 		return (0);
 	else
 		return (1);
@@ -345,12 +345,12 @@ char	*get_termtype()
 
 	temp = NULL;
 
-	while (mini_sh.env[i] != NULL)
+	while (g_sh.env[i] != NULL)
 	{
-		if (ft_strncmp(mini_sh.env[i], "TERM=", 5) == 0)
+		if (ft_strncmp(g_sh.env[i], "TERM=", 5) == 0)
 		{
-			mini_sh.env[i] += 5;
-			temp = mini_sh.env[i];
+			g_sh.env[i] += 5;
+			temp = g_sh.env[i];
 			break;
 		}
 		i++;
@@ -365,13 +365,13 @@ void	init_termcaps()
 	if (isatty(STDIN_FILENO) != 1)
 		exit(EXIT_FAILURE);
 
-	if (tcgetattr(STDIN_FILENO, &mini_sh.old_term) == -1)
+	if (tcgetattr(STDIN_FILENO, &g_sh.old_term) == -1)
 		exit(EXIT_FAILURE);
 
-	if (mini_sh.islinux == 1)
+	if (g_sh.islinux == 1)
 	{
-		mini_sh.buffer = ft_calloc(2048, 1);
-		if (mini_sh.buffer == NULL)
+		g_sh.buffer = ft_calloc(2048, 1);
+		if (g_sh.buffer == NULL)
 			exit(EXIT_FAILURE);
 	}
 
@@ -379,7 +379,7 @@ void	init_termcaps()
 	if (term_type == NULL)
 		exit(EXIT_FAILURE);
 
-	ret = tgetent(mini_sh.buffer, term_type);
+	ret = tgetent(g_sh.buffer, term_type);
 	if (ret <= 0)
 		exit(EXIT_FAILURE);
 	else if (set_capabilities() == 0)
@@ -395,16 +395,16 @@ void	init_termcaps()
 void	delete_single_char(char *buf, int *i)
 {
 	ft_bzero(&buf[*i - 1], BUFSIZ - *i);
-	tputs(mini_sh.cursor_left, 1, ft_putint);
-	tputs(mini_sh.del_line, 1, ft_putint);
+	tputs(g_sh.cursor_left, 1, ft_putint);
+	tputs(g_sh.del_line, 1, ft_putint);
 	prompt();
 	*i = write(STDOUT_FILENO, buf, ft_strlen(buf));
 }
 int		is_up_down_arrow(char *buf)
 {
-	if (ft_strcmp(mini_sh.up_arrow, buf) == 0)
+	if (ft_strcmp(g_sh.up_arrow, buf) == 0)
 		return (1);
-	else if (ft_strcmp(mini_sh.down_arrow, buf) == 0)
+	else if (ft_strcmp(g_sh.down_arrow, buf) == 0)
 		return (1);
 	return (0);
 }
@@ -417,14 +417,14 @@ void	get_input()
 	i = 0;
 
 	ft_bzero(buf, BUFSIZ);
-	mini_sh.current_history = mini_sh.history_len;
+	g_sh.current_history = g_sh.history_len;
 
 	while(!ft_strchr(buf, '\n'))
 	{
 		nb_char_read = read(STDIN_FILENO, &buf[i], BUFSIZ - i);
 		if (is_up_down_arrow(&buf[i]))
 			parse_input_history(buf, &i);
-		else if (ft_strcmp(&buf[i], mini_sh.backspace) == 0)
+		else if (ft_strcmp(&buf[i], g_sh.backspace) == 0)
 			delete_single_char(buf, &i);
 		else if (nb_char_read > 1)
 			ft_bzero(&buf[i], BUFSIZ - i);
@@ -433,8 +433,8 @@ void	get_input()
 	}
 
 	buf[i - 1] = '\0';
-	mini_sh.line = ft_strdup(buf);
-	if (mini_sh.line == NULL)
+	g_sh.line = ft_strdup(buf);
+	if (g_sh.line == NULL)
 		ft_exit();
 }
 void	prompt()
@@ -450,8 +450,8 @@ int main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	mini_sh.islinux = 1;
-	mini_sh.env = envp;
+	g_sh.islinux = 1;
+	g_sh.env = envp;
 	set_history();
 
 	init_termcaps();
@@ -459,7 +459,7 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		turn_off_canonical_mode();
-		mini_sh.line = NULL;
+		g_sh.line = NULL;
 
 		prompt();
 		get_input();
@@ -470,18 +470,18 @@ int main(int argc, char **argv, char **envp)
 		//execute();
 
 		//**********************************************//
-		if (strcmp(mini_sh.line, "history") == 0)
+		if (strcmp(g_sh.line, "history") == 0)
 		{
-			for (size_t a = 0; mini_sh.history[a] != NULL; a++)
-				printf("%li  %s\n", a, mini_sh.history[a]);
+			for (size_t a = 0; g_sh.history[a] != NULL; a++)
+				printf("%li  %s\n", a, g_sh.history[a]);
 		}
-		else if (strcmp(mini_sh.line, "exit") == 0)
+		else if (strcmp(g_sh.line, "exit") == 0)
 		{
-			free(mini_sh.line);
-			free_array(mini_sh.history);
+			free(g_sh.line);
+			free_array(g_sh.history);
 			break;
 		}
-		free(mini_sh.line);
+		free(g_sh.line);
 	}
 }
 

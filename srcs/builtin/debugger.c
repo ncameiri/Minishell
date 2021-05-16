@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   history.c                                          :+:      :+:    :+:   */
+/*   debugger.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/22 02:53:37 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 03:43:20 by tisantos         ###   ########.fr       */
+/*   Created: 2021/05/16 03:52:56 by tisantos          #+#    #+#             */
+/*   Updated: 2021/05/16 03:55:37 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
 
-void	ft_history(void)
+void	ft_debugger(void)
 {
-	int	i;
-
-	i = 0;
-	while (g_sh.history[i] != NULL)
+	if (g_sh.isdebugger == 0)
 	{
-		printf(" %d  %s\n", i + 1, g_sh.history[i]);
-		i++;
+		printf("debugger 1\n");
+		g_sh.isdebugger = 1;
+	}
+	else if (g_sh.isdebugger == 1)
+	{
+		printf("debugger 2\n");
+		g_sh.isdebugger = 2;
+	}
+	else if (g_sh.isdebugger == 2)
+	{
+		printf("debugger 0\n");
+		g_sh.isdebugger = 0;
 	}
 }

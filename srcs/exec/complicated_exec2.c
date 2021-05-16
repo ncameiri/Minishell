@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/09 14:50:29 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/13 17:07:15 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:09 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	take_infile(t_simplecommand *smp_cmd, t_complicated_exec *norm)
 		if (fd > 0)
 			close(fd);
 		fd = open(smp_cmd->infile[i], O_RDONLY);
-		mini_sh.dollar_error = 1;
+		g_sh.dollar_error = 1;
 		if (fd == -1)
 		{
 			dup2(norm->tmpin, 0);

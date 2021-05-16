@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_tiago.c                                    :+:      :+:    :+:   */
+/*   parsing_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 18:36:31 by tisantos          #+#    #+#             */
-/*   Updated: 2021/04/28 14:21:48 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:45:05 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_minishell
 	int 			error;
 }					t_minishell;
 
-t_minishell mini_sh;
+t_minishell g_sh;
 
 
 
@@ -165,32 +165,32 @@ void	free_global(char *f1, char *f2, char *f3, char *f4)
 	if (!ft_strcmp(f1, "line") || !ft_strcmp(f2, "line")
 		|| !ft_strcmp(f3, "line") || !ft_strcmp(f4, "line"))
 	{
-		free(mini_sh.line);
-		mini_sh.line = NULL;
+		free(g_sh.line);
+		g_sh.line = NULL;
 	}
 	if (!ft_strcmp(f1, "history") || !ft_strcmp(f2, "history")
 		|| !ft_strcmp(f3, "history") || !ft_strcmp(f4, "history"))
 	{
-		free_array(mini_sh.history);
-		mini_sh.history = NULL;
+		free_array(g_sh.history);
+		g_sh.history = NULL;
 	}
 	if (!ft_strcmp(f1, "cmd_tables") || !ft_strcmp(f2, "cmd_tables")
 		|| !ft_strcmp(f3, "cmd_tables") || !ft_strcmp(f4, "cmd_tables"))
 	{
-		free_array(mini_sh.cmd_tables);
-		mini_sh.cmd_tables = NULL;
+		free_array(g_sh.cmd_tables);
+		g_sh.cmd_tables = NULL;
 	}
 	if (!ft_strcmp(f1, "env") || !ft_strcmp(f2, "env")
 		|| !ft_strcmp(f3, "env") || !ft_strcmp(f4, "env"))
 	{
-		free_array(mini_sh.env);
-		mini_sh.env = NULL;
+		free_array(g_sh.env);
+		g_sh.env = NULL;
 	}
 	if (!ft_strcmp(f1, "args") || !ft_strcmp(f2, "args")
 		|| !ft_strcmp(f3, "args") || !ft_strcmp(f4, "args"))
 	{
-		free_array(mini_sh.args);
-		mini_sh.args = NULL;
+		free_array(g_sh.args);
+		g_sh.args = NULL;
 	}
 }
 
@@ -227,20 +227,20 @@ void	remove_cmd_blanks2()
 	a = 0;
 	c = 0;
 	copy = 0;
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 	{
 		copy = 0;
-		if (mini_sh.cmd_tables[i][0] == ' ')
+		if (g_sh.cmd_tables[i][0] == ' ')
 		{
 			a = 0;
-			while (mini_sh.cmd_tables[i][a] == ' ' && mini_sh.cmd_tables[i][a] != '\0')
+			while (g_sh.cmd_tables[i][a] == ' ' && g_sh.cmd_tables[i][a] != '\0')
 			{
 				a++;
 				copy++;
 			}
-			temp = ft_strdup(mini_sh.cmd_tables[i] + copy);
-			free(mini_sh.cmd_tables[i]);
-			mini_sh.cmd_tables[i] = ft_strdup(temp);
+			temp = ft_strdup(g_sh.cmd_tables[i] + copy);
+			free(g_sh.cmd_tables[i]);
+			g_sh.cmd_tables[i] = ft_strdup(temp);
 			free(temp);
 		}
 		i++;
@@ -256,16 +256,16 @@ void	remove_cmd_blanks()
 	i = 0;
 	a = 0;
 	not_null = 0;
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 		i++;
 	i -= 1;
-	while (mini_sh.cmd_tables[i][a] != '\0')
-		if (mini_sh.cmd_tables[i][a++] != ' ')
+	while (g_sh.cmd_tables[i][a] != '\0')
+		if (g_sh.cmd_tables[i][a++] != ' ')
 			not_null++;
 	if (not_null == 0)
 	{
-		free(mini_sh.cmd_tables[i]);
-		mini_sh.cmd_tables[i] = NULL;
+		free(g_sh.cmd_tables[i]);
+		g_sh.cmd_tables[i] = NULL;
 	}
 	i = 0;
 	remove_cmd_blanks2();
@@ -276,10 +276,10 @@ void	remove_cmd_semicolons()
 	int i;
 
 	i = 0;
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 	{
-		if (mini_sh.cmd_tables[i][ft_strlen(mini_sh.cmd_tables[i]) - 1] == ';')
-			mini_sh.cmd_tables[i][ft_strlen(mini_sh.cmd_tables[i]) - 1] = '\0';
+		if (g_sh.cmd_tables[i][ft_strlen(g_sh.cmd_tables[i]) - 1] == ';')
+			g_sh.cmd_tables[i][ft_strlen(g_sh.cmd_tables[i]) - 1] = '\0';
 		i++;
 	}
 	i = 0;
@@ -287,21 +287,21 @@ void	remove_cmd_semicolons()
 
 int	final_cmd_error_handling(int i, int a, int c)
 {
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 	{
 		a = 0;
 		c = 0;
-		if (mini_sh.cmd_tables[i][0] == ';')
+		if (g_sh.cmd_tables[i][0] == ';')
 		{
 			syntax_error(1);
 			return (0);
 		}
-		while (mini_sh.cmd_tables[i][a] != '\0')
+		while (g_sh.cmd_tables[i][a] != '\0')
 		{
-			if (mini_sh.cmd_tables[i][a] != ' ' &&
-				mini_sh.cmd_tables[i][a] != ';')
+			if (g_sh.cmd_tables[i][a] != ' ' &&
+				g_sh.cmd_tables[i][a] != ';')
 				c++;
-			if (mini_sh.cmd_tables[i][a] == ';' &&
+			if (g_sh.cmd_tables[i][a] == ';' &&
 				c == 0)
 			{
 				syntax_error(1);
@@ -353,20 +353,20 @@ int	split_cmd_tables3(int *semicolon_location, int i, int copy, int last)
 
 	a = 0;
 
-	mini_sh.cmd_tables[i] = malloc(sizeof(char) * (ft_strlen(mini_sh.line) + 2));
-	if (mini_sh.cmd_tables[i] == NULL)
+	g_sh.cmd_tables[i] = malloc(sizeof(char) * (ft_strlen(g_sh.line) + 2));
+	if (g_sh.cmd_tables[i] == NULL)
 		return (0);
 	if (last == 0)
 	{
 		while (copy <= semicolon_location[i])
-			mini_sh.cmd_tables[i][a++] = mini_sh.line[copy++];
+			g_sh.cmd_tables[i][a++] = g_sh.line[copy++];
 	}
 	else
 	{
-		while (copy < ft_strlen(mini_sh.line))
-			mini_sh.cmd_tables[i][a++] = mini_sh.line[copy++];
+		while (copy < ft_strlen(g_sh.line))
+			g_sh.cmd_tables[i][a++] = g_sh.line[copy++];
 	}
-	mini_sh.cmd_tables[i][a] = '\0';
+	g_sh.cmd_tables[i][a] = '\0';
 	return (copy);
 }
 
@@ -384,14 +384,14 @@ int	split_cmd_tables2(int *semicolon_location, int semicolon_count)
 		return (0); // Se começa com ; ou se tem 2 ;; juntos.
 	}
 
-	mini_sh.cmd_tables = malloc(sizeof(char *) * (semicolon_count + 2));
-	if (mini_sh.cmd_tables == NULL)
+	g_sh.cmd_tables = malloc(sizeof(char *) * (semicolon_count + 2));
+	if (g_sh.cmd_tables == NULL)
 		return (0);
 	while (i < semicolon_count)
 		copy = split_cmd_tables3(semicolon_location, i++, copy, 0);
-	if (copy < ft_strlen(mini_sh.line))
+	if (copy < ft_strlen(g_sh.line))
 		copy = split_cmd_tables3(semicolon_location, i++, copy, 1);
-	mini_sh.cmd_tables[i] = NULL;
+	g_sh.cmd_tables[i] = NULL;
 
 	if (final_cmd_error_handling(0, 0, 0) == 0)
 	{
@@ -413,9 +413,9 @@ int	split_cmd_tables(int *semicolon_location, int semicolon_count)
 
 	if (semicolon_count == 0)
 	{
-		mini_sh.cmd_tables = malloc(sizeof(char *) * 2);
-		mini_sh.cmd_tables[0] = ft_strdup(mini_sh.line);
-		mini_sh.cmd_tables[1] = NULL;
+		g_sh.cmd_tables = malloc(sizeof(char *) * 2);
+		g_sh.cmd_tables[0] = ft_strdup(g_sh.line);
+		g_sh.cmd_tables[1] = NULL;
 		return (1);
 	}
 	else
@@ -437,17 +437,17 @@ int	*separator_location(int *semi_locations, int *semi_count)
 	s = 0;
 	single_q = 0;
 	double_q = 0;
-	while (mini_sh.line[i] != '\0')
+	while (g_sh.line[i] != '\0')
 	{
-		if (mini_sh.line[i] == '\"' && double_q == 0 && single_q == 0)
+		if (g_sh.line[i] == '\"' && double_q == 0 && single_q == 0)
 			double_q = 1;
-		else if (mini_sh.line[i] == '\"' && double_q == 1 && single_q == 0)
+		else if (g_sh.line[i] == '\"' && double_q == 1 && single_q == 0)
 			double_q = 0;
-		else if (mini_sh.line[i] == '\'' && single_q == 0 && double_q == 0)
+		else if (g_sh.line[i] == '\'' && single_q == 0 && double_q == 0)
 			single_q = 1;
-		else if (mini_sh.line[i] == '\'' && single_q == 1 && double_q == 0)
+		else if (g_sh.line[i] == '\'' && single_q == 1 && double_q == 0)
 			single_q = 0;
-		if (mini_sh.line[i] == ';' && single_q == 0 && double_q == 0)
+		if (g_sh.line[i] == ';' && single_q == 0 && double_q == 0)
 		{
 			semi_locations = add_int_to_arr(semi_locations, i, s);
 			s++;
@@ -492,15 +492,15 @@ int	check_complete_quotation()
 	i = 0;
 	single_q = 0;
 	double_q = 0;
-	while (mini_sh.line[i] != '\0')
+	while (g_sh.line[i] != '\0')
 	{
-		if (mini_sh.line[i] == '\"' && double_q == 0 && single_q == 0)
+		if (g_sh.line[i] == '\"' && double_q == 0 && single_q == 0)
 			double_q = 1;
-		else if (mini_sh.line[i] == '\"' && double_q == 1 && single_q == 0)
+		else if (g_sh.line[i] == '\"' && double_q == 1 && single_q == 0)
 			double_q = 0;
-		else if (mini_sh.line[i] == '\'' && single_q == 0 && double_q == 0)
+		else if (g_sh.line[i] == '\'' && single_q == 0 && double_q == 0)
 			single_q = 1;
-		else if (mini_sh.line[i] == '\'' && single_q == 1 && double_q == 0)
+		else if (g_sh.line[i] == '\'' && single_q == 1 && double_q == 0)
 			single_q = 0;
 		i++;
 	}
@@ -538,27 +538,27 @@ int main ()
 
 	while(i < 500)
 	{
-		mini_sh.line = NULL;
-		get_next_line(0, &mini_sh.line);
+		g_sh.line = NULL;
+		get_next_line(0, &g_sh.line);
 		//**********************************************//
 
 		if (cmd_parsing() == 0)
 			continue;
 
-		for (size_t a = 0; mini_sh.cmd_tables[a] != NULL; a++)
+		for (size_t a = 0; g_sh.cmd_tables[a] != NULL; a++)
 		{
-			printf("%s\n", mini_sh.cmd_tables[a]);
+			printf("%s\n", g_sh.cmd_tables[a]);
 		}
 
 
 		//**********************************************//
-		if (ft_strcmp(mini_sh.line, "exit") == 0)
+		if (ft_strcmp(g_sh.line, "exit") == 0)
 		{
-			free(mini_sh.line);
-			free_array(mini_sh.cmd_tables);
+			free(g_sh.line);
+			free_array(g_sh.cmd_tables);
 			break;
 		}
-		free(mini_sh.line);
-		free_array(mini_sh.cmd_tables);
+		free(g_sh.line);
+		free_array(g_sh.cmd_tables);
 	}
 }

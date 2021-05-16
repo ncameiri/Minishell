@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:20:00 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:12:45 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:26 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void	add_to_simple_commands_list(void)
 {
 	t_linklis	*list;
 
-	list = mini_sh.ls_start;
-	mini_sh.simple_cmd = NULL;
+	list = g_sh.ls_start;
+	g_sh.simple_cmd = NULL;
 	while (list != NULL)
 	{
 		if (list->type == 1 || list->type == 8)

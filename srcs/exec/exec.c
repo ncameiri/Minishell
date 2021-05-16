@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 16:51:03 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 15:29:40 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:23 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	exec_command(void)
 	t_linklis		*list;
 	t_simplecommand	*simple_cmd;
 
-	simple_cmd = mini_sh.simple_cmd;
-	list = mini_sh.ls_start;
+	simple_cmd = g_sh.simple_cmd;
+	list = g_sh.ls_start;
 	if (list->content[0] == NULL)
 	{
 		printf(" : command not found.\n");

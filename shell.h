@@ -6,14 +6,13 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/15 18:07:30 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 05:55:01 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHELL_H
 # define SHELL_H
 
-# include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
 
 # include <stdio.h>
@@ -25,6 +24,7 @@
 # include <errno.h>
 # include <termios.h>
 # include <termcap.h>
+# include <fcntl.h>
 
 # define SHELL_DELIMITERS " \t\r\n\a"
 # define DELIMETERS2 " \t\r\n\a\'\""
@@ -61,7 +61,7 @@ typedef struct s_complicated_exec
 
 }				t_complicated_exec;
 
-typedef struct s_simplecommand_temp		// <---- Adicionar este.
+typedef struct s_simplecommand_temp
 {
 	char		**temp_command;
 	char		**temp_infile;
@@ -75,22 +75,22 @@ typedef struct s_simplecommand_temp		// <---- Adicionar este.
 
 }		t_simplecommand_temp;
 
-typedef struct s_simplecommand			// <---- Adicionar este.
+typedef struct s_simplecommand
 {
 	char					**command;
-	char					**outfile;	// These are all outfiles.
-	char					**infile;	// These are all infile.
+	char					**outfile;
+	char					**infile;
 	int						builtin;
 
 	int						outfiles;
 	int						infiles;
-	int						append; // Se é para fazer append ou um outfile normal.
+	int						append;
 
 	struct s_simplecommand	*next;
 
 }				t_simplecommand;
 
-typedef struct s_re_alloc_var //ADICIONADO 11MAIO
+typedef struct s_re_alloc_var
 {
 	int		elems;
 	int		i;
@@ -98,7 +98,7 @@ typedef struct s_re_alloc_var //ADICIONADO 11MAIO
 	char	**ret;
 }				t_re_alloc_var;
 
-typedef struct s_fou_env_var //ADICIONADO 11MAIO
+typedef struct s_fou_env_var
 {
 	int		i;
 	int		k;
@@ -109,7 +109,7 @@ typedef struct s_fou_env_var //ADICIONADO 11MAIO
 	char	temp[1001];
 }				t_fou_env_var;
 
-typedef struct s_env_rm_vars //ADICIONADO 11MAIO
+typedef struct s_env_rm_vars
 {
 	int		a;
 	int		i;
@@ -118,14 +118,12 @@ typedef struct s_env_rm_vars //ADICIONADO 11MAIO
 	char	*set_equal;
 }				t_env_rm_vars;
 
-typedef struct s_built_ex_var //ADICIONADO 11MAIO
+typedef struct s_built_ex_var
 {
 	char	*elem;
 	char	*set;
 	int		i;
 }				t_built_ex_var;
-
-
 
 typedef struct s_splvariab
 {
@@ -134,8 +132,8 @@ typedef struct s_splvariab
 	unsigned int	next_str_len;
 	unsigned int	nb_strs;
 	unsigned int	i;
-	int 			single_q;
-	int 			double_q;
+	int				single_q;
+	int				double_q;
 	int				its_clos;
 
 }				t_splvariab;
@@ -149,7 +147,7 @@ typedef struct s_linklis
 	struct s_linklis	*next;
 }				t_linklis;
 
-typedef struct	s_var_seplink
+typedef struct s_var_seplink
 {
 	int		i;
 	int		s;
@@ -170,7 +168,7 @@ typedef struct s_var_add_tlis
 
 typedef struct s_minishell
 {
-	t_linklis 		*ls_start;
+	t_linklis		*ls_start;
 	t_simplecommand	*simple_cmd;
 
 	char			*line;
@@ -180,6 +178,7 @@ typedef struct s_minishell
 	char			**env;
 
 	int				status;
+	int				isdebugger;
 
 	int				absolute_path;
 	int				testing;
@@ -190,13 +189,14 @@ typedef struct s_minishell
 
 	pid_t			pid;
 
-	int 			error;
+	int				error;
 	char			*error_log;
 	int				actind;
 
 	int				islinux;
 
 	int				dollar_error;
+	int				first_error;
 
 	struct termios	old_term;
 	struct termios	new_term;
@@ -214,32 +214,18 @@ typedef struct s_minishell
 
 }					t_minishell;
 
-/* Freeable
-**
-**		**args
-**		*line
-**		**history
-**		**cmd_tables
-**		**env
-**
-*/
-
-t_minishell mini_sh;
-
-
-/*	Command Tables */
+t_minishell	g_sh;
 
 void			syntax_error(int value);
-int				initial_cmd_error_handling(int *semicolon_location, int semicolon_count);
-int				final_cmd_error_handling();
-void			remove_cmd_semicolons();
-void			remove_cmd_blanks();
+int				initial_cmd_error_handling(int *semicolon_location,
+					int semicolon_count);
+int				final_cmd_error_handling(int i, int a, int c);
+void			remove_cmd_semicolons(void);
+void			remove_cmd_blanks(void);
 void			syntax_error(int value);
 void			remove_cmd_blanks2(void);
 
-/*	Exec */
-
-void			exec_command();
+void			exec_command(void);
 void			simple_execute(t_linklis *list);
 
 void			complicated_execute(t_simplecommand *simple_cmd);
@@ -252,38 +238,29 @@ void			run_builtin_complicated(t_simplecommand *lista);
 int				check_builtin_no_fork(t_simplecommand **lista);
 t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd);
 int				infile_stuff(t_simplecommand **simple_cmd,
-							t_complicated_exec *norm);
+					t_complicated_exec *norm);
 char			*get_path(char *command);
 
-
-/* 	Builtins */
-
-void			ft_absolute_path();
-void			ft_testing();
-void			ft_history();
-void 			ft_exit(char **content);
-int				ft_pwd();
+void			ft_debugger(void);
+void			ft_absolute_path(void);
+void			ft_testing(void);
+void			ft_history(void);
+void			ft_exit(char **content);
+int				ft_pwd(void);
 int				ft_echo(char **content);
-void 			ft_env();
+void			ft_env(void);
 int				ft_cd(char **content);
 int				ft_export(char **content);
 int				ft_unset(char **content);
 void			ft_error(void);
-void	ft_putnstr2(t_splvariab	*varia , char *str, int n ,int i);//11MAIO
-int	its_open_quo(t_splvariab *varia, char t);//11MAIO
+void			ft_putnstr2(t_splvariab	*varia, char *str, int n, int i);
+int				its_open_quo(t_splvariab *varia, char t);
 
+int				cmd_parsing(void);
+int				process_cmd_tables(void);
 
-/* 	Parsing */
-
-int				cmd_parsing();
-int				process_cmd_tables();
-
-/*	Allocate */
-
-void			save_history();
+void			save_history(void);
 char			**save_env(char **env);
-
-/*	Utils */
 
 int				*add_int_to_arr(int *array, int location, int count);
 char			**add_str_to_arrarr(char **array, char *string);
@@ -291,78 +268,67 @@ int				only_spaces(char *line);
 void			debug_command_table(int a);
 char			*ft_errstr(char c);
 
-/*	Signals */
-
 void			sig_int(int signo);
 void			sig_quit(int signo);
 
-/*	List */
-
 char			**ft_aloc_env(char **env);
 char			**ft_split_igquo(char const *s, const char *delimiters);
-int 			chck_iespac(char s1,char s);
+int				chck_iespac(char s1, char s);
 int				add_to_list(int index);
 void			ft_lstspli(void);
 void			ft_lsttrim(void);
 void			ft_linklstclear(t_linklis **lst);
 int				is_separator(char check, char check2, int *type);
 void			add_var_init(t_var_add_tlis *va);
-void 			chck_dup_symbols(void);
-void 			chck_begend_symbols(void);
+void			chck_dup_symbols(void);
+void			chck_begend_symbols(void);
 void			ft_lstbuiltcheck(void);
-void 			ft_lstclear_zerolen(void);
-int				last_elem_lis(t_var_add_tlis *va, int index);//adicionei 11 maio
-t_linklis		*ft_linknew(char *pre_split, int type);//adicionei 11 maio
-void			ft_linkadd_back(t_linklis **lst, t_linklis *new);//adicionei 11 maio
-int				sep_link_2(t_var_seplink *va, int *a, int index, int *type);//adicionei 11 maio
-int				sep_link(int index, int *a, int *type);//adicionei 11 maio
+void			ft_lstclear_zerolen(void);
+int				last_elem_lis(t_var_add_tlis *va, int index);
+t_linklis		*ft_linknew(char *pre_split, int type);
+void			ft_linkadd_back(t_linklis **lst, t_linklis *new);
+int				sep_link_2(t_var_seplink *va, int *a, int index, int *type);
+int				sep_link(int index, int *a, int *type);
 
-
-/*	Simple cmd parsing */
-
-void			add_to_simple_commands_list();
-t_linklis *if_redirections_infile(t_linklis *list,
-											t_simplecommand_temp *temp, int b);
-t_linklis *if_redirections_outfile(t_linklis *list,
-											t_simplecommand_temp *temp, int a);
+void			add_to_simple_commands_list(void);
+t_linklis		*if_redirections_infile(t_linklis *list,
+					t_simplecommand_temp *temp, int b);
+t_linklis		*if_redirections_outfile(t_linklis *list,
+					t_simplecommand_temp *temp, int a);
 void			if_redirections_outfile_2(t_linklis *list,
-											t_simplecommand_temp *temp, int i);
-void 			*if_redirections_infile_2(t_linklis *list,
-											t_simplecommand_temp *temp, int i);
+					t_simplecommand_temp *temp, int i);
+void			*if_redirections_infile_2(t_linklis *list,
+					t_simplecommand_temp *temp, int i);
 
 int				iterations_in_simple_command(t_linklis *list);
 void			*ft_lstnew_simple_add(t_simplecommand_temp add);
 char			*ft_strjoin_free(char *s1, char const *s2);
 char			**new_array_array(char **args);
 void			ft_lstclear_simple_struct(t_simplecommand **lst);
-void			debug_simple_commands();
-
-/*	Free */
+void			debug_simple_commands(void);
 
 void			free_global(char *f1, char *f2, char *f3, char *f4);
 void			exit_finale(int free_list);
 
-/*	Env_func */
-
 int				env_rm_elem (char *set);
 char			*env_isex_elem (char *set);
 int				env_var_update(char *set_tbc, char *new_ct, int is_env);
-int				env_list_upd_elem ();
-void	found_env(char ***original);//adicionei 11 MAIO
-void	found_env5(t_fou_env_var *var);//adicionei 11 MAIO
-void	found_env6(t_fou_env_var *var);//11MAIO
+int				env_list_upd_elem(void);
+void			found_env(char ***original);
+void			found_env5(t_fou_env_var *var);
+void			found_env6(t_fou_env_var *var);
 
-/*	Termcaps */
+int				ft_putint(int c);
+void			init_termcaps(void);
+void			turn_off_canonical_mode(void);
+void			turn_on_canonical_mode(void);
+int				has_history(void);
+void			parse_input_history(char *buf, int *i);
+int				is_up_down_arrow(char *buf);
+void			delete_single_char(char *buf, int *i);
+char			*ft_strcpy(char *dest, char *src);
+void			*shell_prompt_line(void);
 
-int		ft_putint(int c);
-void	init_termcaps();
-void	turn_off_canonical_mode();
-void	turn_on_canonical_mode();
-int		has_history();
-void	parse_input_history(char *buf, int *i);
-int		is_up_down_arrow(char *buf);
-void	delete_single_char(char *buf, int *i);
-char	*ft_strcpy(char *dest, char *src);
-void	*shell_prompt_line();
+void			loop_command_tables(void);
 
 #endif

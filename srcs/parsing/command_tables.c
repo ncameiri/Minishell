@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:00:42 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 16:27:37 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:31 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	check_complete_quotation(void)
 	i = 0;
 	single_q = 0;
 	double_q = 0;
-	while (mini_sh.line[i] != '\0')
+	while (g_sh.line[i] != '\0')
 	{
-		if (mini_sh.line[i] == '\"' && double_q == 0 && single_q == 0)
+		if (g_sh.line[i] == '\"' && double_q == 0 && single_q == 0)
 			double_q = 1;
-		else if (mini_sh.line[i] == '\"' && double_q == 1 && single_q == 0)
+		else if (g_sh.line[i] == '\"' && double_q == 1 && single_q == 0)
 			double_q = 0;
-		else if (mini_sh.line[i] == '\'' && single_q == 0 && double_q == 0)
+		else if (g_sh.line[i] == '\'' && single_q == 0 && double_q == 0)
 			single_q = 1;
-		else if (mini_sh.line[i] == '\'' && single_q == 1 && double_q == 0)
+		else if (g_sh.line[i] == '\'' && single_q == 1 && double_q == 0)
 			single_q = 0;
 		i++;
 	}

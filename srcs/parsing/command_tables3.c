@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 17:20:10 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/11 18:06:14 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 03:43:36 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void	remove_cmd_blanks(void)
 	i = 0;
 	a = 0;
 	not_null = 0;
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 		i++;
 	i -= 1;
-	while (mini_sh.cmd_tables[i][a] != '\0')
-		if (mini_sh.cmd_tables[i][a++] != ' ')
+	while (g_sh.cmd_tables[i][a] != '\0')
+		if (g_sh.cmd_tables[i][a++] != ' ')
 			not_null++;
 	if (not_null == 0)
 	{
-		free(mini_sh.cmd_tables[i]);
-		mini_sh.cmd_tables[i] = NULL;
+		free(g_sh.cmd_tables[i]);
+		g_sh.cmd_tables[i] = NULL;
 	}
 	i = 0;
 	remove_cmd_blanks2();
@@ -41,10 +41,10 @@ void	remove_cmd_semicolons(void)
 	int	i;
 
 	i = 0;
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 	{
-		if (mini_sh.cmd_tables[i][ft_strlen(mini_sh.cmd_tables[i]) - 1] == ';')
-			mini_sh.cmd_tables[i][ft_strlen(mini_sh.cmd_tables[i]) - 1] = '\0';
+		if (g_sh.cmd_tables[i][ft_strlen(g_sh.cmd_tables[i]) - 1] == ';')
+			g_sh.cmd_tables[i][ft_strlen(g_sh.cmd_tables[i]) - 1] = '\0';
 		i++;
 	}
 	i = 0;
@@ -52,21 +52,21 @@ void	remove_cmd_semicolons(void)
 
 int	final_cmd_error_handling(int i, int a, int c)
 {
-	while (mini_sh.cmd_tables[i] != NULL)
+	while (g_sh.cmd_tables[i] != NULL)
 	{
 		a = 0;
 		c = 0;
-		if (mini_sh.cmd_tables[i][0] == ';')
+		if (g_sh.cmd_tables[i][0] == ';')
 		{
 			syntax_error(1);
 			return (0);
 		}
-		while (mini_sh.cmd_tables[i][a] != '\0')
+		while (g_sh.cmd_tables[i][a] != '\0')
 		{
-			if (mini_sh.cmd_tables[i][a] != ' '
-				&& mini_sh.cmd_tables[i][a] != ';')
+			if (g_sh.cmd_tables[i][a] != ' '
+				&& g_sh.cmd_tables[i][a] != ';')
 				c++;
-			if (mini_sh.cmd_tables[i][a] == ';' && c == 0)
+			if (g_sh.cmd_tables[i][a] == ';' && c == 0)
 			{
 				syntax_error(1);
 				return (0);
