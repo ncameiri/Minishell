@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 06:05:01 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 06:38:55 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	shell_prompt(void)
 		else if (buf[i] == 3)
 		{
 			printf("^C\n");
+			g_sh.dollar_error = 130;
 			shell_prompt_line();
 			ft_bzero(buf, BUFSIZ);
 			i = 0;

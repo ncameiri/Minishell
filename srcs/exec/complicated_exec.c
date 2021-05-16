@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 05:35:33 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 06:47:51 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,18 @@
 
 void	complicated_execute5(t_complicated_exec *norm)
 {
+	int	status;
+
 	dup2(norm->tmpin, STDIN_FILENO);
 	dup2(norm->tmpout, STDOUT_FILENO);
 	close(norm->tmpin);
 	close(norm->tmpout);
 	if (g_sh.pid > 0)
-		waitpid(g_sh.pid, NULL, 0);
+		waitpid(g_sh.pid, &status, 0);
 	else if (g_sh.pid < 0)
 		printf("ERROR\n");
+	if (WIFEXITED(status))
+		g_sh.dollar_error = WEXITSTATUS(status);
 }
 
 void	complicated_execute4(t_simplecommand **simple_cmd,

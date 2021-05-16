@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 05:55:01 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 06:29:44 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # include <termios.h>
 # include <termcap.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/ioctl.h>
 
 # define SHELL_DELIMITERS " \t\r\n\a"
 # define DELIMETERS2 " \t\r\n\a\'\""
