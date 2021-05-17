@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 06:29:44 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 03:01:46 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
+# include <dirent.h>
 
 # define SHELL_DELIMITERS " \t\r\n\a"
 # define DELIMETERS2 " \t\r\n\a\'\""
@@ -40,14 +41,16 @@
 
 typedef struct s_norminette_struct
 {
-	int		i;
-	int		a;
-	int		b;
-	int		c;
-	int		s;
-	int		single_q;
-	int		double_q;
-	int		copy;
+	int				i;
+	int				a;
+	int				b;
+	int				c;
+	int				s;
+	int				single_q;
+	int				double_q;
+	int				copy;
+	DIR				*dir;
+	struct dirent	*dirent;
 }		t_norminette_struct;
 
 typedef struct s_complicated_exec
@@ -240,6 +243,7 @@ int				take_outfile(t_simplecommand *smp_cmd);
 void			run_builtin_complicated(t_simplecommand *lista);
 int				check_builtin_no_fork(t_simplecommand **lista);
 t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd);
+t_simplecommand	*remove_single_quotation_marks(t_simplecommand *simple_cmd);
 int				infile_stuff(t_simplecommand **simple_cmd,
 					t_complicated_exec *norm);
 char			*get_path(char *command);

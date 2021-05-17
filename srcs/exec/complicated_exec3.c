@@ -6,39 +6,11 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 21:26:20 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 05:08:25 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/16 23:39:56 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../shell.h"
-
-t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd)
-{
-	t_norminette_struct	n;
-	char				*temp;
-
-	n.i = 0;
-	n.a = 0;
-	n.b = 1;
-	temp = NULL;
-	while (simple_cmd->command[n.i] != NULL)
-	{
-		if (simple_cmd->command[n.i][0] == '\"')
-		{
-			temp = malloc(sizeof(char) * ft_strlen(simple_cmd->command[n.i]));
-			while (n.a < ft_strlen(simple_cmd->command[n.i]) - 2)
-				temp[n.a++] = simple_cmd->command[n.i][n.b++];
-			temp[n.a] = '\0';
-			free(simple_cmd->command[n.i]);
-			simple_cmd->command[n.i] = ft_strdup(temp);
-			free(temp);
-			n.a = 0;
-			n.b = 1;
-		}
-		n.i++;
-	}
-	return (simple_cmd);
-}
 
 int	check_builtin_no_fork3(t_simplecommand **lista, int i)
 {

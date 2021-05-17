@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 06:47:51 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 00:06:53 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	complicated_execute4(t_simplecommand **simple_cmd,
 {
 	char	*bin_path;
 
-	g_sh.dollar_error = 0;
 	g_sh.pid = fork();
 	if (g_sh.pid == 0)
 	{
 		(*simple_cmd) = remove_quotation_marks((*simple_cmd));
+		(*simple_cmd) = remove_single_quotation_marks((*simple_cmd));
 		if ((*simple_cmd)->builtin == 1)
 			run_builtin_complicated((*simple_cmd));
 		else
