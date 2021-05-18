@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 21:31:30 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/17 00:06:53 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:22:32 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,19 @@ void	complicated_execute5(t_complicated_exec *norm)
 		g_sh.dollar_error = WEXITSTATUS(status);
 }
 
-void	complicated_execute4(t_simplecommand **simple_cmd,
-							t_complicated_exec *norm)
+void	complicated_execute4(t_simplecommand **simple_cmd)
 {
 	char	*bin_path;
 
 	g_sh.pid = fork();
 	if (g_sh.pid == 0)
 	{
-		(*simple_cmd) = remove_quotation_marks((*simple_cmd));
-		(*simple_cmd) = remove_single_quotation_marks((*simple_cmd));
 		if ((*simple_cmd)->builtin == 1)
 			run_builtin_complicated((*simple_cmd));
 		else
 		{
+			(*simple_cmd) = remove_quotation_marks((*simple_cmd));
+			(*simple_cmd) = remove_single_quotation_marks((*simple_cmd));
 			if (ft_strchr((*simple_cmd)->command[0], '/'))
 				execve((*simple_cmd)->command[0],
 					(*simple_cmd)->command, g_sh.env);
@@ -102,7 +101,7 @@ void	complicated_execute(t_simplecommand *simple_cmd)
 		complicated_execute3(&simple_cmd, &norm);
 		if (check_builtin_no_fork(&simple_cmd) == 1)
 			continue ;
-		complicated_execute4(&simple_cmd, &norm);
+		complicated_execute4(&simple_cmd);
 		simple_cmd = simple_cmd->next;
 	}
 	complicated_execute5(&norm);

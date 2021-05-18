@@ -63,9 +63,10 @@ int	sep_link_2(t_var_seplink *va, int *a, int index, int *type)
 	else if (va->n == '\'' && va->single_q == 1 && va->double_q == 0 )
 		va->single_q = 0;
 	else if (is_separator(va->n, g_sh.cmd_tables[index][va->i + 1],
-			type) && va->single_q == 0 && va->double_q == 0)
+		type) && va->single_q == 0 && va->double_q == 0)
 		return (va->i);
 	va->i += 1;
+	return (-1);
 }
 
 int	add_to_list_run(void)

@@ -12,7 +12,7 @@
 
 #include "../../shell.h"
 
-int	last_elem_lis(t_var_add_tlis *va, int index)
+void	last_elem_lis(t_var_add_tlis *va, int index)
 {
 	va->type = 8;
 	va->aux = ft_substr(g_sh.cmd_tables[index],

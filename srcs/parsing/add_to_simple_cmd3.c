@@ -12,12 +12,12 @@
 
 #include "../../shell.h"
 
-void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
+void	ft_lstnew_simple_add3(t_simplecommand_temp add)
 {
 	g_sh.simple_cmd->next = malloc(sizeof(t_simplecommand));
 	g_sh.simple_cmd = g_sh.simple_cmd->next;
 	if (g_sh.simple_cmd == NULL)
-		return (NULL);
+		return ;
 	if (g_sh.simple_cmd)
 	{
 		g_sh.simple_cmd->command = add.temp_command;
@@ -31,7 +31,7 @@ void	*ft_lstnew_simple_add3(t_simplecommand_temp add)
 	}
 }
 
-void	*ft_lstnew_simple_add2(t_simplecommand_temp add)
+void	ft_lstnew_simple_add2(t_simplecommand_temp add)
 {
 	t_simplecommand	*start;
 	t_simplecommand	*temp;
@@ -54,7 +54,7 @@ void	*ft_lstnew_simple_add2(t_simplecommand_temp add)
 	g_sh.simple_cmd = start;
 }
 
-void	*ft_lstnew_simple_add1(t_simplecommand_temp add)
+void	ft_lstnew_simple_add1(t_simplecommand_temp add)
 {
 	g_sh.simple_cmd->command = add.temp_command;
 	g_sh.simple_cmd->infile = new_array_array(add.temp_infile);
@@ -66,13 +66,13 @@ void	*ft_lstnew_simple_add1(t_simplecommand_temp add)
 	g_sh.simple_cmd->next = NULL;
 }
 
-void	*ft_lstnew_simple_add(t_simplecommand_temp add)
+void	ft_lstnew_simple_add(t_simplecommand_temp add)
 {
 	if (g_sh.simple_cmd == NULL)
 	{
 		g_sh.simple_cmd = malloc(sizeof(t_simplecommand));
 		if (g_sh.simple_cmd == NULL)
-			return (NULL);
+			return ;
 		if (g_sh.simple_cmd)
 			ft_lstnew_simple_add1(add);
 	}

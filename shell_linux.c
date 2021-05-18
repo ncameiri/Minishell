@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.c                                            :+:      :+:    :+:   */
+/*   shell_linux.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:57:53 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 16:18:11 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/18 18:46:25 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	loop_command_tables(void)
 	free_global("cmd_tables", "line", "empty", "empty");
 }
 
-void	*shell_prompt_line(void)
+void	shell_prompt_line(void)
 {
 	char	buf[1001];
 	char	*path;
@@ -48,57 +48,6 @@ void	*shell_prompt_line(void)
 		write(1, path, ft_strlen(path));
 		write(1, "\x1b[91m$ ", 8);
 	}
-}
-
-void	shell_prompt(void)
-{
-	char	buf[BUFSIZ];
-	int		i;
-	int		nb_char_read;
-
-	i = 0;
-	ft_bzero(buf, BUFSIZ);
-	g_sh.current_history = g_sh.history_len;
-	g_sh.line = NULL;
-	shell_prompt_line();
-	while (!ft_strchr(buf, '\n'))
-	{
-		nb_char_read = read(STDIN_FILENO, &buf[i], BUFSIZ - i);
-		if (*buf == 4)
-		{
-			turn_on_canonical_mode();
-			write (1, "exit\n", 6);
-			exit_finale(0);
-			exit(0);
-		}
-		else if (buf[i] == 3)
-		{
-			printf("^C\n");
-			g_sh.dollar_error = 130;
-			shell_prompt_line();
-			ft_bzero(buf, BUFSIZ);
-			i = 0;
-		}
-		else if (buf[i] == 28 || buf[i] == 4 || buf[i] == 26)
-		{
-			if (buf != '\0')
-				buf[i] = 0;
-		}
-		else if (is_up_down_arrow(&buf[i]))
-			parse_input_history(buf, &i);
-		else if (ft_strcmp(&buf[i], g_sh.backspace) == 0)
-			delete_single_char(buf, &i);
-		else if (nb_char_read > 1)
-			ft_bzero(&buf[i], BUFSIZ - i);
-		else
-			i += write(STDOUT_FILENO, &buf[i], 1);
-	}
-	buf[i - 1] = '\0';
-	g_sh.line = ft_strdup(buf);
-	if (only_spaces(g_sh.line) == 1)
-		free_global("line", "empty", "empty", "empty");
-	if (g_sh.line == NULL || g_sh.line[0] == '\0')
-		shell_prompt();
 }
 
 void	shell_loop(void)

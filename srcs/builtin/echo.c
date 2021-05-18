@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:12:50 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 03:53:37 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:19:12 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	ft_putnstr(char *str, int n)
 				ft_putnbr_fd(g_sh.dollar_error, 1);
 				i++;
 			}
+			else if (str[i] == '\\' && str[i + 1] == 'n')
+				func_case(n, &i);
 			else if (!ft_strchr(OPEN_QUOTE_EC, str[i]) || !varia.its_clos)
 				write(1, &str[i], 1);
 		}

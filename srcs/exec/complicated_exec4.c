@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/16 04:03:15 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/17 03:05:57 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:28:01 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_simplecommand	*remove_single_quotation_marks(t_simplecommand *simple_cmd)
 		if (simple_cmd->command[n.i][0] == '\'')
 		{
 			temp = malloc(sizeof(char) * ft_strlen(simple_cmd->command[n.i]));
-			while (n.a < ft_strlen(simple_cmd->command[n.i]) - 2)
+			while (n.a < ((int)ft_strlen(simple_cmd->command[n.i])) - 2)
 				temp[n.a++] = simple_cmd->command[n.i][n.b++];
 			temp[n.a] = '\0';
 			free(simple_cmd->command[n.i]);
@@ -54,7 +54,7 @@ t_simplecommand	*remove_quotation_marks(t_simplecommand *simple_cmd)
 		if (simple_cmd->command[n.i][0] == '\"')
 		{
 			temp = malloc(sizeof(char) * ft_strlen(simple_cmd->command[n.i]));
-			while (n.a < ft_strlen(simple_cmd->command[n.i]) - 2)
+			while (n.a < (int)ft_strlen(simple_cmd->command[n.i]) - 2)
 				temp[n.a++] = simple_cmd->command[n.i][n.b++];
 			temp[n.a] = '\0';
 			free(simple_cmd->command[n.i]);
@@ -91,7 +91,7 @@ char	*get_path3(char *path, char *command)
 	return (path_send);
 }
 
-char	*get_path2(char *command, char *bin_path, char *env, char **env_array)
+char	*get_path2(char *command, char *bin_path, char **env_array)
 {
 	t_norminette_struct	norm;
 
@@ -128,6 +128,7 @@ char	*get_path(char *command)
 	int		i;
 
 	i = 0;
+	bin_path = NULL;
 	env = NULL;
 	while (g_sh.env[i] != NULL)
 	{
@@ -143,7 +144,7 @@ char	*get_path(char *command)
 	if (env == NULL)
 		return (ft_strdup("empty"));
 	env_array = ft_split(env, ':');
-	bin_path = get_path2(command, bin_path, env, env_array);
+	bin_path = get_path2(command, bin_path, env_array);
 	free_array(env_array);
 	return (bin_path);
 }

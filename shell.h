@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/18 23:59:14 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/17 03:01:46 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/18 18:39:38 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_norminette_struct
 	int				copy;
 	DIR				*dir;
 	struct dirent	*dirent;
+	int				nb_char_read;
 }		t_norminette_struct;
 
 typedef struct s_complicated_exec
@@ -222,6 +223,10 @@ typedef struct s_minishell
 
 t_minishell	g_sh;
 
+void			shell_prompt(void);
+int				shell_prompt2(int norm, char **buf);
+void			shell_prompt3(char *buf, int i);
+
 void			syntax_error(int value);
 int				initial_cmd_error_handling(int *semicolon_location,
 					int semicolon_count);
@@ -291,7 +296,7 @@ void			chck_dup_symbols(void);
 void			chck_begend_symbols(void);
 void			ft_lstbuiltcheck(void);
 void			ft_lstclear_zerolen(void);
-int				last_elem_lis(t_var_add_tlis *va, int index);
+void			last_elem_lis(t_var_add_tlis *va, int index);
 t_linklis		*ft_linknew(char *pre_split, int type);
 void			ft_linkadd_back(t_linklis **lst, t_linklis *new);
 int				sep_link_2(t_var_seplink *va, int *a, int index, int *type);
@@ -304,11 +309,11 @@ t_linklis		*if_redirections_outfile(t_linklis *list,
 					t_simplecommand_temp *temp, int a);
 void			if_redirections_outfile_2(t_linklis *list,
 					t_simplecommand_temp *temp, int i);
-void			*if_redirections_infile_2(t_linklis *list,
+void			if_redirections_infile_2(t_linklis *list,
 					t_simplecommand_temp *temp, int i);
 
 int				iterations_in_simple_command(t_linklis *list);
-void			*ft_lstnew_simple_add(t_simplecommand_temp add);
+void			ft_lstnew_simple_add(t_simplecommand_temp add);
 char			*ft_strjoin_free(char *s1, char const *s2);
 char			**new_array_array(char **args);
 void			ft_lstclear_simple_struct(t_simplecommand **lst);
@@ -334,7 +339,8 @@ void			parse_input_history(char *buf, int *i);
 int				is_up_down_arrow(char *buf);
 void			delete_single_char(char *buf, int *i);
 char			*ft_strcpy(char *dest, char *src);
-void			*shell_prompt_line(void);
+void			shell_prompt_line(void);
+int				func_case(int n, int *i);
 
 void			loop_command_tables(void);
 

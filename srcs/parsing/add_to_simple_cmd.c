@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 04:20:00 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 03:43:26 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:42:10 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	if_redirections_3(t_simplecommand_temp temp)
 		free_array(temp.temp_infile);
 }
 
-t_simplecommand_temp	if_redirections_2(t_simplecommand_temp temp,
-											t_linklis *list)
+t_simplecommand_temp	if_redirections_2(t_linklis *list)
 {
-	int	i;
+	t_simplecommand_temp	temp;
+	int						i;
 
 	i = 0;
 	temp.temp_command = malloc(sizeof(char *) * 60);
@@ -50,7 +50,7 @@ t_linklis	*if_redirections(t_linklis *list)
 	int						a;
 	int						b;
 
-	temp = if_redirections_2(temp, list);
+	temp = if_redirections_2(list);
 	iterations = iterations_in_simple_command(list);
 	i = 1;
 	a = 0;

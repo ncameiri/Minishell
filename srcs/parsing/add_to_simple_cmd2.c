@@ -27,7 +27,7 @@ int	iterations_in_simple_command(t_linklis *list)
 	return (i);
 }
 
-void	*if_redirections_infile_2(t_linklis *list,
+void	if_redirections_infile_2(t_linklis *list,
 											t_simplecommand_temp *temp, int i)
 {
 	int	a;

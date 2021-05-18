@@ -78,7 +78,8 @@ int	final_cmd_error_handling(int i, int a, int c)
 	return (1);
 }
 
-int	initial_cmd_error_handling2(int *semicolon_location, int semicolon_count)
+void	initial_cmd_error_handling2(int *semicolon_location,
+										int semicolon_count)
 {
 	if (semicolon_count == 1)
 		syntax_error(1);

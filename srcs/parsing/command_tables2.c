@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/24 00:36:21 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 03:44:00 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:35:00 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	split_cmd_tables3(int *semicolon_location, int i, int copy, int last)
 	}
 	else
 	{
-		while (copy < ft_strlen(g_sh.line))
+		while (copy < (int)ft_strlen(g_sh.line))
 			g_sh.cmd_tables[i][a++] = g_sh.line[copy++];
 	}
 	g_sh.cmd_tables[i][a] = '\0';
@@ -50,7 +50,7 @@ int	split_cmd_tables2(int *semicolon_location, int semicolon_count, int copy)
 		return (0);
 	while (n.i < semicolon_count)
 		copy = split_cmd_tables3(semicolon_location, n.i++, copy, 0);
-	if (copy < ft_strlen(g_sh.line))
+	if (copy < (int)ft_strlen(g_sh.line))
 		copy = split_cmd_tables3(semicolon_location, n.i++, copy, 1);
 	g_sh.cmd_tables[n.i] = NULL;
 	if (final_cmd_error_handling(0, 0, 0) == 0)

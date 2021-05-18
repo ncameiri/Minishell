@@ -6,7 +6,7 @@
 /*   By: tisantos <tisantos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 11:29:40 by tisantos          #+#    #+#             */
-/*   Updated: 2021/05/16 03:43:35 by tisantos         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:29:59 by tisantos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	check_inside_symbols(t_splvariab *var, char *str)
 {
 	int	i;
 
+	(void)var;
 	i = 0;
 	{
 		if (str[i + 1] && is_a_shell_symbol(str[i], str[i + 1]))
